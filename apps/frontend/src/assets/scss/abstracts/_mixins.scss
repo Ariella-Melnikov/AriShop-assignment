@@ -1,0 +1,99 @@
+// Flexbox mixins
+@mixin flex($direction: row, $justify: flex-start, $align: stretch, $wrap: nowrap) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  flex-wrap: $wrap;
+}
+
+@mixin flex-center {
+  @include flex(row, center, center);
+}
+
+@mixin flex-between {
+  @include flex(row, space-between, center);
+}
+
+// Grid mixins
+@mixin grid($columns: 1, $gap: $grid-gap) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+}
+
+// Media query mixins
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == mobile {
+    @media (max-width: $breakpoint-mobile) { @content; }
+  } @else if $breakpoint == tablet {
+    @media (max-width: $breakpoint-tablet) { @content; }
+  } @else if $breakpoint == desktop {
+    @media (max-width: $breakpoint-desktop) { @content; }
+  } @else if $breakpoint == wide {
+    @media (min-width: $breakpoint-wide) { @content; }
+  }
+}
+
+// Container mixin
+@mixin container {
+  width: 100%;
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: 0 $container-padding;
+}
+
+// Typography mixins
+@mixin heading($size: $font-size-2xl) {
+  font-size: $size;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: $spacing-lg;
+}
+
+@mixin text($size: $font-size-md) {
+  font-size: $size;
+  line-height: 1.5;
+  margin-bottom: $spacing-md;
+}
+
+// Animation mixins
+@mixin transition($property: all) {
+  transition: $property $transition-base;
+}
+
+@mixin hover-lift {
+  @include transition(transform);
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// Utility mixins
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin aspect-ratio($width: 16, $height: 9) {
+  position: relative;
+  &::before {
+    content: '';
+    display: block;
+    padding-top: percentage($height / $width);
+  }
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+} 

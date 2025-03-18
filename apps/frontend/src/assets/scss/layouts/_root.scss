@@ -1,0 +1,22 @@
+@import '../abstracts/variables';
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  color: $color-text;
+  background-color: $color-background;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  margin-top: $header-height;
+  min-height: calc(100vh - $header-height);
+} 
