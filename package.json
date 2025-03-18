@@ -7,6 +7,12 @@
     "apps/*"
   ],
   "devDependencies": {
-    "@types/fs-extra": "^11.0.4"
+    "@types/fs-extra": "^11.0.4",
+    "sass": "^1.86.0",
+    "sass-embedded": "^1.86.0"
+  },
+  "dependencies": {
+    "@types/react-router-dom": "^5.3.3",
+    "react-router-dom": "^7.3.0"
   }
 }
