@@ -1,3 +1,98 @@
 {
-  "products": []
+  "products": [
+    {
+      "_id": "96e96326-045b-4a26-9b4a-c4a152871275",
+      "title": "Romantic Red Roses",
+      "description": "A beautiful bouquet of fresh red roses.",
+      "flowerType": "Roses",
+      "occasion": [
+        "Valentine's Day",
+        "Anniversary"
+      ],
+      "categories": [
+        "Bouquet"
+      ],
+      "tags": [
+        "romantic",
+        "gift"
+      ],
+      "basePrice": {
+        "amount": 150,
+        "currency": "ILS"
+      },
+      "media": [
+        {
+          "_id": "m1",
+          "type": "image",
+          "url": "https://res.cloudinary.com/dkykllpf5/image/upload/v1742312507/bouquet_of_Red_Roses_qvja93.webp"
+        }
+      ],
+      "variants": [
+        {
+          "_id": "v1",
+          "productId": "123",
+          "size": "Large",
+          "color": "Red",
+          "price": {
+            "amount": 180,
+            "currency": "ILS"
+          },
+          "inventory": {
+            "quantity": 10,
+            "availableQuantity": 10
+          }
+        }
+      ],
+      "fragranceLevel": "strong",
+      "createdAt": "2025-03-18T15:28:05.448Z",
+      "updatedAt": "2025-03-18T15:28:05.448Z"
+    },
+    {
+      "_id": "5e3ae7ef-0cd7-4e8f-89f5-92e6c0b40dcb",
+      "title": "Beautiful Tulips",
+      "description": "A vibrant bouquet of fresh tulips.",
+      "flowerType": "Tulips",
+      "occasion": [
+        "Birthday",
+        "Spring Celebration"
+      ],
+      "categories": [
+        "Bouquet"
+      ],
+      "tags": [
+        "fresh",
+        "colorful"
+      ],
+      "basePrice": {
+        "amount": 120,
+        "currency": "ILS"
+      },
+      "media": [
+        {
+          "_id": "new_media_id",
+          "type": "image",
+          "url": "https://res.cloudinary.com/dkykllpf5/image/upload/v1742310996/bouquet_of_Tulips_rhll8q.webp"
+        }
+      ],
+      "variants": [
+        {
+          "_id": "new_variant_id",
+          "productId": "new_product_id",
+          "size": "Medium",
+          "color": "Yellow",
+          "price": {
+            "amount": 130,
+            "currency": "ILS"
+          },
+          "inventory": {
+            "quantity": 20,
+            "availableQuantity": 20
+          }
+        }
+      ],
+      "fragranceLevel": "light",
+      "createdAt": "2025-03-18T15:37:49.044Z",
+      "updatedAt": "2025-03-18T15:37:49.044Z"
+    }
+  ]
 }

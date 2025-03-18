@@ -13,7 +13,7 @@ export interface Price {
 export interface Variant {
   _id: string;
   productId: string;
-  size?: string;
+  size?: string; // Not as relevant for flowers, but keeping for bouquet sizes
   color?: string;
   price: Price;
   inventory: {
@@ -26,13 +26,14 @@ export interface Product {
   _id: string;
   title: string;
   description: string;
-  brand: string;
-  color?: string;
-  categories: string[];
-  tags: string[];
+  flowerType: string; // Added, e.g., "Roses", "Lilies", "Tulips"
+  occasion?: string[]; // Added, e.g., ["Wedding", "Birthday", "Valentine's Day"]
+  categories: string[]; 
+  tags: string[]; 
   basePrice: Price;
   media: ProductMedia[];
-  variants: Variant[];
+  variants: Variant[]; 
+  fragranceLevel?: 'light' | 'medium' | 'strong'; // New, to describe flower scent
   createdAt: Date;
   updatedAt: Date;
-} 
+}
