@@ -48,17 +48,16 @@ This architecture ensures a smooth development experience, scalability for futur
 
 //Product Schema: 
 
- interface Product {
+interface Product {
   _id: string;
-  title: string;
+  name: string;
   description: string;
-  brand: string;
-  color?: string;
   categories: string[];
   tags: string[];
-  basePrice: Price; 
+  basePrice: Price;
   media: ProductMedia[];
   variants: Variant[];
+  availability: Availability;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -72,16 +71,22 @@ interface ProductMedia {
 
 interface Price {
   amount: number;
-  currency: 'ILS' | 'USD' | 'EUR'; // Supports multiple currencies
+  currency: 'ILS' | 'USD' | 'EUR';
 }
 
 interface Variant {
   _id: string;
   productId: string;
-  size?: string;
+  size?: 'small' | 'medium' | 'large';
   color?: string;
+  packaging?: 'standard' | 'gift';
   price: Price;
   inventory: Inventory;
+}
+
+interface Availability {
+  inStock: boolean;
+  leadTime?: number; // Days required to fulfill the order if not in stock
 }
 
 //Inventory Schema:
@@ -89,8 +94,6 @@ interface Variant {
 interface Inventory {
   variantId: string;
   quantity: number;
-  availableQuantity: number;
-  reservedQuantity: number;
   location: string;
   restockThreshold: number;
   restockStatus: 'in_stock' | 'low_stock' | 'out_of_stock' | 'discontinued';
@@ -191,7 +194,6 @@ interface OrderItem {
   quantity: number;
   price: Price;
   totalPrice: Price;
-  returnStatus?: 'none' | 'requested' | 'approved' | 'completed' | 'rejected';
 }
 
 type OrderStatus = 
@@ -200,8 +202,7 @@ type OrderStatus =
   | 'shipped' 
   | 'delivered' 
   | 'cancelled' 
-  | 'refunded' 
-  | 'processing_return';
+  | 'refunded';
 
 interface StatusChange {
   status: OrderStatus;
@@ -229,7 +230,7 @@ interface Payment {
 interface DeliveryMethod {
   _id: string;
   carrier: string;
-  method: string;
+  method:  'standard' | 'express' | 'pickup';
   trackingNumber?: string;
   estimatedDeliveryWindow: {
     from: Date;
@@ -247,7 +248,7 @@ interface DeliveryMethod {
 
 |Method | Endpoint              | Description                               | Query Parameters                                                                              | Request Body | Response               |
 |-------|-----------------------|-------------------------------------------|-----------------------------------------------------------------------------------------------|--------------|------------------------|
-|GET |`/api/products`|Get all products with filtering and sorting |`categories`, `brands`, `colors`, `tags`, `priceMin`, `priceMax`, `search`, `inStock`, `sortBy`, `page`, `limit` | - |Products list with pagination|
+|GET    |`/api/products`        |Get all products with filtering and sorting|`categories`, `color`, `tags`, `priceMin`, `priceMax`, `search`, `inStock`, `sortBy`, `page`, `limit`| - |Products list with pagination|
 |GET    |`/api/products/:id`    |Get specific product by ID                 | -                                                                                             |     -        | Single product details |
 |GET    |`/api/products/search` |Search products by query string            | `q`, `page`, `limit`                                                                          | - | Matching products with pagination |
 |POST   |`/api/products`        |Create a new product                       | -                                                                                             | Product details | New product created |
