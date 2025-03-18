@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import * as fs from 'fs-extra';
 import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { Product } from '../../features/products/interfaces/product.interface';
@@ -7,79 +8,55 @@ interface DatabaseSchema {
   products: Product[];
 }
 
+const DB_FILE_PATH = path.join(process.cwd(), 'data', 'db.json');
+
 @Injectable()
 export class DatabaseService {
-  private db: any;
+  private data: DatabaseSchema = { products: [] };
 
   constructor() {
     this.initializeDb();
   }
 
-  private async initializeDb() {
-    const { Low } = await import('lowdb');
-    const { JSONFile } = await import('lowdb/node');
-    
-    const file = path.join(process.cwd(), 'data', 'db.json');
-    const adapter = new JSONFile<DatabaseSchema>(file);
-    this.db = new Low(adapter, { products: [] });
+  async initializeDb(): Promise<void> {
+    this.data = await fs.readJson(DB_FILE_PATH).catch(() => ({ products: [] }));
+    await fs.writeJson(DB_FILE_PATH, this.data, { spaces: 2 });
   }
 
-  async initialize() {
-    await this.db.read();
-    this.db.data ||= { products: [] };
-    await this.db.write();
+  private async saveDb(): Promise<void> {
+    await fs.writeJson(DB_FILE_PATH, this.data, { spaces: 2 });
   }
 
-  async findAll<T, K extends keyof DatabaseSchema>(
-    collection: K
-  ): Promise<T[]> {
-    await this.db.read();
-    return this.db.data[collection] as T[];
+  async findAll<T, K extends keyof DatabaseSchema>(collection: K): Promise<T[]> {
+    return (this.data[collection] ?? []) as T[];
   }
 
-  async findById<T, K extends keyof DatabaseSchema>(
-    collection: K, 
-    id: string
-  ): Promise<T | null> {
-    await this.db.read();
-    return this.db.data[collection].find((item: { _id: string }) => item._id === id) as T;
+  async findById<T extends Product, K extends keyof DatabaseSchema>(collection: K, id: string): Promise<T | null> {
+    return (this.data[collection] ?? []).find((item: Product) => item._id === id) as T || null;
   }
 
-  async create<T, K extends keyof DatabaseSchema>(
-    collection: K, 
-    data: Omit<T, '_id'>
-  ): Promise<T> {
-    await this.db.read();
+  async create<T, K extends keyof DatabaseSchema>(collection: K, data: Omit<T, '_id'>): Promise<T> {
     const newItem = { _id: uuidv4(), ...data } as T;
-    (this.db.data[collection] as unknown as T[]).push(newItem);
-    await this.db.write();
+    this.data[collection] = [...this.data[collection], newItem] as any;
+    await this.saveDb();
     return newItem;
   }
 
-  async update<T, K extends keyof DatabaseSchema>(
-    collection: K, 
-    id: string, 
-    data: Partial<T>
-  ): Promise<T | null> {
-    await this.db.read();
-    const index = this.db.data[collection].findIndex((item: { _id: string }) => item._id === id);
+  async update<T extends Product, K extends keyof DatabaseSchema>(collection: K, id: string, updateData: Partial<T>): Promise<T | null> {
+    const collectionData = this.data[collection] as any[];
+    const index = collectionData.findIndex((item) => item._id === id);
     if (index === -1) return null;
 
-    this.db.data[collection][index] = {
-      ...this.db.data[collection][index],
-      ...data,
-    };
-    await this.db.write();
-    return this.db.data[collection][index] as T;
+    collectionData[index] = { ...collectionData[index], ...updateData };
+    await this.saveDb();
+    return collectionData[index];
   }
 
   async delete(collection: keyof DatabaseSchema, id: string): Promise<boolean> {
-    await this.db.read();
-    const initialLength = this.db.data[collection].length;
-    this.db.data[collection] = this.db.data[collection].filter(
-      (item: { _id: string }) => item._id !== id
-    );
-    await this.db.write();
-    return initialLength > this.db.data[collection].length;
+    const collectionData = this.data[collection] as any[];
+    const initialLength = collectionData.length;
+    this.data[collection] = collectionData.filter((item) => item._id !== id);
+    await this.saveDb();
+    return initialLength > this.data[collection].length;
   }
-} 
+}

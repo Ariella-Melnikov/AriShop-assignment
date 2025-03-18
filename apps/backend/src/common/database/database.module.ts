@@ -9,6 +9,6 @@ export class DatabaseModule implements OnModuleInit {
   constructor(private databaseService: DatabaseService) {}
 
   async onModuleInit() {
-    await this.databaseService.initialize();
+    await this.databaseService.initializeDb();
   }
 } 

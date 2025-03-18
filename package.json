@@ -1,9 +1,12 @@
 {
-    "name": "ari-shop-assignment",
-    "private": true,
-    "version": "1.0.0",
-    "packageManager": "pnpm@10.6.3",
-    "workspaces": [
-      "apps/*"
-    ]
-  } 
+  "name": "ari-shop-assignment",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.6.3",
+  "workspaces": [
+    "apps/*"
+  ],
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4"
+  }
+}
