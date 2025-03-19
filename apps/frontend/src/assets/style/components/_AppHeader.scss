@@ -21,13 +21,25 @@
     .header-content {
         @include flex(row, space-between, center);
         width: 100%;
+        padding: 0 1rem;
+
+        @include respond(tablet) {
+            padding: 0 1.5rem; // ✅ 24px for tablet
+        }
+
+        @include respond(desktop) {
+            padding:  0 2rem; // ✅ 32px for desktop
+        }
+
+        @include respond(wide) {
+            padding: 0 2.5rem; // ✅ 40px for wide screens
+        }
 
         @include respond(mobile) {
-          display: grid;
-          grid-template-columns: auto 1fr auto; // ✅ Ensures left, center, right alignment
-          align-items: center;
-          width: 100%;
-          padding: 0 $spacing-sm;
+            display: grid;
+            grid-template-columns: auto 1fr auto; // ✅ Ensures left, center, right alignment
+            align-items: center;
+            width: 100%;
         }
     }
 
@@ -93,9 +105,16 @@
 
     // ✅ Logo Column Styling
     .logo-column {
-      flex: 1;
-      display: flex;
-      justify-content: center; // ✅ Center logo in mobile
+        flex: 0 0 auto;
+        display: flex;
+
+        @include respond(mobile) {
+          justify-content: center !important; // ✅ Forces center alignment
+      }
+
+        @include respond(tablet) {
+            justify-content: flex-start;
+        }
 
         .app-logo {
             width: 140px;
@@ -112,7 +131,7 @@
     }
 
     .nav-column {
-        flex: 0 0 666px;
+        flex: 1;
         @include flex(center, center);
         min-height: 20px;
 
@@ -121,26 +140,26 @@
         }
 
         @include respond(mobile) {
-          position: absolute;
-          top: 100%;
-          left: 0;
-          width: 100%;
-          background: $color-background;
-          padding: $spacing-md;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          flex-direction: column;
-          gap: $spacing-md;
-          transition: all 0.3s ease-in-out; // Smooth transition
-  
-          display: none; // ✅ Initially hidden
-          opacity: 0;
-          height: 0;
-  
-          &.active {
-              display: flex;
-              opacity: 1;
-              height: auto; // ✅ Allows dynamic height
-          }
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 40vw;
+            background: $color-background;
+            padding: $spacing-md;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+            gap: $spacing-md;
+            transition: all 0.3s ease-in-out; // Smooth transition
+
+            display: none; // ✅ Initially hidden
+            opacity: 0;
+            height: 0;
+
+            &.active {
+                display: flex;
+                opacity: 1;
+                height: auto; // ✅ Allows dynamic height
+            }
         }
     }
 

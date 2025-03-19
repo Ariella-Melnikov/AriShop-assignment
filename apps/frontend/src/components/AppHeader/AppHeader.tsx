@@ -25,7 +25,6 @@ export const AppHeader = () => {
                     className={`hamburger-menu ${isMobileNavOpen ? 'active' : ''}`}
                     onClick={() => {
                         setIsMobileNavOpen(!isMobileNavOpen)
-                        console.log('Hamburger clicked! isMobileNavOpen:', !isMobileNavOpen) // ✅ Debugging
                     }}>
                     <span className='hamburger-icon'></span>
                 </div>
