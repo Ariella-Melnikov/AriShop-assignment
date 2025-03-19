@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AppHeader } from './components/AppHeader/AppHeader';
-import './assets/scss/main.scss';
 
 function App() {
   return (

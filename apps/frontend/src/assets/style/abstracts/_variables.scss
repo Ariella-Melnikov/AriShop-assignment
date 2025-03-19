@@ -1,0 +1,44 @@
+// Colors
+$color-primary: #D5ABA1;
+$color-background: #FBFBFB;
+$color-text: #232323;
+$color-text-light: #666666;
+$color-border: #E5E5E5;
+$color-white: #FFFFFF;
+
+// Typography
+$font-family-primary: 'Quicksand', sans-serif;
+$font-size-base: 1rem;    // 16px
+$font-size-xs: 0.75rem;   // 12px
+$font-size-sm: 0.875rem;  // 14px
+$font-size-md: 1rem;      // 16px
+$font-size-lg: 1.125rem;  // 18px
+$font-size-xl: 1.25rem;   // 20px
+$font-size-2xl: 1.5rem;   // 24px
+
+// Spacing
+$spacing-xs: 0.25em;  // 4px (assuming base font size is 16px)
+$spacing-sm: 0.5em;   // 8px
+$spacing-md: 1em;     // 16px
+$spacing-lg: 1.5em;   // 24px
+$spacing-xl: 2em;     // 32px
+$spacing-2xl: 3em;    // 48px
+$spacing-3xl: 4em;    // 64px
+
+// Layout
+$header-height: 80px;
+$container-max-width: 1200px;
+$container-padding: 1rem; // ✅ Direct value instead of referencing another variable
+
+// Grid
+$grid-gap: 16px;
+$grid-columns: 12;
+
+// Z-Index
+$z-index-header: 1030;
+$z-index-dropdown: 1040;
+$z-index-modal: 1050;
+$z-index-tooltip: 1060;
+
+// Transitions
+$transition-base: 0.3s ease;

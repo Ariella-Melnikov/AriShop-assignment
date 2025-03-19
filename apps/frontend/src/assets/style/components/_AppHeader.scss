@@ -1,0 +1,76 @@
+@use '../abstracts' as *;
+
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $header-height;
+  background-color: $color-background;
+  z-index: $z-index-header;
+  transition: background-color $transition-base;
+
+  &.sticky {
+    background-color: $color-primary;
+  }
+
+  .header-content {
+    @include container;
+    @include flex(space-between, center);
+
+    @include respond(mobile) {
+      padding: 0 $spacing-sm;
+    }
+  }
+
+  .logo-column, .cart-column {
+    flex: 0 0 auto;
+    @include flex(center, center);
+  }
+
+  .nav-column {
+    flex: 1;
+    @include flex(center, center);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: $spacing-xl;
+
+    @include respond(tablet) {
+      gap: $spacing-lg;
+    }
+
+    @include respond(mobile) {
+      gap: $spacing-md;
+    }
+
+    a {
+      font-size: $font-size-lg;
+      color: $color-text;
+      transition: color $transition-base;
+
+      &:hover, &.active {
+        color: $color-primary;
+      }
+
+      @include respond(mobile) {
+        font-size: $font-size-md;
+      }
+    }
+  }
+
+  .cart-icon {
+    font-size: $font-size-lg;
+    color: $color-text;
+    transition: color $transition-base;
+
+    &:hover {
+      color: $color-primary;
+    }
+
+    @include respond(mobile) {
+      font-size: $font-size-md;
+    }
+  }
+}

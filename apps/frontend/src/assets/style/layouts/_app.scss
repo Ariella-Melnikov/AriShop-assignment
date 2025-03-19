@@ -1,4 +1,4 @@
-@import '../abstracts/variables';
+@use '../abstracts' as *;
 
 .app {
   display: flex;
@@ -13,7 +13,7 @@
   margin: 0 auto;
   padding: 2rem;
   
-  @include respond-to(tablet) {
+  @include respond(tablet) {
     padding: 1rem;
   }
 } 
