@@ -14,9 +14,3 @@ html, body {
   display: flex;
   flex-direction: column;
 }
-
-main {
-  flex: 1;
-  margin-top: $header-height;
-  min-height: calc(100vh - $header-height);
-} 
