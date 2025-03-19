@@ -12,7 +12,10 @@
     "sass-embedded": "^1.86.0"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.6.1",
+    "@types/react-redux": "^7.1.34",
     "@types/react-router-dom": "^5.3.3",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.3.0"
   }
 }
