@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from '../../common/database/database.service';
-import { Product } from './interfaces/product.interface';
+import { Product } from '@shared/types/product';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { v4 as uuidv4 } from 'uuid';
@@ -23,34 +23,37 @@ export class ProductsService {
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const now = new Date();
-    const productId = uuidv4(); // Generate product ID in advance
+    const productId = uuidv4();
     
-    // Add _id to each media item
     const mediaWithIds = createProductDto.media 
       ? createProductDto.media.map(item => ({ _id: uuidv4(), ...item }))
       : [];
     
-    // Add _id and productId to each variant
     const variantsWithIds = createProductDto.variants
       ? createProductDto.variants.map(item => ({ 
           _id: uuidv4(), 
-          productId: productId, // Add the productId to each variant
+          productId: productId,
           ...item 
         }))
       : [];
     
-    const product = {
-      _id: productId, // Use the same ID
-      ...createProductDto,
+    const product: Product = {
+      _id: productId,
+      name: createProductDto.name,
+      description: createProductDto.description,
+      categories: createProductDto.categories,
+      tags: createProductDto.tags,
+      basePrice: createProductDto.basePrice,
       media: mediaWithIds,
       variants: variantsWithIds,
+      availability: {
+        inStock: variantsWithIds.some(v => v.inventory > 0)
+      },
       createdAt: now,
       updatedAt: now,
     };
     
-    // Remove _id before passing to create since it adds _id itself
     const { _id, ...productWithoutId } = product;
-    
     return this.databaseService.create<Product, 'products'>('products', productWithoutId);
   }
 
