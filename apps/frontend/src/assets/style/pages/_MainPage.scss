@@ -10,4 +10,5 @@
 
 .hero-section {
     width: 100%;
+    @include container;
 }
