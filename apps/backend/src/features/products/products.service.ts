@@ -1,20 +1,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DatabaseService } from '../../common/database/database.service';
-import { Product } from '@shared/types/product';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { v4 as uuidv4 } from 'uuid';
+import { buildProductWithIds } from './dto/buildProductWithIds';
+import { InjectModel } from '@nestjs/mongoose';
+import { Product, ProductDocument } from './product.schema';
+import { Model } from 'mongoose';
+
 
 @Injectable()
 export class ProductsService {
-  constructor(private databaseService: DatabaseService) {}
+  constructor(@InjectModel(Product.name) private productModel: Model<ProductDocument>) {}
 
   async findAll(): Promise<Product[]> {
-    return this.databaseService.findAll<Product, 'products'>('products');
+    return this.productModel.find().exec();
   }
 
   async findOne(id: string): Promise<Product> {
-    const product = await this.databaseService.findById<Product, 'products'>('products', id);
+    const product = await this.productModel.findById(id).exec();
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
@@ -22,55 +24,21 @@ export class ProductsService {
   }
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
-    const now = new Date();
-    const productId = uuidv4();
-    
-    const mediaWithIds = createProductDto.media 
-      ? createProductDto.media.map(item => ({ _id: uuidv4(), ...item }))
-      : [];
-    
-    const variantsWithIds = createProductDto.variants
-      ? createProductDto.variants.map(item => ({ 
-          _id: uuidv4(), 
-          productId: productId,
-          ...item 
-        }))
-      : [];
-    
-    const product: Product = {
-      _id: productId,
-      name: createProductDto.name,
-      description: createProductDto.description,
-      categories: createProductDto.categories,
-      tags: createProductDto.tags,
-      basePrice: createProductDto.basePrice,
-      media: mediaWithIds,
-      variants: variantsWithIds,
-      availability: {
-        inStock: variantsWithIds.some(v => v.inventory > 0)
-      },
-      createdAt: now,
-      updatedAt: now,
-    };
-    
-    const { _id, ...productWithoutId } = product;
-    return this.databaseService.create<Product, 'products'>('products', productWithoutId);
+    const productData = buildProductWithIds(createProductDto);
+    return new this.productModel(productData).save();
   }
 
   async update(id: string, updateProductDto: UpdateProductDto): Promise<Product> {
-    const product = await this.databaseService.update<Product, 'products'>('products', id, {
-      ...updateProductDto,
-      updatedAt: new Date(),
-    });
-    if (!product) {
+    const updatedProduct = await this.productModel.findByIdAndUpdate(id, updateProductDto, { new: true }).exec();
+    if (!updatedProduct) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
-    return product;
+    return updatedProduct;
   }
 
   async remove(id: string): Promise<void> {
-    const deleted = await this.databaseService.delete('products', id);
-    if (!deleted) {
+    const deletedProduct = await this.productModel.findByIdAndDelete(id).exec();
+    if (!deletedProduct) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
   }

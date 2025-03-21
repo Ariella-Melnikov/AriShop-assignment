@@ -9,3 +9,4 @@ export class CreateProductDto {
   media: Omit<ProductMedia, '_id'>[];
   variants: Omit<Variant, '_id' | 'productId'>[];
 }
+

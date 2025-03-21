@@ -240,7 +240,117 @@ interface DeliveryMethod {
   areaDescription?: string;
 }
 
+## Data collections:
 
+#products: 
+{
+  _id: ObjectId,
+  name: "Romantic Red Roses",
+  description: "A classic bouquet of red roses.",
+  categories: ["romantic", "valentines"],
+  tags: ["roses", "love", "red"],
+  basePrice: { amount: 150, currency: "ILS" },
+  media: [
+    { type: "image", url: "...", altText: "Bouquet close-up" }
+  ],
+  variants: [
+    {
+      _id: ObjectId,
+      size: "medium",
+      color: "red",
+      packaging: "gift",
+      price: { amount: 180, currency: "ILS" },
+      inventory: {
+        quantity: 12,
+        location: "TA-Store",
+        restockThreshold: 3,
+        restockStatus: "in_stock",
+        lastUpdated: ISODate
+      }
+    }
+  ],
+  availability: { inStock: true },
+  createdAt: ISODate,
+  updatedAt: ISODate
+}
+
+#users:
+
+{
+  _id: ObjectId,
+  email: "customer@email.com",
+  firstName: "Ariella",
+  lastName: "Melnikov",
+  phone: "+972...",
+  role: "customer",
+  addresses: [ {...}, {...} ],
+  defaultAddressId: ObjectId,
+  cart: {
+    _id: ObjectId,
+    items: [ {...}, {...} ],
+    subtotal: {...},
+    shipping: {...},
+    total: {...},
+    updatedAt: ISODate
+  },
+  createdAt: ISODate
+}
+
+#orders: 
+
+{
+  _id: ObjectId,
+  userId: ObjectId,
+  orderNumber: "ORD123456",
+  items: [
+    {
+      productId: ObjectId,
+      variantId: ObjectId,
+      productSnapshot: {
+        title: "Romantic Red Roses",
+        attributes: { size: "medium", color: "red", packaging: "gift" },
+        price: {...},
+        media: { url: "...", alt: "..." }
+      },
+      quantity: 2,
+      price: {...},
+      totalPrice: {...}
+    }
+  ],
+  shippingAddress: {...},
+  deliveryMethod: {...},
+  payment: {...},
+  status: "processing",
+  statusHistory: [ { status: "pending_payment", timestamp: ISODate }, ... ],
+  createdAt: ISODate
+}
+
+#payments:
+
+{
+  _id: ObjectId,
+  orderId: ObjectId,
+  provider: "unipaas",
+  transactionId: "...",
+  amount: {...},
+  status: "completed",
+  timestamp: ISODate,
+  details: {...}
+}
+
+#delivery_methods:
+
+{
+  _id: ObjectId,
+  carrier: "Israel Post",
+  method: "express",
+  estimatedDeliveryWindow: {
+    from: ISODate,
+    to: ISODate
+  },
+  price: {...},
+  areaDescription: "Available in Tel Aviv only"
+}
 
 # E-commerce API Endpoints
 
@@ -297,3 +407,5 @@ interface DeliveryMethod {
 | PUT    | `/api/addresses/:id/default` | Set default address                |        -         |        -        | Updated address |
 
 
+DALLE prompt for fllowers img: 
+A luxurious floral arrangement in a modern, minimalistic style, featuring a bouquet of [flower type] in soft neutral tones. The bouquet is placed in a clear or ceramic vase on a marble or light-toned surface, with natural light casting soft shadows. The aesthetic is refined and elegant, with a delicate balance of texture and color. The background is clean and airy, often white or subtly marbled. The image should have a high-end boutique feel, with an emphasis on sophistication and timeless beauty."
