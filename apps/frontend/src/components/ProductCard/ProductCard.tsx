@@ -8,9 +8,10 @@ interface ProductCardProps {
 export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
     const imageUrl = product.media?.[0]?.url || '';
     const imageAlt = product.media?.[0]?.altText || product.name;
-    const price = product.basePrice?.amount || 0;
-    const currency = product.basePrice?.currency || 'USD';
-    const isInStock = product.availability?.inStock ?? true;
+    const mediumVariant = product.variants?.find(v => v.size === 'medium');
+    const price = mediumVariant?.price?.amount || 0;
+    const currency = mediumVariant?.price?.currency || 'USD';
+    const isInStock = Boolean(mediumVariant?.inventory?.quantity);
 
     return (
         <div className="product-card">

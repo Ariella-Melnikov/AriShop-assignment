@@ -4,7 +4,7 @@ const API_URL = 'http://localhost:3030/api/products'; // Example API
 
 interface BackendProduct {
     _id: string;
-    title: string;
+    name: string;
     description: string;
     categories: string[];
     tags: string[];
@@ -16,7 +16,7 @@ interface BackendProduct {
 
 const transformProduct = (product: BackendProduct): Product => ({
     _id: product._id,
-    name: product.title,
+    name: product.name,
     description: product.description,
     categories: product.categories,
     tags: product.tags,
