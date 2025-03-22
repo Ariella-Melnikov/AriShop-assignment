@@ -1,4 +1,4 @@
-import { ProductMedia, Price, Variant } from '@shared/types/product';
+import { ProductMedia, Price } from '@arishop/shared/types/product';
 
 export class CreateProductDto {
   name: string;
@@ -7,6 +7,5 @@ export class CreateProductDto {
   tags: string[];
   basePrice: Price;
   media: Omit<ProductMedia, '_id'>[];
-  variants: Omit<Variant, '_id' | 'productId'>[];
 }
 

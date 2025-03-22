@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
-import { Price, ProductMedia, Variant } from '@shared/types/product'
+import { Price, ProductMedia, Variant } from '@arishop/shared/types/product'
 import { ProductMediaSchema } from './product-media.schema'
 import { VariantSchema } from './variant.schema'
 
@@ -8,8 +8,6 @@ export type ProductDocument = Product & Document
 
 @Schema({ timestamps: true })
 export class Product {
-    @Prop({ type: String })
-    _id: string
 
     @Prop({ required: true })
     name: string
@@ -32,8 +30,17 @@ export class Product {
     @Prop({ type: [VariantSchema], default: [] })
     variants: Variant[];
   
+    @Prop({ type: String })
+    fragranceLevel: string;
+
     @Prop({ type: Object, default: { inStock: true } })
     availability: { inStock: boolean };
+
+    @Prop()
+    createdAt: Date;
+  
+    @Prop()
+    updatedAt: Date;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product)

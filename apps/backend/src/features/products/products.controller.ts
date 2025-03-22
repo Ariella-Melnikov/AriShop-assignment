@@ -6,7 +6,6 @@ import {
   Delete,
   Body,
   Param,
-  HttpStatus,
   HttpCode,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
