@@ -1,4 +1,4 @@
-import { ProductMedia, Price } from '@arishop/shared/types/product';
+import { ProductMedia, Price } from '@arishop/shared';
 
 export class CreateProductDto {
   name: string;

@@ -1,4 +1,4 @@
-import { Price, Inventory } from '@arishop/shared/types/product';
+import { Price, Inventory } from '@arishop/shared';
 
 export class CreateVariantsDto {
   variants: CreateVariantDto[];

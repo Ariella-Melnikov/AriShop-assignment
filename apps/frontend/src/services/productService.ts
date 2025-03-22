@@ -1,4 +1,4 @@
-import { Product, Price, ProductMedia, Variant } from '@arishop/shared/types/product';
+import { Product, Price, ProductMedia, Variant } from '@arishop/shared';
 
 const API_URL = 'http://localhost:3030/api/products'; // Example API
 

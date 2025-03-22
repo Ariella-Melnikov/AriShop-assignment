@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
-import { Price, ProductMedia, Variant } from '@arishop/shared/types/product'
+import { Price, ProductMedia, Variant } from '@arishop/shared'
 import { ProductMediaSchema } from './product-media.schema'
 import { VariantSchema } from './variant.schema'
 

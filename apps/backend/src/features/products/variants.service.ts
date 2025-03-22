@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product, ProductDocument } from './product.schema';
 import { Model } from 'mongoose';
-import { Variant } from '@arishop/shared/types/product';
+import { Variant } from '@arishop/shared';
 import { UpdateVariantDto } from './dto/update-variant.dto';
 import { CreateVariantDto } from './dto/create-variant.dto';
 

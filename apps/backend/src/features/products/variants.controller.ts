@@ -1,7 +1,7 @@
 import { Controller, Put, Param, Body, NotFoundException, Post } from '@nestjs/common'
 import { VariantsService } from './variants.service'
 import { UpdateVariantDto } from './dto/update-variant.dto'
-import { Variant } from '@arishop/shared/types/product'
+import { Variant } from '@arishop/shared'
 import { CreateVariantsDto } from './dto/create-variant.dto'
 
 @Controller('products/:productId/variants') 

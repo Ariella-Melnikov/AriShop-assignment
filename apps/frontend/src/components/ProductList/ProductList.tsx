@@ -1,4 +1,4 @@
-import { Product } from '@arishop/shared/types/product';
+import { Product } from '@arishop/shared';
 import { ProductCard } from '../ProductCard/ProductCard';
 
 interface ProductListProps {

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Product } from '@arishop/shared/types/product';
+import { Product } from '@arishop/shared';
 import { productService } from '../../services/productService';
 
 interface ProductState {

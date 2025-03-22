@@ -17,10 +17,10 @@
     "noFallthroughCasesInSwitch": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "paths": {
-      "@arishop/shared/*": ["../shared/src/*"]
-    }
-  },
-  "include": ["src", "../shared/src"],
-  "exclude": ["node_modules", "dist", "../shared"]
+    // "paths": {
+    //   "@arishop/shared/*": ["../shared/src/*"]
+    // }
+  }//,
+  // "include": ["src/**/*"],
+  // "exclude": ["node_modules", "dist", "../shared"]
 } 
