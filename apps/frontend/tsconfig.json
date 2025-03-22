@@ -7,7 +7,7 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["../shared/src/*"]
+      "@arishop/shared/*": ["../shared/src/*"]
     },
 
     /* Bundler mode */
