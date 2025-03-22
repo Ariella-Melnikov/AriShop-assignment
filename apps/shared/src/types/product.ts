@@ -39,7 +39,6 @@ export interface Price {
     description: string;
     categories: string[];
     tags: string[];
-    basePrice: Price;
     media: ProductMedia[];
     variants: Variant[];
     availability: Availability;

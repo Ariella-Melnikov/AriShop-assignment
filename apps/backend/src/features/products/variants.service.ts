@@ -51,7 +51,7 @@ export class VariantsService {
     }
 
     const variantIndex = product.variants.findIndex(
-      (v) => v._id === variantId
+      (v) =>  v._id.toString() === variantId
     );
 
     if (variantIndex === -1) {

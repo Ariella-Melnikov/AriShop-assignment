@@ -1,4 +1,4 @@
-import { Product, Price, ProductMedia, Variant } from '@arishop/shared';
+import { Product, ProductMedia, Variant } from '@arishop/shared';
 
 const API_URL = 'http://localhost:3030/api/products'; // Example API
 
@@ -8,7 +8,6 @@ interface BackendProduct {
     description: string;
     categories: string[];
     tags: string[];
-    basePrice: Price;
     media: ProductMedia[];
     variants: Variant[];
     createdAt: string;
@@ -17,11 +16,10 @@ interface BackendProduct {
 
 const transformProduct = (product: BackendProduct): Product => ({
     _id: product._id,
-    name: product.title, // Map title to name
+    name: product.title,
     description: product.description,
     categories: product.categories,
     tags: product.tags,
-    basePrice: product.basePrice,
     media: product.media,
     variants: product.variants,
     availability: {
