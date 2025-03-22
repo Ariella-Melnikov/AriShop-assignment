@@ -1,4 +1,4 @@
-import { Product, Price, ProductMedia, Variant } from '@shared/types/product';
+import { Product, Price, ProductMedia, Variant } from '@arishop/shared/types/product';
 
 const API_URL = 'http://localhost:3030/api/products'; // Example API
 
@@ -25,7 +25,7 @@ const transformProduct = (product: BackendProduct): Product => ({
     media: product.media,
     variants: product.variants,
     availability: {
-        inStock: product.variants?.some(v => v.inventory > 0) ?? true
+        inStock: product.variants?.some(v => v.inventory.quantity > 0) ?? true
     },
     createdAt: new Date(product.createdAt),
     updatedAt: new Date(product.updatedAt)

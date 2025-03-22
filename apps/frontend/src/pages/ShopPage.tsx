@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../store/store';
 import { fetchProducts } from '../store/slices/productSlice';
 import { ProductList } from '../components/ProductList/ProductList';
-import { Product } from '@shared/types/product';
+import { Product } from '@arishop/shared/types/product';
 
 export const ShopPage = () => {
     const dispatch = useDispatch<AppDispatch>();
