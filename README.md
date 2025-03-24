@@ -365,6 +365,14 @@ interface DeliveryMethod {
 |PUT    |`/api/products/:id`    |Update an existing product                 | -                                                                                             | Product details | Updated product     |
 |DELETE |`/api/products/:id`    |Delete a product                           | -                                                                                             | -               | Success message     |
 
+## Variant Endpoints
+
+| Method | Endpoint                                                       | Description                    | Query Parameters | Request Body     | Response               |
+|--------|----------------------------------------------------------------|--------------------------------|------------------|------------------|------------------------|
+| POST   | `/api/products/:productId/variants`                            | Add a new variant to a product |        -         | Variant details  | New variant added      |
+| PUT    | `/api/products/:productId/variants/:variantId`                 | Update a specific variant      |        -         | Variant details  | Updated variant        |
+| DELETE | `/api/products/:productId/variants/:variantId`                 | Delete a specific variant      |        -         |        -         | Success message        |
+
 ## Cart Endpoints
 
 | Method | Endpoint                  | Description               | Query Parameters | Request Body                         | Response             |
