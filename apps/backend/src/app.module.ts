@@ -5,6 +5,7 @@ import { CartModule } from './features/cart/cart.module';
 import { config } from 'dotenv';
 import { AuthModule } from './features/auth/auth.module';
 import { UserModule } from './features/user/user.module';
+import { AddressModule } from './features/address/address.module';
 
 config();
 @Module({
@@ -14,6 +15,7 @@ config();
     CartModule,
     AuthModule,
     UserModule,
+    AddressModule,
   ],
   controllers: [],
   providers: [],
