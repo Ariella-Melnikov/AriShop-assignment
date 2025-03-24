@@ -1,10 +1,9 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Address, Order, Cart } from '@arishop/shared'
-import mongoose, { Document, Types } from 'mongoose'
-import { CartSchema } from '../cart/cart.schema';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { Document, Types } from 'mongoose';
+import { Address, Order } from '@arishop/shared';
 import { OrderSchema } from '../order/order.schema';
 
-@Schema({ timestamps: true })
+@Schema({ timestamps: true }) // handles createdAt and updatedAt automatically
 export class User extends Document {
   @Prop({ required: true, unique: true })
   email: string;
@@ -32,10 +31,6 @@ export class User extends Document {
 
   @Prop({ type: [OrderSchema] })
   orderHistory: Order[];
-
-  @Prop({ type: CartSchema })
-  cart: Cart;
-
-  @Prop()
-  createdAt: Date;
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);
