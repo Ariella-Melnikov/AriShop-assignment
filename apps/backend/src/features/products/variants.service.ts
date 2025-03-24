@@ -70,4 +70,25 @@ export class VariantsService {
 
     return product.variants[variantIndex];
   }
+
+  async removeVariant(productId: string, variantId: string): Promise<void> {
+    const product = await this.productModel.findById(productId).exec();
+    if (!product) {
+      throw new NotFoundException(`Product with ID ${productId} not found`);
+    }
+
+    const variantIndex = product.variants.findIndex(
+      (v) => v._id.toString() === variantId
+    );
+
+    if (variantIndex === -1) {
+      throw new NotFoundException(
+        `Variant with ID ${variantId} not found in product ${productId}`
+      );
+    }
+
+    product.variants.splice(variantIndex, 1);
+    product.updatedAt = new Date();
+    await product.save();
+  }
 }

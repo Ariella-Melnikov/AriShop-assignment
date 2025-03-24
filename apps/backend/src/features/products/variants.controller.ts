@@ -1,4 +1,4 @@
-import { Controller, Put, Param, Body, NotFoundException, Post } from '@nestjs/common'
+import { Controller, Put, Param, Body, NotFoundException, Post, Delete, HttpCode } from '@nestjs/common'
 import { VariantsService } from './variants.service'
 import { UpdateVariantDto } from './dto/update-variant.dto'
 import { Variant } from '@arishop/shared'
@@ -26,5 +26,14 @@ export class VariantsController {
         }
 
         return updatedVariant
+    }
+
+    @Delete(':variantId')
+    @HttpCode(204)
+    async removeVariant(
+        @Param('productId') productId: string,
+        @Param('variantId') variantId: string
+    ): Promise<void> {
+        return this.variantsService.removeVariant(productId, variantId);
     }
 }
