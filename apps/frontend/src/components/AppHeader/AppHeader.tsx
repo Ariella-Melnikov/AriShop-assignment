@@ -20,23 +20,21 @@ export const AppHeader = () => {
     return (
         <header className={`app-header ${isSticky ? 'sticky' : ''}`}>
             <div className='header-content'>
-                {/* ✅ Hamburger Menu (No SVG, Uses CSS) */}
+                {/* Hamburger */}
                 <div
                     className={`hamburger-menu ${isMobileNavOpen ? 'active' : ''}`}
-                    onClick={() => {
-                        setIsMobileNavOpen(!isMobileNavOpen)
-                    }}>
-                    <span className='hamburger-icon'></span>
+                    onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}>
+                    <span className='hamburger-icon' />
                 </div>
 
-                {/* Logo Column */}
-                <div className='header-column logo-column'>
+                {/* Logo */}
+                <div className='logo-column'>
                     <NavLink to='/' className='logo-link'>
                         <AppLogo className='app-logo' />
                     </NavLink>
                 </div>
 
-                {/* Navigation Column */}
+                {/* Navigation */}
                 <nav className={`nav-column ${isMobileNavOpen ? 'active' : ''}`}>
                     <ul className='nav-links'>
                         <li>
@@ -62,8 +60,8 @@ export const AppHeader = () => {
                     </ul>
                 </nav>
 
-                {/* Cart Column */}
-                <div className='header-column cart-column'>
+                {/* Cart */}
+                <div className='cart-column'>
                     <NavLink to='/cart' className='cart-button'>
                         <CartIcon className='cart-icon' />
                     </NavLink>
