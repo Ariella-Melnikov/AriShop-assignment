@@ -2,4 +2,5 @@
 
 .app {
   min-height: 100vh;
+  @include layout-grid;
 }
