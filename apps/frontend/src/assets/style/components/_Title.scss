@@ -1,0 +1,15 @@
+@use '../abstracts' as *;
+
+.title {
+    font-family: $font-family-title; 
+    font-size:$font-size-title; 
+    color: $color-text;
+    font-weight: $font-weight-regular;
+    text-align: center;
+    margin-top: $spacing-xl;
+    line-height: 1.1;
+
+    @include respond(mobile) {
+        font-size: $font-size-title-mobile; 
+    }
+}

@@ -1,0 +1,38 @@
+@use '../abstracts' as *;
+
+.sort-box {
+    position: relative;
+    gap: $spacing-sm;
+    padding: 1rem;
+    border: 1px solid $color-border-dark;
+    background-color: $color-white;
+    border-radius: $radius-sm;
+    max-width: 13.75rem; //220px
+    @include flex-column-center;
+
+    .sort-header {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        @include flex(row, flex-start, center);
+        gap: 0.5rem;
+
+        .sort-icon {
+            width: auto;
+            height: auto;
+        }
+
+        .sort-title {
+            font-family: $font-family-primary;
+            font-size: $font-size-base;
+            font-weight: $font-weight-regular;
+            color: $color-text;
+        }
+    }
+
+    .sort-options {
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+}
