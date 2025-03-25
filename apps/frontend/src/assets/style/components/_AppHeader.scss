@@ -14,13 +14,13 @@
     align-items: center;
   
     &.sticky {
-      background-color: $color-primary;
+      background-color: $color-background;
     }
   
     .header-content {
       @include layout-grid;
-      align-items: center;
       width: 100%;
+      align-items: center;
 
       @include respond(desktop) {
         grid-template-columns: auto 1fr auto;
@@ -163,11 +163,11 @@
   
         &:hover,
         &.active {
-          color: $color-hover;
+          color: $color-action;
         }
   
         @include respond-mobile-tablet {
-          font-size: $font-size-md;
+          font-size: $font-size-base;
         }
       }
     }
@@ -192,7 +192,7 @@
         transition: color $transition-base;
   
         &:hover {
-          color: $color-hover;
+          color: $color-action;
         }
       }
     }

@@ -31,7 +31,9 @@ export const ShopPage = () => {
     return (
         <div className="shop-page">
             <h1>Our Products</h1>
-            <ProductList products={products} onAddToCart={handleAddToCart} />
+            <div className="products-container">
+                <ProductList products={products} onAddToCart={handleAddToCart} />
+            </div>
         </div>
     );
 }; 
