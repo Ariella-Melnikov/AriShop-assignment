@@ -10,6 +10,19 @@
   flex-wrap: $wrap;
 }
 
+// Shortcut for common Flexbox
+@mixin flex-center {
+  @include flex(row, center, center);
+}
+
+@mixin flex-between {
+  @include flex(row, space-between, center);
+}
+
+@mixin flex-column-center {
+  @include flex(column, center, center);
+}
+
 // Grid
 @mixin layout-grid {
   display: grid;
@@ -57,7 +70,7 @@
   margin-bottom: $spacing-lg;
 }
 
-@mixin text($size: $font-size-md) {
+@mixin text($size: $font-size-base) {
   font-size: $size;
   line-height: 1.5;
   margin-bottom: $spacing-md;

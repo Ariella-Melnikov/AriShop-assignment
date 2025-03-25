@@ -3,9 +3,6 @@
 html, body {
   margin: 0;
   padding: 0;
-  font-family: $font-family-primary;
-  font-size: $font-size-base;
-  color: $color-text;
   background-color: $color-background;
 }
 
@@ -13,4 +10,19 @@ html, body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+main {
+  flex: 1;
+  padding: 2rem 200px;
+  width: 100%;
+  box-sizing: border-box;
+
+  @include respond(tablet) {
+    padding: 2rem;
+  }
+
+  @include respond(mobile) {
+    padding: 1rem;
+  }
 }
