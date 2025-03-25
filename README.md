@@ -390,8 +390,16 @@ interface DeliveryMethod {
 | POST   |`/api/orders`           | Create order from cart         |                   -                     | `shippingAddressId`, `deliveryMethodId`, `paymentDetails` | New order                   |
 | GET    |`/api/orders`           | Get all orders for current user| `status`, `from`, `to`, `page`, `limit` |                            -                              | Orders list with pagination |
 | GET    |`/api/orders/:id`       | Get specific order by ID       |                   -                     |                            -                              | Single order details        |
-| POST   |`/api/orders/:id/cancel`| Cancel order                   |                   -                     | `reason` (optional)                                       | Updated order               |
-| POST   |`/api/orders/:id/return`| Request return/refund          |                   -                     | `items` array with return details                         | Updated order               |
+| POST   |`/api/orders/:id/cancel`| Cancel order                   |                   -                     | {reasonTag?, reasonText?: string}                         | Updated order               |
+
+*Cancel Reason Tags: "changed_mind- I changed my mind", "ordered_wrong – Ordered by mistake", "delayed – Delivery is too late","found_cheaper – Found cheaper elsewhere", "other – Other reason"
+
+## Admin Order Endpoints
+
+| Method | Endpoint                 | Description                 | Query Parameters                        | Request Body                          | Response       |
+|--------|--------------------------|-----------------------------|-----------------------------------------|---------------------------------------|----------------|
+| PUT    | `/api/orders/:id/status` | Update order status (admin) |                   -                     | { status: 'shipped' } | Updated order |                |
+| GET    | `/api/admin/orders`      | View all orders             | `status`, `from`, `to`, `page`, `limit` |                   -                   | Paginated list |
 
 ## Authentication Endpoints
 
@@ -406,13 +414,14 @@ interface DeliveryMethod {
 
 ## Address Endpoints
 
-| Method | Endpoint                     | Description                        | Query Parameters | Request Body    | Response        |
-|--------|------------------------------|------------------------------------|------------------|-----------------|-----------------|
-| GET    | `/api/addresses`             | Get all addresses for current user |        -         |        -        | Addresses list  |
-| POST   | `/api/addresses`             | Add new address                    |        -         | Address details | New address     |
-| PUT    | `/api/addresses/:id`         | Update address                     |        -         | Address details | Updated address |
-| DELETE | `/api/addresses/:id`         | Delete address                     |        -         |        -        | Success message |
-| PUT    | `/api/addresses/:id/default` | Set default address                |        -         |        -        | Updated address |
+| Method | Endpoint                     | Description                            | Query Parameters | Request Body    | Response        |
+|--------|------------------------------|----------------------------------------|------------------|-----------------|-----------------|
+| GET    | `/api/addresses`             | Get all addresses for current user     |        -         |        -        | Addresses list  |
+| GET    | `/api/addresses/:id`         | Get specific addresse for current user |        -         |        -        | Address object  |
+| POST   | `/api/addresses`             | Add new address                        |        -         | Address details | New address     |
+| PUT    | `/api/addresses/:id`         | Update address                         |        -         | Address details | Updated address |
+| DELETE | `/api/addresses/:id`         | Delete address                         |        -         |        -        | Success message |
+| PUT    | `/api/addresses/:id/default` | Set default address                    |        -         |        -        | Updated address |
 
 
 DALLE prompt for fllowers img: 

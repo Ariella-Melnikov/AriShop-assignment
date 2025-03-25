@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, Types } from 'mongoose';
 import { Address, Order } from '@arishop/shared';
-import { OrderSchema } from '../order/order.schema';
 
 @Schema({ timestamps: true }) // handles createdAt and updatedAt automatically
 export class User extends Document {
@@ -29,8 +28,6 @@ export class User extends Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Address' })
   defaultAddressId: Types.ObjectId;
 
-  @Prop({ type: [OrderSchema] })
-  orderHistory: Order[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

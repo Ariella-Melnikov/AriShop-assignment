@@ -1,13 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
-  Order,
-  OrderItem,
-  ProductSnapshot,
-  StatusHistoryEntry,
-  Address,
-  Payment,
-  DeliveryMethod,
-} from '@arishop/shared';
+    Order as OrderInterface,
+    OrderItem,
+    ProductSnapshot,
+    StatusHistoryEntry,
+    Address,
+    Payment,
+    DeliveryMethod,
+  } from '@arishop/shared';
 import mongoose, { Types, Document } from 'mongoose';
 
 export type OrderDocument = Order & Document;
@@ -73,7 +73,7 @@ export class StatusHistoryEntrySchemaClass implements StatusHistoryEntry {
 export const StatusHistoryEntrySchema = SchemaFactory.createForClass(StatusHistoryEntrySchemaClass);
 
 @Schema({ timestamps: true })
-export class OrderSchemaClass implements Order {
+export class Order extends Document implements OrderInterface {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   userId: string;
 
@@ -106,4 +106,4 @@ export class OrderSchemaClass implements Order {
   _id: string;
 }
 
-export const OrderSchema = SchemaFactory.createForClass(OrderSchemaClass);
+export const OrderSchema = SchemaFactory.createForClass(Order);

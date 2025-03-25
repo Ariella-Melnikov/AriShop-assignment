@@ -6,6 +6,8 @@ import { config } from 'dotenv';
 import { AuthModule } from './features/auth/auth.module';
 import { UserModule } from './features/user/user.module';
 import { AddressModule } from './features/address/address.module';
+import { OrderModule } from './features/order/order.module';
+import { PaymentModule } from './features/payment/payment.module';
 
 config();
 @Module({
@@ -16,6 +18,8 @@ config();
     AuthModule,
     UserModule,
     AddressModule,
+    OrderModule,
+    PaymentModule,
   ],
   controllers: [],
   providers: [],
