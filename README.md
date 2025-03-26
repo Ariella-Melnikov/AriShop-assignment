@@ -426,3 +426,9 @@ interface DeliveryMethod {
 
 DALLE prompt for fllowers img: 
 A luxurious floral arrangement in a modern, minimalistic style, featuring a bouquet of [flower type] in soft neutral tones. The bouquet is placed in a clear or ceramic vase on a marble or light-toned surface, with natural light casting soft shadows. The aesthetic is refined and elegant, with a delicate balance of texture and color. The background is clean and airy, often white or subtly marbled. The image should have a high-end boutique feel, with an emphasis on sophistication and timeless beauty."
+
+To Do for production: 
+* address validation. 
+* move addresses to be a separate table in order to save costs when validating addresses and also allow tracking customers geo cords location based. 
+* move to real auth service (the authentication).
+* currently due to UX product creation and variant creation are separate, allow creation of both
