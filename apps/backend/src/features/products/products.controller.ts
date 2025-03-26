@@ -1,47 +1,42 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Body,
-  Param,
-  HttpCode,
-} from '@nestjs/common';
-import { ProductsService } from './products.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { Product } from './product.schema';
+import { Controller, Get, Post, Put, Delete, Body, Param, HttpCode } from '@nestjs/common'
+import { ProductsService } from './products.service'
+import { CreateProductDto } from './dto/create-product.dto'
+import { UpdateProductDto } from './dto/update-product.dto'
+import { Product } from './product.schema'
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+    constructor(private readonly productsService: ProductsService) {}
 
-  @Get()
-  findAll(): Promise<Product[]> {
-    return this.productsService.findAll();
-  }
+    @Get()
+    findAll(): Promise<Product[]> {
+        return this.productsService.findAll()
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<Product> {
-    return this.productsService.findOne(id);
-  }
+    @Get('tags')
+    getAllTags(): Promise<string[]> {
+        return this.productsService.getAllTags()
+    }
 
-  @Post()
-  create(@Body() createProductDto: CreateProductDto): Promise<Product> {
-    return this.productsService.create(createProductDto);
-  }
+    @Get(':id')
+    findOne(@Param('id') id: string): Promise<Product> {
+        return this.productsService.findOne(id)
+    }
 
-  @Put(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateProductDto: UpdateProductDto,
-  ): Promise<Product> {
-    return this.productsService.update(id, updateProductDto);
-  }
+    @Post()
+    create(@Body() createProductDto: CreateProductDto): Promise<Product> {
+        return this.productsService.create(createProductDto)
+    }
 
-  @Delete(':id')
-  @HttpCode(204)
-  remove(@Param('id') id: string): Promise<void> {
-    return this.productsService.remove(id);
-  }
-} 
+    @Put(':id')
+    update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto): Promise<Product> {
+        return this.productsService.update(id, updateProductDto)
+    }
+
+    @Delete(':id')
+    @HttpCode(204)
+    remove(@Param('id') id: string): Promise<void> {
+        return this.productsService.remove(id)
+    }
+
+
+}

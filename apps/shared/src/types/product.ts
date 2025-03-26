@@ -1,3 +1,14 @@
+export type ProductTag =
+  | 'Birthday'
+  | 'Anniversary'
+  | 'Love & Romance'
+  | 'Congratulations'
+  | 'Get Well Soon'
+  | 'Thank You'
+  | 'Sympathy'
+  | 'Roses'
+  | 'Red'
+  | 'Mixed Flowers';
 export interface Price {
     amount: number;
     currency: 'ILS' | 'USD' | 'EUR';
@@ -38,10 +49,11 @@ export interface Price {
     name: string;
     description: string;
     categories: string[];
-    tags: string[];
+    tags: ProductTag[];
     media: ProductMedia[];
     variants: Variant[];
     availability: Availability;
     createdAt: Date;
     updatedAt: Date;
   }
+

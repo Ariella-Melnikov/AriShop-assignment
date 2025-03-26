@@ -46,4 +46,13 @@ export class ProductsService {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
   }
+
+  async getAllTags(): Promise<string[]> {
+    const products = await this.productModel.find({}, 'tags').lean().exec();
+    const tagsSet = new Set<string>();
+    products.forEach(product => {
+      product.tags?.forEach(tag => tagsSet.add(tag));
+    });
+    return Array.from(tagsSet);
+  }
 } 

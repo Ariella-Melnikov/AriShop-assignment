@@ -1,4 +1,4 @@
-import { Product, ProductMedia, Variant } from '@arishop/shared';
+import { Product, ProductMedia, ProductTag, Variant } from '@arishop/shared';
 
 const API_URL = 'http://localhost:3030/api/products'; // Example API
 
@@ -7,7 +7,7 @@ interface BackendProduct {
     name: string;
     description: string;
     categories: string[];
-    tags: string[];
+    tags: ProductTag[];
     media: ProductMedia[];
     variants: Variant[];
     createdAt: string;
@@ -42,5 +42,15 @@ export const productService = {
         } catch (error) {
             throw new Error(error instanceof Error ? error.message : 'Failed to fetch products');
         }
-    }
+    },
+
+    async fetchTags(): Promise<string[]> {
+        try {
+          const res = await fetch(`${API_URL}/tags`);
+          if (!res.ok) throw new Error('Failed to fetch tags');
+          return res.json();
+        } catch (err) {
+          throw new Error(err instanceof Error ? err.message : 'Unknown error');
+        }
+      }
 }; 

@@ -1,6 +1,5 @@
 import { Payment } from "./payment";
 import { Address } from "./user";
-import { Price } from './product';
 import { DeliveryMethod } from "./delivery";
 
 export interface ProductSnapshot {
