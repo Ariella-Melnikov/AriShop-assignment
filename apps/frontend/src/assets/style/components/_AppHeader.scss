@@ -18,9 +18,10 @@
     }
   
     .header-content {
-      @include layout-grid;
       width: 100%;
       align-items: center;
+
+      @include layout-grid;
 
       @include respond(desktop) {
         grid-template-columns: auto 1fr auto;
@@ -163,7 +164,8 @@
   
         &:hover,
         &.active {
-          color: $color-action;
+          color: $color-action-hover;
+          font-weight: $font-weight-bold;
         }
   
         @include respond-mobile-tablet {

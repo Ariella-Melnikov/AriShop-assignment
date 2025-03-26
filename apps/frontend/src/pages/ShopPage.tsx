@@ -1,39 +1,66 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '../store/store';
-import { fetchProducts } from '../store/slices/productSlice';
-import { ProductList } from '../components/ProductList/ProductList';
-import { Product } from '@arishop/shared';
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState, AppDispatch } from '../store/store'
+import { fetchProducts, toggleTag, fetchTags } from '../store/slices/productSlice'
+import { ProductList } from '../components/ProductList/ProductList'
+import { Product } from '@arishop/shared'
+import { Title } from '../components/Title/Title'
+import { Banner } from '../components/Banner/Banner'
+import { Tag } from '../components/Buttons/TagButton'
+import shopHeroImg from '../assets/img/Shop-hero.png'
 
 export const ShopPage = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const { products, loading, error } = useSelector((state: RootState) => state.products);
+    const dispatch = useDispatch<AppDispatch>()
+
+    const { loading, error } = useSelector((state: RootState) => state.products)
+    const products = useSelector((state: RootState) => state.products.products)
+    const filteredProducts = useSelector((state: RootState) => state.products.filteredProducts)
+    const allTags = useSelector((state: RootState) => state.products.allTags)
+    const selectedTags = useSelector((state: RootState) => state.products.selectedTags)
 
     useEffect(() => {
         if (products.length === 0) {
-            dispatch(fetchProducts());
+            dispatch(fetchProducts())
+            dispatch(fetchTags())
         }
-    }, [dispatch, products.length]);
+    }, [dispatch, products.length])
 
     const handleAddToCart = (product: Product) => {
         // TODO: Implement cart functionality
-        console.log('Adding to cart:', product);
-    };
+        console.log('Adding to cart:', product)
+    }
 
     if (loading) {
-        return <div className="loading">Loading...</div>;
+        return <div className='loading'>Loading...</div>
     }
 
     if (error) {
-        return <div className="error">{error}</div>;
+        return <div className='error'>{error}</div>
     }
 
     return (
-        <div className="shop-page">
-            <h1>Our Products</h1>
-            <div className="products-container">
-                <ProductList products={products} onAddToCart={handleAddToCart} />
+        <div className='shop-page'>
+            <Banner imgUrl={shopHeroImg} />
+            <div className='shop-title'>
+                <Title>All Bouquets</Title>
+            </div>
+
+            <div className='tag-filters'>
+                <div className='tag-buttons'>
+                    {allTags.map((tag) => (
+                        <Tag
+                            key={tag}
+                            label={tag}
+                            isActive={selectedTags.includes(tag)}
+                            onClick={() => dispatch(toggleTag(tag))}
+                        />
+                    ))}
+                </div>
+            </div>
+
+            <div className='products-container'>
+                <ProductList products={filteredProducts} onAddToCart={handleAddToCart} />
             </div>
         </div>
-    );
-}; 
+    )
+}
