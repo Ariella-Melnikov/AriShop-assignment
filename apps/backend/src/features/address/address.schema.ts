@@ -9,7 +9,7 @@ export class Address extends Document {
   @Prop({ required: true }) country: string;
   @Prop({ required: true }) zip: string;
   @Prop({ default: false }) isDefault: boolean;
-  @Prop({ required: true }) userId: string; // to ensure user ownership
+  @Prop({ required: true, index: true }) userId: string; // to ensure user ownership
 }
 
 export const AddressSchema = SchemaFactory.createForClass(Address);

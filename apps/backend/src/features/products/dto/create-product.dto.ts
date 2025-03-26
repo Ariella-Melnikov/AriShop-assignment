@@ -5,7 +5,6 @@ export class CreateProductDto {
   description: string;
   categories: string[];
   tags: string[];
-  basePrice: Price;
   media: Omit<ProductMedia, '_id'>[];
 }
 

@@ -18,11 +18,9 @@ export class Product {
     @Prop({ type: [String], default: [] })
     categories: string[]
 
-    @Prop({ type: [String], default: [] })
+    @Prop({ type: [String], default: [], index: true,  })
     tags: string[]
 
-    @Prop({ type: Object })
-    basePrice?: Price
 
     @Prop({ type: [ProductMediaSchema], default: [] })
     media: ProductMedia[];
