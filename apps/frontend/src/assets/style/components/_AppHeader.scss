@@ -12,190 +12,193 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  
+
     &.sticky {
-      background-color: $color-background;
+        background-color: $color-background;
     }
-  
+
     .header-content {
-      width: 100%;
-      align-items: center;
-
-      @include layout-grid;
-
-      @include respond(desktop) {
-        grid-template-columns: auto 1fr auto;
-      }    
-  
-      @include respond-mobile-tablet {
-        grid-template-columns: auto 1fr auto;
-      }
-    }
-  
-    .hamburger-menu {
-      display: none;
-      grid-column: 1; // ✅ always left in mobile/tablet
-      cursor: pointer;
-      width: 30px;
-      height: 30px;
-      position: relative;
-  
-      @include respond-mobile-tablet {
-        display: flex;
+        width: 100%;
         align-items: center;
-        justify-content: start;
-      }
-  
-      .hamburger-icon {
-        width: 100%;
-        height: 3px;
-        background: $color-text;
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        transition: background 0.3s ease-in-out;
-  
-        &::before,
-        &::after {
-          content: '';
-          width: 100%;
-          height: 3px;
-          background: $color-text;
-          position: absolute;
-          left: 0;
-          transition: transform 0.3s ease-in-out;
-        }
-  
-        &::before {
-          top: -10px;
-        }
-  
-        &::after {
-          top: 10px;
-        }
-      }
-  
-      &.active .hamburger-icon {
-        background: transparent;
-  
-        &::before {
-          transform: rotate(45deg);
-          top: 0;
-        }
-  
-        &::after {
-          transform: rotate(-45deg);
-          top: 0;
-        }
-      }
-    }
-  
-    .logo-column {
-      grid-column: 1;
-      display: flex;
-      justify-content: start;
-      align-items: center;
 
-      @include respond-mobile-tablet {
-        grid-column: 2;
-        justify-content: center;
-    }
+        @include layout-grid;
 
+        @include respond(desktop) {
+            grid-template-columns: auto 1fr auto;
+        }
 
-      .app-logo {
-        width: 140px;
-        height: auto;
-  
-        @include respond(tablet) {
-          width: 120px;
-        }
-  
-        @include respond(mobile) {
-          width: 100px;
-        }
-      }
-    }
-  
-    .nav-column {
-      grid-column: 2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-  
-      @include respond-mobile-tablet {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: $color-background;
-        padding: $spacing-md;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        flex-direction: column;
-        gap: $spacing-md;
-        transition: all 0.3s ease-in-out;
-  
-        display: none;
-        opacity: 0;
-        height: 0;
-  
-        &.active {
-          display: flex;
-          opacity: 1;
-          height: auto;
-        }
-      }
-    }
-  
-    .nav-links {
-      display: flex;
-      gap: $spacing-xl;
-  
-      @include respond-mobile-tablet {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: $spacing-sm;
-      }
-  
-      a {
-        font-size: $font-size-base;
-        color: $color-text;
-        transition: color $transition-base;
-  
-        &:hover,
-        &.active {
-          color: $color-action-hover;
-          font-weight: $font-weight-bold;
-        }
-  
         @include respond-mobile-tablet {
-          font-size: $font-size-base;
+            grid-template-columns: auto 1fr auto;
         }
-      }
     }
-  
-    .cart-column {
-      grid-column: 3;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding-left: 1rem;
-  
-      .cart-button {
+
+    .hamburger-menu {
+        display: none;
+        grid-column: 1; // ✅ always left in mobile/tablet
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        position: relative;
+
+        @include respond-mobile-tablet {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+        }
+
+        .hamburger-icon {
+            width: 100%;
+            height: 3px;
+            background: $color-text;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            transition: background 0.3s ease-in-out;
+
+            &::before,
+            &::after {
+                content: '';
+                width: 100%;
+                height: 3px;
+                background: $color-text;
+                position: absolute;
+                left: 0;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            &::before {
+                top: -10px;
+            }
+
+            &::after {
+                top: 10px;
+            }
+        }
+
+        &.active .hamburger-icon {
+            background: transparent;
+
+            &::before {
+                transform: rotate(45deg);
+                top: 0;
+            }
+
+            &::after {
+                transform: rotate(-45deg);
+                top: 0;
+            }
+        }
+    }
+
+    .logo-column {
+        grid-column: 1;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+
+        @include respond-mobile-tablet {
+            grid-column: 2;
+            justify-content: center;
+        }
+
+        .app-logo {
+            width: 140px;
+            height: auto;
+
+            @include respond(tablet) {
+                width: 120px;
+            }
+
+            @include respond(mobile) {
+                width: 100px;
+            }
+        }
+    }
+
+    .nav-column {
+        grid-column: 2;
         display: flex;
         align-items: center;
         justify-content: center;
-      }
-  
-      .cart-icon {
-        width: 22.98px;
-        height: 20.82px;
-        color: $color-text;
-        transition: color $transition-base;
-  
-        &:hover {
-          color: $color-action;
+
+        @include respond-mobile-tablet {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: $color-background;
+            padding: $spacing-md;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+            gap: $spacing-md;
+            transition: all 0.3s ease-in-out;
+
+            display: none;
+            opacity: 0;
+            height: 0;
+
+            &.active {
+                display: flex;
+                opacity: 1;
+                height: auto;
+            }
         }
-      }
     }
-  }
+
+    .nav-links {
+        display: flex;
+        gap: $spacing-xl;
+
+        @include respond-mobile-tablet {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: $spacing-sm;
+        }
+
+        a {
+            font-size: $font-size-base;
+            color: $color-text;
+            transition: color $transition-base;
+
+            &:hover,
+            &.active {
+                color: $color-action-hover;
+                font-weight: $font-weight-bold;
+            }
+
+            @include respond-mobile-tablet {
+                font-size: $font-size-base;
+            }
+        }
+    }
+
+    .cart-column {
+        grid-column: 3;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding-left: 1rem;
+
+        .cart-button-wrapper {
+            position: relative;
+
+            .cart-button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .cart-icon {
+                width: 22.98px;
+                height: 20.82px;
+                color: $color-text;
+                transition: color $transition-base;
+
+                &:hover {
+                    color: $color-action;
+                }
+            }
+        }
+    }
+}

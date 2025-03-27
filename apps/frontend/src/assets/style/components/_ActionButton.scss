@@ -15,4 +15,18 @@
     &:active {
       background-color: $color-action-hover;
     }
+  
+    &.secondary {
+      background-color: $color-background;
+      
+      &:hover,
+      &:active {
+        background-color: $color-action-hover;
+      }
+    }
+  
+    &.disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
   }

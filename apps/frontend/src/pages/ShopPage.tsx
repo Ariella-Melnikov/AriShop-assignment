@@ -1,14 +1,17 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState, AppDispatch } from '../store/store'
 import { fetchProducts, toggleTag, fetchTags, setSortOrder } from '../store/slices/productSlice'
 import { ProductList } from '../components/ProductList/ProductList'
-import { Product } from '@arishop/shared'
+import { addToCart } from '../store/slices/cartSlice'
+import { Product, Variant } from '@arishop/shared'
 import { Title } from '../components/Title/Title'
 import { Tag } from '../components/Buttons/TagButton'
 import { SortBox } from '../components/SortBox/SortBox'
 import { Banner } from '../components/Banner/Banner'
 import shopHeroImg from '../assets/img/Shop-hero.png'
+import { CartModal } from '../components/Modal/CartModal'
+import { openCartModal } from '../store/slices/cartUiSlice'
 
 export const ShopPage = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -27,9 +30,33 @@ export const ShopPage = () => {
         }
     }, [dispatch, products.length])
 
-    const handleAddToCart = (product: Product) => {
-        // TODO: Implement cart functionality
-        console.log('Adding to cart:', product)
+    const getBestAvailableVariant = (product: Product) => {
+        const preferredOrder: ('medium' | 'small' | 'large')[] = ['medium', 'small', 'large']
+        return (
+            preferredOrder
+                .map((size) => product.variants.find((v) => v.size === size && v.inventory.quantity > 0))
+                .find(Boolean) || null
+        )
+    }
+
+    const productCardsData = filteredProducts.map((product) => {
+        const variant = getBestAvailableVariant(product)
+        return {
+            product,
+            displayVariant: variant,
+        }
+    })
+
+    const handleAddToCart = (product: Product, variant: Variant) => {
+        dispatch(
+            addToCart({
+                productId: product._id,
+                variantId: variant._id,
+                quantity: 1,
+                price: variant.price.amount,
+            })
+        )
+        dispatch(openCartModal())
     }
 
     if (loading) {
@@ -64,7 +91,7 @@ export const ShopPage = () => {
             </div>
 
             <div className='products-container'>
-                <ProductList products={filteredProducts} onAddToCart={handleAddToCart} />
+                <ProductList products={productCardsData} onAddToCart={handleAddToCart} />
             </div>
         </div>
     )

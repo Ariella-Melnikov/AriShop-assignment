@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { productService } from '../services/productService'
 import { Product } from '@arishop/shared'
 import { Title } from '../components/Title/Title'
 import { ActionButton } from '../components/Buttons/ActionButton'
+import { addToCart } from '../store/slices/cartSlice'
+import { openCartModal } from '../store/slices/cartUiSlice'
+import type { AppDispatch } from '../store/store'
 
 export const ProductPage = () => {
+    const dispatch = useDispatch<AppDispatch>()
     const { productId } = useParams()
     const [product, setProduct] = useState<Product | null>(null)
     const [selectedSize, setSelectedSize] = useState<'small' | 'medium' | 'large'>('medium')
@@ -28,7 +33,6 @@ export const ProductPage = () => {
 
     return (
         <div className='product-page'>
-            {/* First Column */}
             <div className='product-info'>
                 <Title>{product.name}</Title>
                 <p className='product-description'>{product.description}</p>
@@ -70,13 +74,23 @@ export const ProductPage = () => {
 
                 <ActionButton
                     label='Add to Cart'
-                    onClick={() => console.log('Add to cart', product, selectedSize, quantity)}
+                    onClick={() => {
+                        if (!selectedVariant) return
+
+                        dispatch(
+                            addToCart({
+                                productId: product._id,
+                                variantId: selectedVariant._id,
+                                quantity,
+                                price: selectedVariant.price.amount,
+                            })
+                        )
+                        dispatch(openCartModal())
+                    }}
                 />
             </div>
-
             {/* seconed Column — placeholder for future content */}
             <div className='product-extra'>{/* Could be recommendations, reviews, etc. */}</div>
-
             {/* third Column */}
             <div className='product-gallery'>
                 {product.media?.[0] && (

@@ -3,6 +3,7 @@ import { AppHeader } from './components/AppHeader/AppHeader';
 import { MainPage } from "./pages/MainPage";
 import { ShopPage } from './pages/ShopPage';
 import { ProductPage } from './pages/ProductPage'; 
+import { CartPage } from './pages/CartPage';
 
 function App() {
   return (
@@ -11,12 +12,13 @@ function App() {
         <AppHeader />
         <main >
           <Routes>
+            <Route path="/" element={<MainPage />} />
             <Route path="/best-seller" element={<div>Best Seller Page</div>} />
             <Route path="/shop" element={<ShopPage />} />
             <Route path="/shop/:productId" element={<ProductPage />} />
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/philosophy" element={<div>Philosophy Page</div>} />
             <Route path="/contact" element={<div>Contact Page</div>} />
-            <Route path="/" element={<MainPage />} />
           </Routes>
         </main>
       </div>

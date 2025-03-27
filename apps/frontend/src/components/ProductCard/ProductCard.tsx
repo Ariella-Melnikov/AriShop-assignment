@@ -1,28 +1,25 @@
-import { Product } from '@arishop/shared'
+import { Product, Variant } from '@arishop/shared'
 import { ActionButton } from '../Buttons/ActionButton'
 import { useNavigate } from 'react-router-dom';
 
 interface ProductCardProps {
-    product: Product
-    onAddToCart: (product: Product) => void;
-
+    product: Product;
+    displayVariant: Variant | null;
+    onAddToCart: (product: Product, variant: Variant) => void;
 }
 
-export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+export const ProductCard = ({ product, displayVariant, onAddToCart }: ProductCardProps) => {
+    const navigate = useNavigate()
     const imageUrl = product.media?.[0]?.url || ''
     const imageAlt = product.media?.[0]?.altText || product.name
-    const mediumVariant = product.variants?.find((v) => v.size === 'medium')
-    const price = mediumVariant?.price?.amount || 0
-    const currency = mediumVariant?.price?.currency || 'USD'
-    const isInStock = Boolean(mediumVariant?.inventory?.quantity)
-    const navigate = useNavigate();
+    const isInStock = !!displayVariant
+    const price = displayVariant?.price?.amount || 0
+    const currency = displayVariant?.price?.currency || 'USD'
 
     const handleCardClick = (e: React.MouseEvent) => {
-        if ((e.target as HTMLElement).closest('.action-button')) {
-            return;
-        }
-        navigate(`/shop/${product._id}`);
-    };
+        if ((e.target as HTMLElement).closest('.action-button')) return
+        navigate(`/shop/${product._id}`)
+    }
 
     return (
         <div className='product-card' onClick={handleCardClick}>
@@ -34,7 +31,7 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
                 </h3>
                 <ActionButton
                     label={isInStock ? 'Add to Cart' : 'Out of Stock'}
-                    onClick={() => onAddToCart(product)}
+                    onClick={() => displayVariant && onAddToCart(product, displayVariant)}
                     type='button'
                     disabled={!isInStock}
                 />

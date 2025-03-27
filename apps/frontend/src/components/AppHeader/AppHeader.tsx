@@ -1,11 +1,19 @@
 import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
+import { RootState } from '../../store/store'
+import { closeCartModal } from '../../store/slices/cartUiSlice'
 import AppLogo from '@/assets/icons/app-logo.svg?react'
 import CartIcon from '@/assets/icons/cart-icon.svg?react'
+import { CartModal } from '../Modal/CartModal'
 
 export const AppHeader = () => {
+    const dispatch = useDispatch()
+    const location = useLocation()
     const [isSticky, setIsSticky] = useState(false)
     const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
+    const showCartModal = useSelector((state: RootState) => state.cartUi.showCartModal)
 
     useEffect(() => {
         const handleScroll = () => {
@@ -16,6 +24,21 @@ export const AppHeader = () => {
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
+
+    useEffect(() => {
+        if (showCartModal) {
+            const timer = setTimeout(() => {
+                dispatch(closeCartModal())
+            }, 20000) // 20 seconds
+            return () => clearTimeout(timer)
+        }
+    }, [showCartModal, dispatch])
+
+    useEffect(() => {
+        if (showCartModal) {
+            dispatch(closeCartModal())
+        }
+    }, [location.pathname])
 
     return (
         <header className={`app-header ${isSticky ? 'sticky' : ''}`}>
@@ -62,9 +85,12 @@ export const AppHeader = () => {
 
                 {/* Cart */}
                 <div className='cart-column'>
-                    <NavLink to='/cart' className='cart-button'>
-                        <CartIcon className='cart-icon' />
-                    </NavLink>
+                    <div className='cart-button-wrapper'>
+                        <NavLink to='/cart' className='cart-button'>
+                            <CartIcon className='cart-icon' />
+                        </NavLink>
+                        {showCartModal && <CartModal onClose={() => dispatch(closeCartModal())} />}
+                    </div>
                 </div>
             </div>
         </header>
