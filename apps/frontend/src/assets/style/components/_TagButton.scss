@@ -8,12 +8,11 @@
   
   border: 1px solid $color-text;
   background-color: transparent;
-  font-family: $font-family-primary;
-  font-size: $font-size-base;
   line-height:  1;
   text-align: start;
   cursor: pointer;
   transition: background-color $transition-base;
+  @include text-style;
   
   @include flex-center;
     &.active,

@@ -4,13 +4,15 @@ type TagProps = {
     label: string
     isActive?: boolean
     onClick?: () => void
-}
-
-export const Tag = ({ label, isActive = false, onClick }: TagProps) => {
+    showCloseIcon?: boolean
+    className?: string
+  }
+  
+  export const Tag = ({ label, isActive = false, onClick, showCloseIcon = true, className = '' }: TagProps) => {
     return (
-        <button className={`tag ${isActive ? 'active' : ''}`} onClick={onClick}>
-            {isActive && <CloseIcon className='tag-icon' />}
-            <span>{label}</span>
-        </button>
+      <button className={`tag ${isActive ? 'active' : ''} ${className}`} onClick={onClick}>
+        {isActive && showCloseIcon && <CloseIcon className='tag-icon' />}
+        <span>{label}</span>
+      </button>
     )
-}
+  }

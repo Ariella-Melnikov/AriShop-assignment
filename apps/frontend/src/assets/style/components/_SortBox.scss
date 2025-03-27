@@ -2,21 +2,16 @@
 
 .sort-box {
     position: relative;
-    gap: $spacing-sm;
-    padding: 1rem;
-    border: 1px solid $color-border-dark;
-    background-color: $color-white;
-    border-radius: $radius-sm;
     max-width: 13.75rem; //220px
-    @include flex-column-center;
+    @include flex(column, flex-start, flex-start);
 
     .sort-header {
         background: none;
         border: none;
         padding: 0;
         cursor: pointer;
-        @include flex(row, flex-start, center);
         gap: 0.5rem;
+        @include flex(row, flex-start, center);
 
         .sort-icon {
             width: auto;
@@ -24,15 +19,29 @@
         }
 
         .sort-title {
-            font-family: $font-family-primary;
-            font-size: $font-size-base;
-            font-weight: $font-weight-regular;
-            color: $color-text;
+            @include text-style;
         }
     }
 
     .sort-options {
-        gap: 0.5rem;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        z-index: 10;
         margin-top: 0.5rem;
+        background-color: $color-white;
+        border: 1px solid $color-text;
+        border-radius: $radius-sm;
+        padding: 1.25rem 0.625rem; // 20px top/bottom, 10px left/right
+
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+        min-width: 13.75rem; 
+
+        .tag-sort{
+            padding: 0 1.375rem;
+            justify-content: flex-start;
+        }
     }
 }

@@ -6,8 +6,7 @@
     color: $color-text;
     font-weight: $font-weight-regular;
     text-align: center;
-    margin-top: $spacing-md;
-    margin-bottom: $spacing-md;
+    margin-block: var(--title-margin, $spacing-3xl);
     line-height: 1.1;
 
     @include respond(mobile) {

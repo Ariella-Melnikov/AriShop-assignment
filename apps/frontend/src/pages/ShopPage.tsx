@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState, AppDispatch } from '../store/store'
-import { fetchProducts, toggleTag, fetchTags } from '../store/slices/productSlice'
+import { fetchProducts, toggleTag, fetchTags, setSortOrder } from '../store/slices/productSlice'
 import { ProductList } from '../components/ProductList/ProductList'
 import { Product } from '@arishop/shared'
 import { Title } from '../components/Title/Title'
-import { Banner } from '../components/Banner/Banner'
 import { Tag } from '../components/Buttons/TagButton'
+import { SortBox } from '../components/SortBox/SortBox'
+import { Banner } from '../components/Banner/Banner'
 import shopHeroImg from '../assets/img/Shop-hero.png'
 
 export const ShopPage = () => {
@@ -17,6 +18,7 @@ export const ShopPage = () => {
     const filteredProducts = useSelector((state: RootState) => state.products.filteredProducts)
     const allTags = useSelector((state: RootState) => state.products.allTags)
     const selectedTags = useSelector((state: RootState) => state.products.selectedTags)
+    const sortOrder = useSelector((state: RootState) => state.products.sortOrder)
 
     useEffect(() => {
         if (products.length === 0) {
@@ -55,6 +57,9 @@ export const ShopPage = () => {
                             onClick={() => dispatch(toggleTag(tag))}
                         />
                     ))}
+                </div>
+                <div className='sort-section'>
+                    <SortBox active={sortOrder} onChange={(val) => dispatch(setSortOrder(val))} />
                 </div>
             </div>
 

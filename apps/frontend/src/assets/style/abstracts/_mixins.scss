@@ -70,10 +70,18 @@
   margin-bottom: $spacing-lg;
 }
 
-@mixin text($size: $font-size-base) {
+@mixin text-style(
+  $size: $font-size-base,
+  $family: $font-family-primary,
+  $weight: $font-weight-regular,
+  $color: $color-text,
+  $spacing: 0.1em
+) {
   font-size: $size;
-  line-height: 1.5;
-  margin-bottom: $spacing-md;
+  font-family: $family;
+  font-weight: $weight;
+  color: $color;
+  letter-spacing: $spacing;
 }
 
 // Utility

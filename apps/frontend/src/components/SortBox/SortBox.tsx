@@ -24,6 +24,12 @@ export const SortBox = ({ active, onChange }: SortBoxProps) => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  const sortOptions: { label: string; value: SortOption }[] = [
+    { label: 'Best Sellers', value: 'best' },
+    { label: 'Price - High to Low', value: 'high-to-low' },
+    { label: 'Price - Low to High', value: 'low-to-high' },
+  ]
+
   const handleSelect = (value: SortOption) => {
     onChange(value)
     setIsOpen(false)
@@ -32,17 +38,25 @@ export const SortBox = ({ active, onChange }: SortBoxProps) => {
   return (
     <div className="sort-box" ref={boxRef}>
       <button className="sort-header" onClick={() => setIsOpen(!isOpen)}>
-        <SortIcon className="sort-icon" />
         <span className="sort-title">Sort</span>
+        <SortIcon className="sort-icon" />
+        
       </button>
 
       {isOpen && (
-        <div className="sort-options">
-          <Tag label="Best Sellers" isActive={active === 'best'} onClick={() => handleSelect('best')} />
-          <Tag label="Price - High to Low" isActive={active === 'high-to-low'} onClick={() => handleSelect('high-to-low')} />
-          <Tag label="Price - Low to High" isActive={active === 'low-to-high'} onClick={() => handleSelect('low-to-high')} />
-        </div>
-      )}
-    </div>
+      <div className="sort-options">
+        {sortOptions.map(({ label, value }) => (
+          <Tag
+            key={value}
+            label={label}
+            isActive={active === value}
+            onClick={() => handleSelect(value)}
+            showCloseIcon={false}
+            className='tag-sort'
+          />
+        ))}
+      </div>
+    )}
+  </div>
   )
 }
