@@ -1,7 +1,6 @@
 import { Product, ProductMedia, ProductTag, Variant } from '@arishop/shared';
 
-const API_URL = 'http://localhost:3030/api/products'; // Example API
-
+const API_URL = 'https://asteria.onrender.com/api/products';
 interface BackendProduct {
     _id: string;
     name: string;
