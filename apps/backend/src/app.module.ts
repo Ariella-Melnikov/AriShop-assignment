@@ -9,7 +9,11 @@ import { AddressModule } from './features/address/address.module';
 import { OrderModule } from './features/order/order.module';
 import { PaymentModule } from './features/payment/payment.module';
 
-config();
+if (process.env.RENDER) {
+  config({ path: '/etc/secrets/.env' });
+} else {
+  config();
+}
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGO_URI),

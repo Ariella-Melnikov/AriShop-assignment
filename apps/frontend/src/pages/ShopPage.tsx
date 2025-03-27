@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState, AppDispatch } from '../store/store'
 import { fetchProducts, toggleTag, fetchTags, setSortOrder } from '../store/slices/productSlice'
@@ -10,7 +10,6 @@ import { Tag } from '../components/Buttons/TagButton'
 import { SortBox } from '../components/SortBox/SortBox'
 import { Banner } from '../components/Banner/Banner'
 import shopHeroImg from '../assets/img/Shop-hero.png'
-import { CartModal } from '../components/Modal/CartModal'
 import { openCartModal } from '../store/slices/cartUiSlice'
 
 export const ShopPage = () => {
