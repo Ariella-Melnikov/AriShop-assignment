@@ -1,0 +1,125 @@
+@use '../abstracts' as *;
+
+.product-page {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-xl;
+    border: 1px solid $color-text;
+    margin-top: $spacing-8xl;
+
+    @include respond(mobile) {
+        grid-template-columns: 1fr;
+    }
+
+    .product-info {
+        gap: 1.5rem;
+        height: 100%;
+        @include flex(column, flex-start, stretch);
+
+        > * {
+            padding-inline: 10px;
+        }
+
+        .title {
+            --title-margin: 0;
+            text-align: left;
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+        .product-description {
+            @include text-style($size: $font-size-lg,$color: $color-text-light);
+        }
+
+        .variant-select {
+            gap: 1rem;
+            @include flex($align:center);
+            @include text-style($size: $font-size-lg);
+
+
+            .variant-button {
+                width: 2rem;
+                height: 2rem;
+                border: 1px solid $color-text;
+                aspect-ratio: 1 / 1;
+                padding: $spacing-sm $spacing-md;
+                background-color: transparent;
+                cursor: pointer;
+                transition: background-color $transition-base;
+                position: relative;
+
+                @include text-style($size: $font-size-lg, $weight: $font-weight-medium);
+                @include flex-center;
+
+                &.active,
+                &:hover {
+                    background-color: $color-action;
+                }
+            }
+
+            .variant-button.disabled {
+                cursor: not-allowed;
+                opacity: 0.4;
+                pointer-events: none;
+                position: relative;
+                overflow: hidden;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    width: 140%; // slightly more than 100% to cover the diagonal
+                    height: 0.0625rem;
+                    background-color: $color-text;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%) rotate(45deg);
+                    pointer-events: none;
+                }
+            }
+        }
+
+        .quantity-select {
+            gap: $spacing-md;
+            @include flex( $align: center);
+            @include text-style($size: $font-size-lg);
+
+            .quantity-buttons {
+                gap: $spacing-sm;
+                @include flex( $align: center);
+                @include text-style($size: $font-size-lg);
+
+
+                button {
+                    padding: $spacing-xs $spacing-sm-2;
+                    background-color: transparent;
+                    border: none;
+                    cursor: pointer;
+                    @include text-style($size: $font-size-xl);
+                }
+            }
+        }
+
+        .price {
+            @include text-style($size: $font-size-3xl, $weight: $font-weight-bold);
+        }
+
+        .action-button {
+            align-self: flex-start; 
+            margin-top: auto; 
+        }
+    }
+
+
+    .product-gallery {
+        height: 100%;
+        width: 100%;
+        border: 1px solid $color-text;
+        @include flex($justify:center);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}

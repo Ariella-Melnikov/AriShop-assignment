@@ -7,6 +7,7 @@ interface ProductState {
     filteredProducts: Product[]
     allTags: string[]
     selectedTags: string[]
+    sortOrder: 'best' | 'low-to-high' | 'high-to-low'
     loading: boolean
     error: string | null
 }
@@ -16,6 +17,7 @@ const initialState: ProductState = {
     filteredProducts: [],
     allTags: [],
     selectedTags: [],
+    sortOrder: 'best',
     loading: false,
     error: null,
 }
@@ -53,6 +55,28 @@ const productSlice = createSlice({
             state.selectedTags = []
             state.filteredProducts = state.products
         },
+        setSortOrder(state, action) {
+            state.sortOrder = action.payload
+    
+            const getMediumPrice = (product: Product): number =>
+                product.variants.find((v) => v.size === 'medium')?.price?.amount ?? 0
+    
+            const sorted = [...state.filteredProducts]
+    
+            switch (action.payload) {
+                case 'low-to-high':
+                    sorted.sort((a, b) => getMediumPrice(a) - getMediumPrice(b))
+                    break
+                case 'high-to-low':
+                    sorted.sort((a, b) => getMediumPrice(b) - getMediumPrice(a))
+                    break
+                default:
+                    // best → keep current order
+                    break
+            }
+    
+            state.filteredProducts = sorted
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -75,5 +99,5 @@ const productSlice = createSlice({
     },
 })
 
-export const { toggleTag, clearTags } = productSlice.actions
+export const { toggleTag, clearTags, setSortOrder } = productSlice.actions
 export default productSlice.reducer

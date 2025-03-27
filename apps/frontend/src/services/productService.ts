@@ -44,6 +44,17 @@ export const productService = {
         }
     },
 
+    async fetchProductById(productId: string): Promise<Product> {
+        try {
+          const response = await fetch(`${API_URL}/${productId}`);
+          if (!response.ok) throw new Error('Failed to fetch product');
+          const data = await response.json();
+          return transformProduct(data);
+        } catch (err) {
+          throw new Error(err instanceof Error ? err.message : 'Unknown error');
+        }
+      },
+
     async fetchTags(): Promise<string[]> {
         try {
           const res = await fetch(`${API_URL}/tags`);
