@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { config } from 'dotenv'
-import * as path from 'path'
-import * as express from 'express'
+import path from 'path';
+import express, { Request, Response } from 'express';
 
 if (process.env.RENDER) {
     config({ path: '/etc/secrets/.env' })
@@ -22,11 +22,14 @@ async function bootstrap() {
     })
 
     if (process.env.NODE_ENV === 'production') {
-        const publicPath = path.join(__dirname, 'public')
-        app.use(express.static(publicPath))
-        app.use('*', (req, res) => {
-            res.sendFile(path.join(publicPath, 'index.html'))
-        })
+      const expressApp = app.getHttpAdapter().getInstance(); // ✅ get native express app
+      const publicPath = path.join(__dirname, 'public');
+  
+      expressApp.use(express.static(publicPath));
+  
+      expressApp.get('*', (_req: Request, res: Response) => {
+        res.sendFile(path.join(publicPath, 'index.html'));
+      });
     }
 
     const port = process.env.PORT || 3030
