@@ -1,0 +1,91 @@
+@use '../abstracts' as *;
+
+.cart-product-card {
+  display: flex;
+  gap: $spacing-lg;
+  border: 1px solid $color-text;
+  border-radius: $radius-sm;
+  padding: $spacing-md;
+  background-color: $color-white;
+
+  .image-container {
+    width: 140px;
+    height: 140px;
+    border: 1px solid $color-border-light;
+    overflow: hidden;
+    border-radius: $radius-sm;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  .info-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .title {
+      @include text-style($size: $font-size-xl, $weight: $font-weight-semibold);
+      margin-bottom: $spacing-xs;
+    }
+
+    .description {
+      @include text-style($size: $font-size-sm, $color: $color-text-light);
+      margin-bottom: $spacing-sm;
+      line-height: 1.4;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+
+      .label {
+        @include text-style($size: $font-size-sm);
+      }
+
+      button {
+        padding: 0.25rem 0.5rem;
+        border: 1px solid $color-text;
+        background-color: transparent;
+        cursor: pointer;
+        font-size: $font-size-sm;
+
+        &:hover {
+          background-color: $color-action;
+        }
+      }
+
+      .quantity {
+        @include text-style($size: $font-size-sm, $weight: $font-weight-bold);
+        padding: 0 $spacing-xs;
+      }
+    }
+
+    .footer-row {
+      margin-top: $spacing-sm;
+      @include flex-between;
+
+      .total-price {
+        @include text-style($size: $font-size-lg, $weight: $font-weight-semibold);
+      }
+
+      .remove-btn {
+        background: none;
+        border: none;
+        color: $color-error;
+        font-size: $font-size-sm;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

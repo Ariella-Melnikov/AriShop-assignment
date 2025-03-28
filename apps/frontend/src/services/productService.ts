@@ -1,6 +1,7 @@
 import { Product, ProductMedia, ProductTag, Variant } from '@arishop/shared';
 
 const API_BASE_URL = '/products'
+
 interface BackendProduct {
     _id: string;
     name: string;
