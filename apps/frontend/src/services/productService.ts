@@ -1,6 +1,7 @@
 import { Product, ProductMedia, ProductTag, Variant } from '@arishop/shared';
 
-const API_URL = 'https://asteria.onrender.com/api/products';
+const base = import.meta.env.VITE_API_URL;
+const API_BASE_URL = `${base}/products`;
 interface BackendProduct {
     _id: string;
     name: string;
@@ -29,9 +30,12 @@ const transformProduct = (product: BackendProduct): Product => ({
 });
 
 export const productService = {
+
+  
     async fetchProducts(): Promise<Product[]> {
+      console.log('💡 API_BASE_URL:', API_BASE_URL);
         try {
-            const response = await fetch(API_URL);
+            const response = await fetch(API_BASE_URL);
             if (!response.ok) {
                 throw new Error('Failed to fetch products');
             }
@@ -45,7 +49,7 @@ export const productService = {
 
     async fetchProductById(productId: string): Promise<Product> {
         try {
-          const response = await fetch(`${API_URL}/${productId}`);
+          const response = await fetch(`${API_BASE_URL}/${productId}`);
           if (!response.ok) throw new Error('Failed to fetch product');
           const data = await response.json();
           return transformProduct(data);
@@ -56,7 +60,7 @@ export const productService = {
 
     async fetchTags(): Promise<string[]> {
         try {
-          const res = await fetch(`${API_URL}/tags`);
+          const res = await fetch(`${API_BASE_URL}/tags`);
           if (!res.ok) throw new Error('Failed to fetch tags');
           return res.json();
         } catch (err) {
