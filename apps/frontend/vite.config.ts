@@ -5,6 +5,7 @@ import * as path from "path";
 
 
 export default defineConfig({
+  base: './', 
   plugins: [react(), svgr()],
   resolve: {
     alias: {

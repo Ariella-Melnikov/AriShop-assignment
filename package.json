@@ -46,7 +46,7 @@
     },
     "scripts": {
         "dev": "pnpm --filter @arishop/shared... build && concurrently -k -n BACKEND,FRONTEND \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\"",
-        "build": "pnpm --filter @arishop/shared... build && pnpm --filter backend build && pnpm --filter frontend build",
+        "build": "pnpm --filter @arishop/shared... build && pnpm --filter frontend build && pnpm --filter backend build",
         "start": "pnpm --filter backend start"
     }
 }

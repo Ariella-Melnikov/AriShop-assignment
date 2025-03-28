@@ -1,7 +1,6 @@
 import { Product, ProductMedia, ProductTag, Variant } from '@arishop/shared';
 
-const base = import.meta.env.VITE_API_URL;
-const API_BASE_URL = `${base}/products`;
+const API_BASE_URL = '/products'
 interface BackendProduct {
     _id: string;
     name: string;
