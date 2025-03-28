@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core'
-import { AppModule } from './app.module'
+import { AppModule } from './src/app.module'
 import { config } from 'dotenv'
-import path from 'path';
+import * as path from 'path';
 import express, { Request, Response } from 'express';
 
 if (process.env.RENDER) {
