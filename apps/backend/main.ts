@@ -33,10 +33,18 @@ async function bootstrap() {
       //expressApp.use(express.static(publicPath));
       app.use(express.static(publicPath));
 
-      expressApp.get(/(.*)/, (_req: Request, res: Response) => {
-        console.log('request', res) 
+        // Only handle non-API routes (exclude anything starting with /api)
+    expressApp.get(/^\/(?!api).*/, (req: Request, res: Response) => {
+        console.log('Serving frontend for:', req.url);
         res.sendFile(path.join(publicPath, 'index.html'));
-      });
+    });
+    //   expressApp.get(/(.*)/, (req: Request, res: Response) => {
+    //     console.log('Request URL:', req.url);
+    //     if (req.url.startsWith('/api')) {
+    //         return res.
+    //       }
+    //     res.sendFile(path.join(publicPath, 'index.html'));
+    //   });
 
     const port = process.env.PORT || 3030;
     await app.listen(port,

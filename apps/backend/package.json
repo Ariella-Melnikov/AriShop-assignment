@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "nest start",
+    "start": "nest start --watch",
     "dev": "nest start --watch",
     "debug": "nest start --debug --watch"
   },
