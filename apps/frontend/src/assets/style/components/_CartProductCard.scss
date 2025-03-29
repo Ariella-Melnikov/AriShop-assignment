@@ -3,17 +3,14 @@
 .cart-product-card {
   display: flex;
   gap: $spacing-lg;
-  border: 1px solid $color-text;
-  border-radius: $radius-sm;
-  padding: $spacing-md;
-  background-color: $color-white;
+  border-bottom: 1px solid $color-border-light;
+  padding-bottom: $spacing-md;
+
 
   .image-container {
     width: 140px;
     height: 140px;
-    border: 1px solid $color-border-light;
     overflow: hidden;
-    border-radius: $radius-sm;
 
     img {
       width: 100%;
@@ -29,10 +26,36 @@
     flex-direction: column;
     justify-content: space-between;
 
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: $spacing-xs;
+
     .title {
       @include text-style($size: $font-size-xl, $weight: $font-weight-semibold);
       margin-bottom: $spacing-xs;
     }
+    .remove-btn {
+      background: none;
+      border: none;
+      padding: 0.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      .remove-icon {
+        width: 10px;
+        height: 10px;
+        transition: stroke 0.2s ease;
+  
+        &:hover {
+          stroke: $color-error;
+        }
+      }
+    }
+  }
 
     .description {
       @include text-style($size: $font-size-sm, $color: $color-text-light);
@@ -75,17 +98,18 @@
         @include text-style($size: $font-size-lg, $weight: $font-weight-semibold);
       }
 
-      .remove-btn {
-        background: none;
-        border: none;
-        color: $color-error;
-        font-size: $font-size-sm;
-        cursor: pointer;
+      // .remove-btn {
+      //   background: none;
+      //   border: none;
+      //   color: $color-text;
+      //   font-size: $font-size-sm;
+      //   cursor: pointer;
 
-        &:hover {
-          text-decoration: underline;
-        }
-      }
+      //   &:hover {
+      //     text-decoration: underline;
+      //     color: $color-error;
+      //   }
+      // }
     }
   }
 }

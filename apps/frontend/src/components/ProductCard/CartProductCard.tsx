@@ -2,6 +2,7 @@
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { CartItem } from '@arishop/shared'
+import CloseIcon from '@/assets/icons/X.svg?react'
 
 interface CartProductCardProps {
   cartItem: CartItem
@@ -34,7 +35,12 @@ export const CartProductCard = ({
       </div>
 
       <div className="info-container">
+      <div className="title-row">
         <h3 className="title">{product.name}</h3>
+        <button className="remove-btn" onClick={() => onRemove(variantId)} aria-label="Remove product">
+      <CloseIcon className="remove-icon" />
+    </button>
+    </div>
         <p className="description">{product.description}</p>
 
         <div className="controls">
@@ -46,9 +52,6 @@ export const CartProductCard = ({
 
         <div className="footer-row">
           <div className="total-price">{totalPrice} ₪</div>
-          <button className="remove-btn" onClick={() => onRemove(variantId)}>
-            Remove
-          </button>
         </div>
       </div>
     </div>

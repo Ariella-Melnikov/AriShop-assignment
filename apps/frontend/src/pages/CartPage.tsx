@@ -56,11 +56,12 @@ export const CartPage = () => {
                 <div className='cart-summary-section'>
                     <div className='cart-summary-box'>
                         <h3 className='summary-title'>Summary</h3>
+                        <div className='summary-rows-wrapper'>
                         <div className='summary-row'>
                             <span>Subtotal</span>
                             <span>{subtotal.toFixed(2)} ₪</span>
                         </div>
-                        <div className='summary-row'>
+                        <div className='summary-row with-border'>
                             <span>Delivery</span>
                             <span>{deliveryCost.toFixed(2)} ₪</span>
                         </div>
@@ -68,9 +69,12 @@ export const CartPage = () => {
                             <strong>Total</strong>
                             <strong>{total.toFixed(2)} ₪</strong>
                         </div>
+                        </div>
+                        <div className='checkout-btn-wrapper'>
                         <button className='checkout-btn' onClick={() => console.log('checkout button')}>
                             Checkout
                         </button>
+                        </div>
                     </div>
                 </div>
             </div>
