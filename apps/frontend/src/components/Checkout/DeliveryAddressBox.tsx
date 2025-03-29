@@ -9,6 +9,9 @@ interface DeliveryAddressBoxProps {
   email?: string
   isSignedIn?: boolean
   onSave?: (address: Address) => void
+  onGuestInfoSave?: (info: { firstName: string; lastName: string; email: string }) => void
+  title?: string
+  editable?: boolean
 }
 
 export const DeliveryAddressBox = ({
@@ -17,9 +20,13 @@ export const DeliveryAddressBox = ({
   lastName = '',
   email = '',
   isSignedIn = false,
-  onSave
+  onSave,
+  onGuestInfoSave,
+  title = 'Delivery Address',
+  editable = true
 }: DeliveryAddressBoxProps) => {
-  const [isEditing, setIsEditing] = useState(!address)
+  const [isEditing, setIsEditing] = useState(!address && editable !== false)
+
   const [formData, setFormData] = useState<Address>(
     address ?? {
       _id: '',
@@ -32,31 +39,32 @@ export const DeliveryAddressBox = ({
   )
 
   const [guestInfo, setGuestInfo] = useState({
-    firstName: firstName || '',
-    lastName: lastName || '',
-    email: email || '',
+    firstName,
+    lastName,
+    email
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-
     if (['firstName', 'lastName', 'email'].includes(name)) {
-        setGuestInfo((prev) => ({ ...prev, [name]: value }))
-      } else {
-        setFormData((prev) => ({ ...prev, [name]: value }))
-      }
+      setGuestInfo((prev) => ({ ...prev, [name]: value }))
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }))
+    }
   }
 
   const handleSave = () => {
     if (!formData.street || !formData.apartment || !formData.city || !formData.zip) return
+    if (!isSignedIn) {
+      onGuestInfoSave?.(guestInfo)
+    }
     onSave?.({ ...formData, country: 'IL' })
     setIsEditing(false)
   }
 
   return (
     <div className="delivery-address-box">
-      <h3>Delivery Address</h3>
-
+      <h3>{title}</h3>
       {isEditing ? (
         <form className="address-form">
           {!isSignedIn && (
@@ -66,7 +74,6 @@ export const DeliveryAddressBox = ({
               <input name="email" placeholder="Email" value={guestInfo.email} onChange={handleChange} />
             </>
           )}
-
           <input name="street" placeholder="Street" value={formData.street} onChange={handleChange} />
           <input name="apartment" placeholder="Floor/Apartment" value={formData.apartment} onChange={handleChange} />
           <input name="city" placeholder="City" value={formData.city} onChange={handleChange} />
@@ -75,9 +82,13 @@ export const DeliveryAddressBox = ({
         </form>
       ) : (
         <div className="address-preview">
-          <p>{`${guestInfo.firstName}`}</p>
-          <p>{`${guestInfo.lastName}`}</p>
-          <p>{guestInfo.email}</p>
+          {!isSignedIn && (
+            <>
+              <p>{guestInfo.firstName}</p>
+              <p>{guestInfo.lastName}</p>
+              <p>{guestInfo.email}</p>
+            </>
+          )}
           <p>{formData.street}</p>
           <p>{formData.apartment}</p>
           <p>{formData.city}</p>

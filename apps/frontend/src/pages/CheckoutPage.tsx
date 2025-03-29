@@ -1,7 +1,6 @@
-import { useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../store/store'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
+import { AppDispatch, RootState } from '../store/store'
 import { fetchLoggedInUser, updateUserAddress } from '../store/slices/userSlice'
 import { Title } from '../components/Title/Title'
 import { ActionButton } from '../components/Buttons/ActionButton'
@@ -9,15 +8,52 @@ import unipaasLogo from '@/assets/icons/unipaas-logo.svg'
 import AppLogo from '@/assets/icons/app-logo.svg?react'
 import { DeliveryAddressBox } from '../components/Checkout/DeliveryAddressBox'
 import { DeliveryOptionsBox } from '../components/Checkout/DeliveryOptionsBox'
+import { setAnonymousBillingAddress, setAnonymousDeliveryAddress, setAnonymousNameAndEmail } from '../store/slices/anonymousUserSlice'
+  import { Address } from '@arishop/shared'
 
 export const CheckoutPage = () => {
     const { items, subtotal } = useSelector((state: RootState) => state.cart)
     const dispatch = useDispatch<AppDispatch>()
     const user = useSelector((state: RootState) => state.user.user)
+    const anonymousUser = useSelector((state: RootState) => state.anonymousUser)
+    
 
     useEffect(() => {
         if (!user) dispatch(fetchLoggedInUser())
     }, [dispatch, user])
+
+    useEffect(() => {
+        if (!user && anonymousUser.deliveryAddress) {
+          dispatch(setAnonymousBillingAddress(anonymousUser.deliveryAddress))
+        }
+      }, [anonymousUser.deliveryAddress])
+
+    const handleGuestInfoSave = (info: { firstName: string; lastName: string; email: string }) => {
+        dispatch(setAnonymousNameAndEmail(info))
+      }
+
+    const handleSaveDeliveryAddress = (updatedAddress: Address) => {
+        if (user) {
+            dispatch(updateUserAddress(updatedAddress))
+        } else {
+            dispatch(setAnonymousDeliveryAddress(updatedAddress))
+            dispatch(setAnonymousBillingAddress(updatedAddress)) // Default billing = delivery
+        }
+    }
+
+    const handleSaveBillingAddress = (updatedAddress: Address) => {
+        if (!user) {
+            dispatch(setAnonymousBillingAddress(updatedAddress))
+        }
+    }
+
+    const deliveryAddress: Address | undefined = user
+    ? user.addresses.find((addr) => addr._id === user.defaultAddressId)
+    : anonymousUser.deliveryAddress ?? undefined
+  
+  const billingAddress: Address | undefined = user
+    ? user.addresses.find((addr) => addr._id === user.defaultAddressId)
+    : anonymousUser.billingAddress ?? anonymousUser.deliveryAddress ?? undefined
 
     return (
         <div className='checkout-page'>
@@ -36,24 +72,37 @@ export const CheckoutPage = () => {
                     </div>
                 </div>
             </header>
+
             <main className='checkout-main'>
                 <section className='checkout-left'>
                     <div className='box'>
                         <DeliveryAddressBox
-                            address={user?.addresses.find((addr) => addr._id === user.defaultAddressId)}
-                            firstName={user?.firstName || ''}
-                            lastName={user?.lastName || ''}
-                            email={user?.email || ''}
+                            address={deliveryAddress ?? anonymousUser.deliveryAddress ?? undefined}
+                            firstName={user?.firstName || anonymousUser.firstName}
+                            lastName={user?.lastName || anonymousUser.lastName}
+                            email={user?.email || anonymousUser.email}
                             isSignedIn={!!user}
-                            onSave={(updatedAddress) => dispatch(updateUserAddress(updatedAddress))}
+                            onSave={handleSaveDeliveryAddress}
+                            title='Delivery Address'
+                            onGuestInfoSave={handleGuestInfoSave}
                         />
                     </div>
                     <div className='box'>
-                    <DeliveryOptionsBox />
+                        <DeliveryOptionsBox />
                     </div>
                     <div className='box'>
                         <h2>Payment</h2>
-                        <h3>Billing Address - TBD</h3>
+                        <DeliveryAddressBox
+                            address={billingAddress}
+                            firstName={user?.firstName || anonymousUser.firstName}
+                            lastName={user?.lastName || anonymousUser.lastName}
+                            email={user?.email || anonymousUser.email}
+                            isSignedIn={!!user}
+                            editable={!user} // signed-in users don’t edit billing
+                            onSave={handleSaveBillingAddress}
+                            title='Billing Address'
+                            onGuestInfoSave={handleGuestInfoSave}
+                        />
                         <h3>Payment Type</h3>
                         <div className='unipaas-method'>
                             <img src={unipaasLogo} alt='UniPaaS' />

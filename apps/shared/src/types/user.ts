@@ -40,6 +40,13 @@ export interface User {
   createdAt: Date;
 }
 
+export interface AnonymousUserInfo {
+  firstName: string
+  lastName: string
+  email: string
+  deliveryAddress: Address | null
+  billingAddress: Address | null
+}
 // For auth responses (frontend-safe)
 export interface PublicUser {
   _id: string;
