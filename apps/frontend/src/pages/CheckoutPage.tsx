@@ -8,6 +8,7 @@ import { ActionButton } from '../components/Buttons/ActionButton'
 import unipaasLogo from '@/assets/icons/unipaas-logo.svg'
 import AppLogo from '@/assets/icons/app-logo.svg?react'
 import { DeliveryAddressBox } from '../components/Checkout/DeliveryAddressBox'
+import { DeliveryOptionsBox } from '../components/Checkout/DeliveryOptionsBox'
 
 export const CheckoutPage = () => {
     const { items, subtotal } = useSelector((state: RootState) => state.cart)
@@ -47,7 +48,9 @@ export const CheckoutPage = () => {
                             onSave={(updatedAddress) => dispatch(updateUserAddress(updatedAddress))}
                         />
                     </div>
-                    <div className='box'>Delivery Options - TBD</div>
+                    <div className='box'>
+                    <DeliveryOptionsBox />
+                    </div>
                     <div className='box'>
                         <h2>Payment</h2>
                         <h3>Billing Address - TBD</h3>
