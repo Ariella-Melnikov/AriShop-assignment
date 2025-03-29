@@ -27,10 +27,11 @@ export class PaymentService {
             country: 'IL',
             email: dto.email,
             orderId: dto.orderId,
-            billingAddress: dto.billingAddress,
+            shippingAddress: dto.shippingAddress, // ← remapped
             shippingSameAsBilling: dto.shippingSameAsBilling,
-            item: dto.item,
+            items: dto.items,
             successfulPaymentRedirect: dto.successfulPaymentRedirect,
+            paymentMethods: ['creditCard'],
         }
 
         try {
@@ -38,11 +39,10 @@ export class PaymentService {
                 this.httpService.post('https://sandbox.unipaas.com/platform/pay-ins/checkout', payload, { headers })
             )
 
-            const checkoutUrl = response.data?.checkoutUrl
+            const checkoutUrl = response.data?.checkoutUrl || response.data?.shortLink
             if (!checkoutUrl) {
                 throw new InternalServerErrorException('Missing checkout URL in response')
             }
-
             return { checkoutUrl }
         } catch (err) {
             console.error('UniPaaS Checkout error:', err.response?.data || err.message)

@@ -33,8 +33,8 @@ export const CartModal = ({ onClose }: CartModalProps) => {
     }
 
     const handleCheckout = () => {
-        console.log('CHECKOUT')
-        // Later: navigate('/checkout')
+        navigate('/checkout') // ✅ Navigate to checkout
+        onClose()
     }
 
     return (

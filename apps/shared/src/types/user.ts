@@ -3,6 +3,7 @@ import { Order } from "./order";
 export interface Address {
   _id: string;
   street: string;
+  apartment: string;
   city: string;
   country: string;
   zip: string;

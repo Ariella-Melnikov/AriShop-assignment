@@ -2,12 +2,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { CartProductCard } from '../components/ProductCard/CartProductCard'
 import { RootState, AppDispatch } from '../store/store'
 import { removeFromCart, updateQuantity } from '../store/slices/cartSlice'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Title } from '../components/Title/Title'
 
 export const CartPage = () => {
     const dispatch = useDispatch<AppDispatch>()
-    // const navigate = useNavigate()
+    const navigate = useNavigate() // ✅ Add this
+
 
     const { items, subtotal } = useSelector((state: RootState) => state.cart)
     const deliveryCost = 35
@@ -71,7 +72,7 @@ export const CartPage = () => {
                         </div>
                         </div>
                         <div className='checkout-btn-wrapper'>
-                        <button className='checkout-btn' onClick={() => console.log('checkout button')}>
+                        <button className='checkout-btn' onClick={() => navigate('/checkout')}>
                             Checkout
                         </button>
                         </div>

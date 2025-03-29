@@ -1,0 +1,79 @@
+@use '../abstracts' as *;
+
+.delivery-address-box {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    h3 {
+        margin-bottom: $spacing-sm;
+        @include text-style($size: $font-size-lg);
+    }
+
+    .address-form {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-sm;
+
+        input {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid $color-border-light;
+            @include text-style();
+        }
+
+        button {
+            margin-top: $spacing-xs;
+            align-self: flex-start;
+            padding: 0.4rem 1rem;
+            font-size: $font-size-sm;
+            font-weight: 500;
+            background-color: $color-action;
+            color: $color-text;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background-color: $color-action-hover-green;
+            }
+        }
+    }
+
+    .address-preview {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        p {
+            @include text-style($size: $font-size-base);
+        }
+
+        .address-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            }
+            .edit-button {
+                margin-top: 0;
+              
+                button {
+                    margin-top: $spacing-xs;
+                    align-self: flex-start;
+                    padding: 0.4rem 1rem;
+                    font-size: $font-size-base;
+                    font-weight: 500;
+                    background-color: $color-action;
+                    color: $color-text;
+                    border: none;
+                    cursor: pointer;
+                    transition: background-color 0.2s ease;
+        
+                    &:hover {
+                        background-color: $color-action-hover-green;
+                    }
+                }
+              }
+            }
+        }
+
