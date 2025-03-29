@@ -91,7 +91,7 @@ export const CheckoutPage = () => {
                         <DeliveryOptionsBox />
                     </div>
                     <div className='box'>
-                        <h2>Payment</h2>
+                        <h2>PAYMENT</h2>
                         <DeliveryAddressBox
                             address={billingAddress}
                             firstName={user?.firstName || anonymousUser.firstName}
