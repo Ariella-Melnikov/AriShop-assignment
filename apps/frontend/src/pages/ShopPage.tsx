@@ -5,7 +5,7 @@ import { fetchProducts, toggleTag, fetchTags, setSortOrder } from '../store/slic
 import { ProductList } from '../components/ProductList/ProductList'
 import { addToCart } from '../store/slices/cartSlice'
 import { Product, Variant } from '@arishop/shared'
-import { Title } from '../components/Title/Title'
+import { PageTitle } from '../components/Title/PageTitle'
 import { Tag } from '../components/Buttons/TagButton'
 import { SortBox } from '../components/SortBox/SortBox'
 import { Banner } from '../components/Banner/Banner'
@@ -70,7 +70,7 @@ export const ShopPage = () => {
         <div className='shop-page'>
             <Banner imgUrl={shopHeroImg} />
             <div className='shop-title'>
-                <Title>All Bouquets</Title>
+                <PageTitle>All Bouquets</PageTitle>
             </div>
 
             <div className='tag-filters'>

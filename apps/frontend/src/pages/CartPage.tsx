@@ -3,7 +3,7 @@ import { CartProductCard } from '../components/ProductCard/CartProductCard'
 import { RootState, AppDispatch } from '../store/store'
 import { removeFromCart, updateQuantity } from '../store/slices/cartSlice'
 import { useNavigate } from 'react-router-dom'
-import { Title } from '../components/Title/Title'
+import { PageTitle } from '../components/Title/PageTitle'
 
 export const CartPage = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -40,7 +40,7 @@ export const CartPage = () => {
     return (
         <section className='cart-page'>
             <div className='cart-title-section'>
-                <Title>Your Cart</Title>
+                <PageTitle>Your Cart</PageTitle>
             </div>
             <div className='cart-page-main'>
                 <div className='cart-items'>

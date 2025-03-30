@@ -1,0 +1,8 @@
+@use '../abstracts' as *;
+
+.section-title-container {
+    margin-bottom: $spacing-sm-2;
+.section-title {
+    @include text-style($size: $font-size-lg, $weight: $font-weight-semibold);
+  }
+}

@@ -2,21 +2,26 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { AppDispatch, RootState } from '../store/store'
 import { fetchLoggedInUser, updateUserAddress } from '../store/slices/userSlice'
-import { Title } from '../components/Title/Title'
+import {
+    setAnonymousBillingAddress,
+    setAnonymousDeliveryAddress,
+    setAnonymousNameAndEmail,
+} from '../store/slices/anonymousUserSlice'
+import { PageTitle } from '../components/Title/PageTitle'
 import { ActionButton } from '../components/Buttons/ActionButton'
-import unipaasLogo from '@/assets/icons/unipaas-logo.svg'
-import AppLogo from '@/assets/icons/app-logo.svg?react'
 import { DeliveryAddressBox } from '../components/Checkout/DeliveryAddressBox'
 import { DeliveryOptionsBox } from '../components/Checkout/DeliveryOptionsBox'
-import { setAnonymousBillingAddress, setAnonymousDeliveryAddress, setAnonymousNameAndEmail } from '../store/slices/anonymousUserSlice'
-  import { Address } from '@arishop/shared'
+import { SectionTitle } from '../components/Title/SectionTitle'
+import { Address } from '@arishop/shared'
+import unipaasLogo from '@/assets/icons/unipaas-logo.svg'
+import AppLogo from '@/assets/icons/app-logo.svg?react'
+import creditCards from '@/assets/icons/credit-cards.svg'
 
 export const CheckoutPage = () => {
     const { items, subtotal } = useSelector((state: RootState) => state.cart)
     const dispatch = useDispatch<AppDispatch>()
     const user = useSelector((state: RootState) => state.user.user)
     const anonymousUser = useSelector((state: RootState) => state.anonymousUser)
-    
 
     useEffect(() => {
         if (!user) dispatch(fetchLoggedInUser())
@@ -24,13 +29,13 @@ export const CheckoutPage = () => {
 
     useEffect(() => {
         if (!user && anonymousUser.deliveryAddress) {
-          dispatch(setAnonymousBillingAddress(anonymousUser.deliveryAddress))
+            dispatch(setAnonymousBillingAddress(anonymousUser.deliveryAddress))
         }
-      }, [anonymousUser.deliveryAddress])
+    }, [anonymousUser.deliveryAddress])
 
     const handleGuestInfoSave = (info: { firstName: string; lastName: string; email: string }) => {
         dispatch(setAnonymousNameAndEmail(info))
-      }
+    }
 
     const handleSaveDeliveryAddress = (updatedAddress: Address) => {
         if (user) {
@@ -48,12 +53,12 @@ export const CheckoutPage = () => {
     }
 
     const deliveryAddress: Address | undefined = user
-    ? user.addresses.find((addr) => addr._id === user.defaultAddressId)
-    : anonymousUser.deliveryAddress ?? undefined
-  
-  const billingAddress: Address | undefined = user
-    ? user.addresses.find((addr) => addr._id === user.defaultAddressId)
-    : anonymousUser.billingAddress ?? anonymousUser.deliveryAddress ?? undefined
+        ? user.addresses.find((addr) => addr._id === user.defaultAddressId)
+        : anonymousUser.deliveryAddress ?? undefined
+
+    const billingAddress: Address | undefined = user
+        ? user.addresses.find((addr) => addr._id === user.defaultAddressId)
+        : anonymousUser.billingAddress ?? anonymousUser.deliveryAddress ?? undefined
 
     return (
         <div className='checkout-page'>
@@ -64,7 +69,7 @@ export const CheckoutPage = () => {
                     </div>
                 </div>
                 <div className='checkout-title'>
-                    <Title>CHECKOUT</Title>
+                    <PageTitle>CHECKOUT</PageTitle>
                 </div>
                 <div className='unipaas-logo-column'>
                     <div className='unipaas-logo'>
@@ -91,27 +96,33 @@ export const CheckoutPage = () => {
                         <DeliveryOptionsBox />
                     </div>
                     <div className='box'>
-                        <h2>PAYMENT</h2>
-                        <DeliveryAddressBox
-                            address={billingAddress}
-                            firstName={user?.firstName || anonymousUser.firstName}
-                            lastName={user?.lastName || anonymousUser.lastName}
-                            email={user?.email || anonymousUser.email}
-                            isSignedIn={!!user}
-                            editable={!user} // signed-in users don’t edit billing
-                            onSave={handleSaveBillingAddress}
-                            title='Billing Address'
-                            onGuestInfoSave={handleGuestInfoSave}
-                        />
-                        <h3>Payment Type</h3>
-                        <div className='unipaas-method'>
-                            <img src={unipaasLogo} alt='UniPaaS' />
-                            <span>UniPaaS</span>
+                        <div className='payment-box'>
+                            <SectionTitle>PAYMENT</SectionTitle>
+                            <DeliveryAddressBox
+                                address={billingAddress}
+                                firstName={user?.firstName || anonymousUser.firstName}
+                                lastName={user?.lastName || anonymousUser.lastName}
+                                email={user?.email || anonymousUser.email}
+                                isSignedIn={!!user}
+                                editable={!user} // signed-in users don’t edit billing
+                                onSave={handleSaveBillingAddress}
+                                title='Billing Address'
+                                onGuestInfoSave={handleGuestInfoSave}
+                            />
                         </div>
-                        <footer className='payment-footer'>
-                            <span>We Accept:</span>
-                            {/* Add credit card logos later */}
-                        </footer>
+                        <div className='payment-type-box'>
+                            <SectionTitle>PAYMENT TYPE</SectionTitle>
+                            <div className='unipaas-method'>
+                                <img src={unipaasLogo} alt='UniPaaS' />
+                                <span>UniPaaS</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='payment-footer-box box'>
+                        <span>We Accept:</span>
+                        <img src={creditCards} alt='Accepted credit cards' className='credit-cards-img' />
+                    </div>
+                    <div className='payment-button'>
                         <ActionButton label='Pay with UniPaaS' onClick={() => {}} />
                     </div>
                 </section>
@@ -119,7 +130,7 @@ export const CheckoutPage = () => {
                 <section className='checkout-summary'>
                     <div className='box sticky'>
                         <div className='summary-header'>
-                            <h2>{items.length} ITEMS</h2>
+                            <SectionTitle>{items.length} ITEMS</SectionTitle>
                             <button className='secondary'>Edit</button>
                         </div>
                         <div className='cart-items'>Cart Items - TBD</div>

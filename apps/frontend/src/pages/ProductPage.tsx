@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { productService } from '../services/productService'
 import { Product } from '@arishop/shared'
-import { Title } from '../components/Title/Title'
+import { PageTitle } from '../components/Title/PageTitle'
 import { ActionButton } from '../components/Buttons/ActionButton'
 import { addToCart } from '../store/slices/cartSlice'
 import { openCartModal } from '../store/slices/cartUiSlice'
@@ -34,7 +34,7 @@ export const ProductPage = () => {
     return (
         <div className='product-page'>
             <div className='product-info'>
-                <Title>{product.name}</Title>
+                <PageTitle>{product.name}</PageTitle>
                 <p className='product-description'>{product.description}</p>
 
                 <div className='variant-select'>
