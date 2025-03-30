@@ -3,12 +3,17 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AppDispatch, RootState } from '../store/store'
 import { fetchLoggedInUser, updateUserAddress } from '../store/slices/userSlice'
-import { setAnonymousBillingAddress, setAnonymousDeliveryAddress, setAnonymousNameAndEmail } from '../store/slices/anonymousUserSlice'
+import {
+    setAnonymousBillingAddress,
+    setAnonymousDeliveryAddress,
+    setAnonymousNameAndEmail,
+} from '../store/slices/anonymousUserSlice'
 import { PageTitle } from '../components/Title/PageTitle'
 import { ActionButton } from '../components/Buttons/ActionButton'
 import { DeliveryAddressBox } from '../components/Checkout/DeliveryAddressBox'
 import { DeliveryOptionsBox } from '../components/Checkout/DeliveryOptionsBox'
 import { SectionTitle } from '../components/Title/SectionTitle'
+import { paymentService } from '../services/paymentService'
 import { Address } from '@arishop/shared'
 import unipaasLogo from '@/assets/icons/unipaas-logo.svg'
 import AppLogo from '@/assets/icons/app-logo.svg?react'
@@ -17,7 +22,6 @@ import { CartProductCard } from '../components/ProductCard/CartProductCard'
 import { fetchILSToUSDRate } from '@arishop/shared'
 
 export const CheckoutPage = () => {
-
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
 
@@ -59,6 +63,56 @@ export const CheckoutPage = () => {
     const handleSaveBillingAddress = (updatedAddress: Address) => {
         if (!user) {
             dispatch(setAnonymousBillingAddress(updatedAddress))
+        }
+    }
+
+    const handleUniPaaSPayment = async () => {
+        try {
+            const orderId = crypto.randomUUID()
+            const email = user?.email || anonymousUser.email
+            const shippingAddress = deliveryAddress!
+            const billingName = {
+                firstName: user?.firstName || anonymousUser.firstName,
+                lastName: user?.lastName || anonymousUser.lastName,
+            }
+
+            const itemsPayload = items.map((item) => {
+                const product = products.find((p) => p._id === item.productId)
+                const variant = product?.variants.find((v) => v._id === item.variantId)
+
+                return {
+                    name: product?.name || 'Unknown',
+                    amount: variant?.price.amount || 0,
+                    vendorId: 'demo_vendor',
+                    platformFee: 0,
+                }
+            })
+
+            const payload = {
+                amount: subtotalILS,
+                currency: 'ILS',
+                orderId,
+                email,
+                country: 'IL',
+                items: itemsPayload,
+                shippingSameAsBilling: true,
+                shippingAddress: {
+                    ...billingName,
+                    city: shippingAddress.city,
+                    country: shippingAddress.country,
+                    line1: shippingAddress.street,
+                    postalCode: shippingAddress.zip,
+                    line2: '',
+                    state: '',
+                },
+                successfulPaymentRedirect: `${window.location.origin}/success?orderId=${orderId}`,
+            }
+
+            const { checkoutUrl } = await paymentService.createCheckout(payload)
+            window.location.href = checkoutUrl
+        } catch (err) {
+            console.error('Failed to create checkout:', err)
+            alert('Failed to create payment session. Please try again.')
         }
     }
 
@@ -142,15 +196,15 @@ export const CheckoutPage = () => {
                         <img src={creditCards} alt='Accepted credit cards' className='credit-cards-img' />
                     </div>
                     <div className='payment-button'>
-                        <ActionButton label='Pay with UniPaaS' onClick={() => {}} />
+                        <ActionButton label='Pay with UniPaaS' onClick={handleUniPaaSPayment} />
                     </div>
                 </section>
 
                 <section className='checkout-summary'>
                     <div className='box sticky'>
                         <div className='summary-header'>
-                                <SectionTitle>{items.length} ITEMS</SectionTitle>
-                                <ActionButton label='Edit' variant='secondary' onClick={() => navigate('/cart')} />
+                            <SectionTitle>{items.length} ITEMS</SectionTitle>
+                            <ActionButton label='Edit' variant='secondary' onClick={() => navigate('/cart')} />
                         </div>
                         {items.length === 0 ? (
                             <p className='empty-cart-msg'>Cart is empty.</p>

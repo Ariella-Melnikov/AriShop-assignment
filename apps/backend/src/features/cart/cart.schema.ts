@@ -58,5 +58,14 @@ export class Cart extends Document {
 
 export const CartSchema = SchemaFactory.createForClass(Cart)
 
-// Add compound index for preventing duplicate items
-CartSchema.index({ 'items.productId': 1, 'items.variantId': 1 }, { unique: true })
+CartSchema.index({ cartToken: 1 }, { unique: true, sparse: true })
+CartSchema.index({ userId: 1 }, { unique: true, sparse: true })
+CartSchema.index({ 'items.productId': 1, 'items.variantId': 1 }, { sparse: true })
+
+// CartSchema.pre('save', function (next) {
+//   this.items = this.items.filter(
+//     (item) => item.productId && item.variantId
+//   )
+//   console.log('[Pre Save Hook] items after:', this.items)
+//   next()
+// })

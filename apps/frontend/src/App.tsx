@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AppHeader } from './components/AppHeader/AppHeader'
 import { MainPage } from './pages/MainPage'
 import { ShopPage } from './pages/ShopPage'
@@ -6,7 +6,7 @@ import { ProductPage } from './pages/ProductPage'
 import { CartPage } from './pages/CartPage'
 import { CheckoutPage } from './pages/CheckoutPage'
 
-function App() {
+function App() {    
     return (
         <Router>
             <Routes>
@@ -24,7 +24,6 @@ function App() {
                                     <Route path='/cart' element={<CartPage />} />
                                     <Route path='/philosophy' element={<div>Philosophy Page</div>} />
                                     <Route path='/contact' element={<div>Contact Page</div>} />
-                                    <Route path='/checkout' element={<CheckoutPage />} />
                                 </Routes>
                             </main>
                         </div>

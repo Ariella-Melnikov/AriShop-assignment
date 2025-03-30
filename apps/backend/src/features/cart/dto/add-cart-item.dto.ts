@@ -1,13 +1,15 @@
-import { IsNotEmpty, IsNumber, Min } from 'class-validator';
+import { IsNotEmpty, IsMongoId, IsInt, Min } from 'class-validator'
 
 export class AddCartItemDto {
+  @IsMongoId()
   @IsNotEmpty()
-  productId: string;
+  productId: string
 
+  @IsMongoId()
   @IsNotEmpty()
-  variantId: string;
+  variantId: string
 
-  @IsNumber()
+  @IsInt()
   @Min(1)
-  quantity: number;
+  quantity: number
 }

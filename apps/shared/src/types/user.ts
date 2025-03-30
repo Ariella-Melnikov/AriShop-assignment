@@ -1,4 +1,5 @@
 import { Order } from "./order";
+import { Price } from "./product";
 
 export interface Address {
   _id: string;
@@ -14,14 +15,13 @@ export interface CartItem {
   productId: string;
   variantId: string;
   quantity: number;
-  price: number;
+  price: Price;
 }
 
 export interface Cart {
   items: CartItem[];
-  subtotal: number;
-  shipping: number;
-  total: number;
+  subtotal: Price;
+  total: Price;
   updatedAt: Date;
 }
 

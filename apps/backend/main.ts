@@ -4,7 +4,6 @@ import { config } from 'dotenv'
 import * as path from 'path';
 import * as express from 'express'; // ✅ This ensures 'static' will be defined
 import { Request, Response } from 'express';
-import http from 'http'
 
 if (process.env.RENDER) {
     config({ path: '/etc/secrets/.env' })
@@ -14,7 +13,6 @@ if (process.env.RENDER) {
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule)
-    //const server = http.createServer(app)
 
     app.setGlobalPrefix('api')
 
@@ -28,9 +26,6 @@ async function bootstrap() {
   //if (process.env.NODE_ENV === 'production') {
       const expressApp = app.getHttpAdapter().getInstance(); // ✅ get native express app
       const publicPath = path.join(__dirname, '..', 'public');
-      console.log('publicPath', publicPath)
-      //const publicPath = path.join(__dirname, 'public');
-      //expressApp.use(express.static(publicPath));
       app.use(express.static(publicPath));
 
         // Only handle non-API routes (exclude anything starting with /api)
@@ -38,13 +33,7 @@ async function bootstrap() {
         console.log('Serving frontend for:', req.url);
         res.sendFile(path.join(publicPath, 'index.html'));
     });
-    //   expressApp.get(/(.*)/, (req: Request, res: Response) => {
-    //     console.log('Request URL:', req.url);
-    //     if (req.url.startsWith('/api')) {
-    //         return res.
-    //       }
-    //     res.sendFile(path.join(publicPath, 'index.html'));
-    //   });
+
 
     const port = process.env.PORT || 3030;
     await app.listen(port,

@@ -5,3 +5,4 @@ export * from './types/delivery';
 export * from './types/payment';
 
 export * from './utils/exchangeRate'
+export * from './utils/cartToken'

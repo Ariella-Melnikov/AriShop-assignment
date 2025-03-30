@@ -53,7 +53,7 @@ export interface Price {
     media: ProductMedia[];
     variants: Variant[];
     availability: Availability;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
   }
 

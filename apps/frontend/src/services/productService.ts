@@ -26,19 +26,19 @@ const transformProduct = (product: BackendProduct): Product => ({
   availability: {
     inStock: product.variants?.some(v => v.inventory.quantity > 0) ?? true
   },
-  createdAt: new Date(product.createdAt),
-  updatedAt: new Date(product.updatedAt)
+  createdAt: new Date(product.createdAt).toISOString(),
+  updatedAt: new Date(product.updatedAt).toISOString()
 })
 
 
 export const productService = {
   async fetchProducts(): Promise<Product[]> {
-    const data = await http.get(`${API_ROUTE}`)
+    const data = await http.get(`${API_ROUTE}`) as BackendProduct[]
     return data.map(transformProduct)
   },
 
   async fetchProductById(productId: string): Promise<Product> {
-    const data = await http.get(`${API_ROUTE}/${productId}`)
+    const data = await http.get(`${API_ROUTE}/${productId}`) as BackendProduct
     return transformProduct(data)
   },
 

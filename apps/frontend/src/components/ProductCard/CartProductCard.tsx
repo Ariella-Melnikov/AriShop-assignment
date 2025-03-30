@@ -21,13 +21,24 @@ export const CartProductCard = ({
     showRemove = false,
     className = '',
 }: CartProductCardProps) => {
+    console.log('CartProductCard props:', { cartItem, isEditable, showRemove })
     const { productId, variantId, quantity } = cartItem
+    type PopulatedProduct = { _id: string; name?: string; variants?: any[] }
 
-    const product = useSelector((state: RootState) => state.products.products.find((p) => p._id === productId))
+    const typedProductId = productId as string | PopulatedProduct
+
+    const productIdStr = typeof typedProductId === 'string' ? typedProductId : typedProductId._id
+
+    const product = useSelector((state: RootState) => state.products.products.find((p) => p._id === productIdStr))
+    console.log('Found product:', product)
 
     const variant = product?.variants.find((v) => v._id === variantId)
+    console.log('Found variant:', variant)
 
-    if (!product || !variant) return null
+    if (!product || !variant) {
+        console.log('Product or variant not found:', { productId, variantId })
+        return null
+    }
 
     const imageUrl = product.media?.[0]?.url || ''
     const totalPrice = (variant.price.amount * quantity).toFixed(2)

@@ -7,16 +7,13 @@ import {
   Body, 
   Param, 
   Headers,
-  UseGuards,
   Request,
   HttpCode,
-  NotFoundException,
   BadRequestException
 } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { AddCartItemDto } from './dto/add-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
-// import { OptionalAuthGuard } from '../auth/guards/optional-auth.guard'; 
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Cart')
@@ -33,10 +30,19 @@ export class CartController {
       throw new BadRequestException('Either authentication or cart-token is required');
     }
 
-    return this.cartService.findOrCreateCart({
-      userId: req.user?.id,
-      cartToken: !req.user ? cartToken : undefined,
+    let cart = await this.cartService.findCart({
+        userId: req.user?.id,
+        cartToken: !req.user ? cartToken : undefined,
     });
+
+    if (!cart) {
+        cart = await this.cartService.createCart({
+            userId: req.user?.id,
+            cartToken: !req.user ? cartToken : undefined,
+        });
+    }
+
+    return cart;
   }
 
   @Post('items')
@@ -47,17 +53,31 @@ export class CartController {
     @Headers('cart-token') cartToken: string,
     @Body() dto: AddCartItemDto,
   ) {
-    if (!req.user && !cartToken) {
-      throw new BadRequestException('Either authentication or cart-token is required');
-    }
+    try {
+      if (!req.user && !cartToken) {
+        throw new BadRequestException('Either authentication or cart-token is required');
+      }
 
-    return this.cartService.addItem(
-      {
+      // First try to find existing cart
+      let cart = await this.cartService.findCart({
         userId: req.user?.id,
         cartToken: !req.user ? cartToken : undefined,
-      },
-      dto,
-    );
+      });
+
+      // If no cart exists, create a new one
+      if (!cart) {
+        cart = await this.cartService.createCart({
+          userId: req.user?.id,
+          cartToken: !req.user ? cartToken : undefined,
+        });
+      }
+
+      // Add item to cart
+      return this.cartService.addItem(cart._id.toString(), dto);
+    } catch (error) {
+      console.error('Add item error:', error);
+      throw error;
+    }
   }
 
   @Put('items/:itemId')
@@ -80,21 +100,20 @@ export class CartController {
   }
 
   @Delete('items/:itemId')
-  @HttpCode(204)
   @ApiOperation({ summary: 'Remove item from cart' })
-  @ApiResponse({ status: 204, description: 'Item removed from cart' })
+  @ApiResponse({ status: 200, description: 'Item removed from cart' }) // ⬅️ changed from 204 to 200
   async removeItem(
     @Request() req,
     @Headers('cart-token') cartToken: string,
     @Param('itemId') itemId: string,
   ) {
-    await this.cartService.removeItem(
+    return await this.cartService.removeItem(
       {
         userId: req.user?.id,
         cartToken: !req.user ? cartToken : undefined,
       },
       itemId,
-    );
+    )
   }
 
   @Delete()

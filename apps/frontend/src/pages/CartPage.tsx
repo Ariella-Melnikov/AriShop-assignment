@@ -1,40 +1,50 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { CartProductCard } from '../components/ProductCard/CartProductCard'
 import { RootState, AppDispatch } from '../store/store'
-import { removeFromCart, updateQuantity } from '../store/slices/cartSlice'
+import { removeCartItem, updateCartItem } from '../store/actions/cartActions'
 import { useNavigate } from 'react-router-dom'
 import { PageTitle } from '../components/Title/PageTitle'
 
 export const CartPage = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const navigate = useNavigate() // ✅ Add this
-
+    const navigate = useNavigate()
 
     const { items, subtotal } = useSelector((state: RootState) => state.cart)
     const deliveryCost = 35
-    const total = subtotal + deliveryCost
-
-    const handleQtyChange = (variantId: string, quantity: number) => {
-        if (quantity < 1) return
-        dispatch(updateQuantity({ variantId, quantity }))
+    const total = { 
+        amount: subtotal.amount + deliveryCost, 
+        currency: subtotal.currency 
     }
 
-    const handleRemove = (variantId: string) => {
-        dispatch(removeFromCart({ variantId }))
-
-        if (items.length === 0) {
-            return (
-                <div className='empty-cart'>
-                    <div className='cart-icon'>🛒</div> {/* Replace with an actual icon component if needed */}
-                    <p className='main-message'>Your cart is empty</p>
-                    <p className='sub-message'>Sign in to see your cart</p>
-                    <p className='tagline'>and get a new Boquete</p>
-                    <button className='signin-btn' onClick={() => console.log('Sign in logic here')}>
-                        Sign In
-                    </button>
-                </div>
-            )
+    const handleQtyChange = async (variantId: string, quantity: number) => {
+        if (quantity < 1) return
+        try {
+            await dispatch(updateCartItem({ itemId: variantId, quantity })).unwrap()
+        } catch (error) {
+            console.error('Failed to update quantity:', error)
         }
+    }
+
+    const handleRemove = async (variantId: string) => {
+        try {
+            await dispatch(removeCartItem(variantId)).unwrap()
+        } catch (error) {
+            console.error('Failed to remove item:', error)
+        }
+    }
+
+    if (items.length === 0) {
+        return (
+            <div className='empty-cart'>
+                <div className='cart-icon'>🛒</div>
+                <p className='main-message'>Your cart is empty</p>
+                <p className='sub-message'>Sign in to see your cart</p>
+                <p className='tagline'>and get a new Boquete</p>
+                <button className='signin-btn' onClick={() => console.log('Sign in logic here')}>
+                    Sign In
+                </button>
+            </div>
+        )
     }
 
     return (
@@ -46,12 +56,12 @@ export const CartPage = () => {
                 <div className='cart-items'>
                     {items.map((item) => (
                         <CartProductCard
-                        key={item.variantId}
-                        cartItem={item}
-                        isEditable={true}
-                        showRemove={true}
-                        onQuantityChange={handleQtyChange}
-                        onRemove={handleRemove}
+                            key={item.variantId}
+                            cartItem={item}
+                            isEditable={true}
+                            showRemove={true}
+                            onQuantityChange={handleQtyChange}
+                            onRemove={handleRemove}
                         />
                     ))}
                 </div>
@@ -60,23 +70,23 @@ export const CartPage = () => {
                     <div className='cart-summary-box'>
                         <h3 className='summary-title'>Summary</h3>
                         <div className='summary-rows-wrapper'>
-                        <div className='summary-row'>
-                            <span>Subtotal</span>
-                            <span>{subtotal.toFixed(2)} ₪</span>
-                        </div>
-                        <div className='summary-row with-border'>
-                            <span>Delivery</span>
-                            <span>{deliveryCost.toFixed(2)} ₪</span>
-                        </div>
-                        <div className='summary-row total'>
-                            <strong>Total</strong>
-                            <strong>{total.toFixed(2)} ₪</strong>
-                        </div>
+                            <div className='summary-row'>
+                                <span>Subtotal</span>
+                                <span>{subtotal.amount.toFixed(2)} ₪</span>
+                            </div>
+                            <div className='summary-row with-border'>
+                                <span>Delivery</span>
+                                <span>{deliveryCost.toFixed(2)} ₪</span>
+                            </div>
+                            <div className='summary-row total'>
+                                <strong>Total</strong>
+                                <strong>{total.amount.toFixed(2)} {total.currency}</strong>
+                            </div>
                         </div>
                         <div className='checkout-btn-wrapper'>
-                        <button className='checkout-btn' onClick={() => navigate('/checkout')}>
-                            Checkout
-                        </button>
+                            <button className='checkout-btn' onClick={() => navigate('/checkout')}>
+                                Checkout
+                            </button>
                         </div>
                     </div>
                 </div>

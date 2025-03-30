@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState, AppDispatch } from '../store/store'
 import { fetchProducts, toggleTag, fetchTags, setSortOrder } from '../store/slices/productSlice'
 import { ProductList } from '../components/ProductList/ProductList'
-import { addToCart } from '../store/slices/cartSlice'
 import { Product, Variant } from '@arishop/shared'
 import { PageTitle } from '../components/Title/PageTitle'
 import { Tag } from '../components/Buttons/TagButton'
@@ -11,6 +10,7 @@ import { SortBox } from '../components/SortBox/SortBox'
 import { Banner } from '../components/Banner/Banner'
 import shopHeroImg from '../assets/img/Shop-hero.png'
 import { openCartModal } from '../store/slices/cartUiSlice'
+import { addCartItem } from '../store/actions/cartActions'
 
 export const ShopPage = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -46,16 +46,28 @@ export const ShopPage = () => {
         }
     })
 
-    const handleAddToCart = (product: Product, variant: Variant) => {
-        dispatch(
-            addToCart({
+    const handleAddToCart = async (product: Product, variant: Variant) => {
+        try {
+            if (!product._id || !variant._id) {
+                console.error('Invalid product or variant ID');
+                return;
+            }
+            
+            console.log('Adding to cart:', {
                 productId: product._id,
                 variantId: variant._id,
                 quantity: 1,
-                price: variant.price.amount,
-            })
-        )
-        dispatch(openCartModal())
+            });
+            
+            await dispatch(addCartItem({
+                productId: product._id,
+                variantId: variant._id,
+                quantity: 1,
+            })).unwrap()
+            dispatch(openCartModal())
+        } catch (error) {
+            console.error('Failed to add item to cart:', error)
+        }
     }
 
     if (loading) {

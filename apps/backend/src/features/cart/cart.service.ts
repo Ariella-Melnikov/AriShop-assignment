@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import mongoose from 'mongoose'
@@ -11,29 +11,44 @@ import { ProductsService } from '../products/products.service'
 export class CartService {
     constructor(@InjectModel(Cart.name) private cartModel: Model<Cart>, private productsService: ProductsService) {}
 
-    async findOrCreateCart(identifier: { userId?: string; cartToken?: string }): Promise<Cart> {
-        let cart = await this.cartModel.findOne(identifier)
-
-        if (!cart) {
-            cart = await this.cartModel.create({
-                ...identifier,
-                items: [],
-                subtotal: { amount: 0, currency: 'ILS' },
-                total: { amount: 0, currency: 'ILS' },
-            })
-        }
-
-        return cart
+    async findCart(identifier: { userId?: string; cartToken?: string }): Promise<Cart | null> {
+        return this.cartModel.findOne(identifier);
     }
 
-    async addItem(identifier: { userId?: string; cartToken?: string }, dto: AddCartItemDto): Promise<Cart> {
-        const cart = await this.findOrCreateCart(identifier)
-        const product = await this.productsService.findOne(dto.productId)
+    async createCart(identifier: { userId?: string; cartToken?: string }): Promise<Cart> {
+        const cart = new this.cartModel({
+            ...identifier,
+            items: [],
+            subtotal: { amount: 0, currency: 'ILS' },
+            total: { amount: 0, currency: 'ILS' },
+        });
+        
+        return cart.save();
+    }
 
-        if (!product) throw new NotFoundException('Product not found')
+    async findOrCreateCart(identifier: { userId?: string; cartToken?: string }): Promise<Cart> {
+        let cart = await this.findCart(identifier);
+        if (!cart) {
+            cart = await this.createCart(identifier);
+        }
+        return cart;
+    }
 
-        const variant = product.variants.find((v) => v._id.toString() === dto.variantId)
-        if (!variant) throw new NotFoundException('Variant not found')
+    async addItem(cartId: string, dto: AddCartItemDto): Promise<Cart> {
+        const cart = await this.cartModel.findById(cartId);
+        if (!cart) {
+            throw new NotFoundException('Cart not found');
+        }
+
+        const product = await this.productsService.findOne(dto.productId);
+        if (!product) {
+            throw new NotFoundException('Product not found');
+        }
+
+        const variant = product.variants.find(v => v._id.toString() === dto.variantId);
+        if (!variant) {
+            throw new NotFoundException('Variant not found');
+        }
 
         const existingIndex = cart.items.findIndex(
             (item) => item.productId.toString() === dto.productId && item.variantId.toString() === dto.variantId
@@ -93,7 +108,7 @@ export class CartService {
         cart.markModified('items')
         this.recalculateCartTotals(cart)
         await cart.save()
-
+        console.log('[REMOVE] Returning cart:', JSON.stringify(cart, null, 2))
         return this.cartModel.findById(cart._id).populate('items.productId')
     }
 

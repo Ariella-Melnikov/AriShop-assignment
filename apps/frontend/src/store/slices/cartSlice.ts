@@ -1,67 +1,106 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { CartItem } from '@arishop/shared'
+import { CartItem, Cart, Price } from '@arishop/shared'
+import {
+  addCartItem,
+  updateCartItem,
+  removeCartItem,
+  clearCartItems,
+  fetchCart
+} from '../actions/cartActions'
 
 interface CartState {
   items: CartItem[]
-  subtotal: number
-  total: number
+  subtotal: Price
+  total: Price
   loading: boolean
   error: string | null
 }
 
 const initialState: CartState = {
   items: [],
-  subtotal: 0,
-  total: 0,
+  subtotal: { amount: 0, currency: 'ILS' },
+  total: { amount: 0, currency: 'ILS' },
   loading: false,
   error: null,
 }
 
-const recalculateTotals = (state: CartState) => {
-    state.subtotal = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-    state.total = state.subtotal // We'll add shipping/tax later if needed
+const normalizeCart = (cart: Cart): CartState => {
+  return {
+    items: cart.items.map((item) => {
+      const productId =
+        typeof item.productId === 'string'
+          ? item.productId
+          : (item.productId as { _id: string })._id
+
+      return {
+        productId,
+        variantId: item.variantId,
+        quantity: item.quantity,
+        price: item.price,
+      }
+    }),
+    subtotal: cart.subtotal,
+    total: cart.total,
+    loading: false,
+    error: null,
+  }
 }
 
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart(state, action: PayloadAction<CartItem>) {
-      const item = action.payload
-
-      const existingItem = state.items.find(
-        (i) => i.variantId === item.variantId
-      )
-
-      if (existingItem) {
-        existingItem.quantity += item.quantity
-      } else {
-        state.items.push(item)
-      }
-
-      recalculateTotals(state)
-    },
-
-    removeFromCart(state, action: PayloadAction<{ variantId: string }>) {
-      state.items = state.items.filter((i) => i.variantId !== action.payload.variantId)
-      recalculateTotals(state)
-    },
-
-    updateQuantity(state, action: PayloadAction<{ variantId: string; quantity: number }>) {
-      const item = state.items.find((i) => i.variantId === action.payload.variantId)
-      if (item) {
-        item.quantity = action.payload.quantity
-        recalculateTotals(state)
-      }
-    },
-
     clearCart(state) {
       state.items = []
-      state.subtotal = 0
-      state.total = 0
+      state.subtotal = { amount: 0, currency: 'ILS' }
+      state.total = { amount: 0, currency: 'ILS' }
     },
   },
+  
+  extraReducers: (builder) => {
+    builder
+    .addCase(fetchCart.pending, (state) => {
+      state.loading = true
+      state.error = null
+    })
+    .addCase(fetchCart.fulfilled, (state, action: PayloadAction<Cart>) => {
+      Object.assign(state, normalizeCart(action.payload))
+    })
+    .addCase(fetchCart.rejected, (state, action) => {
+      state.loading = false
+      state.error = action.error.message || 'Failed to fetch cart'
+    })
+
+    .addCase(addCartItem.pending, (state) => {
+      state.loading = true
+      state.error = null
+    })
+    .addCase(addCartItem.fulfilled, (state, action: PayloadAction<Cart>) => {
+      console.log('Cart updated:', action.payload)
+      Object.assign(state, normalizeCart(action.payload))
+    })
+    .addCase(addCartItem.rejected, (state, action) => {
+      state.loading = false
+      state.error = action.error.message || 'Failed to add item to cart'
+      console.error('Cart error:', action.error)
+    })
+
+    .addCase(updateCartItem.fulfilled, (state, action: PayloadAction<Cart>) => {
+      Object.assign(state, normalizeCart(action.payload))
+    })
+    .addCase(removeCartItem.fulfilled, (state, action: PayloadAction<Cart>) => {
+      Object.assign(state, normalizeCart(action.payload))
+    })
+
+    .addCase(clearCartItems.fulfilled, (state) => {
+      state.items = []
+      state.subtotal = { amount: 0, currency: 'ILS' }
+      state.total = { amount: 0, currency: 'ILS' }
+      state.loading = false
+      state.error = null
+    })
+}
 })
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } = cartSlice.actions
+export const { clearCart } = cartSlice.actions
 export default cartSlice.reducer

@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { productService } from '../services/productService'
 import { Product } from '@arishop/shared'
 import { PageTitle } from '../components/Title/PageTitle'
 import { ActionButton } from '../components/Buttons/ActionButton'
-import { addToCart } from '../store/slices/cartSlice'
 import { openCartModal } from '../store/slices/cartUiSlice'
+import { addCartItem } from '../store/actions/cartActions'
 import type { AppDispatch } from '../store/store'
 
 export const ProductPage = () => {
@@ -25,11 +25,28 @@ export const ProductPage = () => {
         }
     }, [productId])
 
-    if (!product) return <div>Loading product...</div>
+    const selectedVariant = product?.variants.find((v) => v.size === selectedSize)
 
-    const selectedVariant = product.variants.find((v) => v.size === selectedSize)
+    const handleAddToCart = useCallback(async () => {
+        if (!selectedVariant || !product) return
+      
+        try {
+            await dispatch(addCartItem({
+                productId: product._id,
+                variantId: selectedVariant._id,
+                quantity: 1,
+              })).unwrap()
+            dispatch(openCartModal())
+        } catch (error) {
+            console.error('Failed to add item to cart:', error)
+            // You can add error handling UI here
+        }
+    }, [dispatch, product, selectedVariant, quantity])
+
     const price = selectedVariant?.price?.amount || 0
     const currency = selectedVariant?.price?.currency || 'ILS'
+
+    if (!product) return <div>Loading product...</div>
 
     return (
         <div className='product-page'>
@@ -74,19 +91,7 @@ export const ProductPage = () => {
 
                 <ActionButton
                     label='Add to Cart'
-                    onClick={() => {
-                        if (!selectedVariant) return
-
-                        dispatch(
-                            addToCart({
-                                productId: product._id,
-                                variantId: selectedVariant._id,
-                                quantity,
-                                price: selectedVariant.price.amount,
-                            })
-                        )
-                        dispatch(openCartModal())
-                    }}
+                    onClick={handleAddToCart}
                 />
             </div>
             {/* seconed Column — placeholder for future content */}
