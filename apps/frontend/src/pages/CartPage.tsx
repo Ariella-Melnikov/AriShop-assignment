@@ -46,10 +46,12 @@ export const CartPage = () => {
                 <div className='cart-items'>
                     {items.map((item) => (
                         <CartProductCard
-                            key={item.variantId}
-                            cartItem={item}
-                            onQuantityChange={handleQtyChange}
-                            onRemove={handleRemove}
+                        key={item.variantId}
+                        cartItem={item}
+                        isEditable={true}
+                        showRemove={true}
+                        onQuantityChange={handleQtyChange}
+                        onRemove={handleRemove}
                         />
                     ))}
                 </div>

@@ -1,12 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AppDispatch, RootState } from '../store/store'
 import { fetchLoggedInUser, updateUserAddress } from '../store/slices/userSlice'
-import {
-    setAnonymousBillingAddress,
-    setAnonymousDeliveryAddress,
-    setAnonymousNameAndEmail,
-} from '../store/slices/anonymousUserSlice'
+import { setAnonymousBillingAddress, setAnonymousDeliveryAddress, setAnonymousNameAndEmail } from '../store/slices/anonymousUserSlice'
 import { PageTitle } from '../components/Title/PageTitle'
 import { ActionButton } from '../components/Buttons/ActionButton'
 import { DeliveryAddressBox } from '../components/Checkout/DeliveryAddressBox'
@@ -16,10 +13,17 @@ import { Address } from '@arishop/shared'
 import unipaasLogo from '@/assets/icons/unipaas-logo.svg'
 import AppLogo from '@/assets/icons/app-logo.svg?react'
 import creditCards from '@/assets/icons/credit-cards.svg'
+import { CartProductCard } from '../components/ProductCard/CartProductCard'
+import { fetchILSToUSDRate } from '@arishop/shared'
 
 export const CheckoutPage = () => {
-    const { items, subtotal } = useSelector((state: RootState) => state.cart)
+
     const dispatch = useDispatch<AppDispatch>()
+    const navigate = useNavigate()
+
+    const [exchangeRate, setExchangeRate] = useState<number>(0.28)
+    const { items } = useSelector((state: RootState) => state.cart)
+    const products = useSelector((state: RootState) => state.products.products)
     const user = useSelector((state: RootState) => state.user.user)
     const anonymousUser = useSelector((state: RootState) => state.anonymousUser)
 
@@ -32,6 +36,12 @@ export const CheckoutPage = () => {
             dispatch(setAnonymousBillingAddress(anonymousUser.deliveryAddress))
         }
     }, [anonymousUser.deliveryAddress])
+
+    useEffect(() => {
+        fetchILSToUSDRate().then((rate) => {
+            if (rate) setExchangeRate(rate)
+        })
+    }, [])
 
     const handleGuestInfoSave = (info: { firstName: string; lastName: string; email: string }) => {
         dispatch(setAnonymousNameAndEmail(info))
@@ -59,6 +69,15 @@ export const CheckoutPage = () => {
     const billingAddress: Address | undefined = user
         ? user.addresses.find((addr) => addr._id === user.defaultAddressId)
         : anonymousUser.billingAddress ?? anonymousUser.deliveryAddress ?? undefined
+
+    const subtotalILS = items.reduce((acc, item) => {
+        const product = products.find((p) => p._id === item.productId)
+        const variant = product?.variants.find((v) => v._id === item.variantId)
+        if (!variant) return acc
+        return acc + variant.price.amount * item.quantity
+    }, 0)
+
+    const subtotalUSD = +(subtotalILS * exchangeRate).toFixed(2)
 
     return (
         <div className='checkout-page'>
@@ -130,13 +149,31 @@ export const CheckoutPage = () => {
                 <section className='checkout-summary'>
                     <div className='box sticky'>
                         <div className='summary-header'>
-                            <SectionTitle>{items.length} ITEMS</SectionTitle>
-                            <button className='secondary'>Edit</button>
+                                <SectionTitle>{items.length} ITEMS</SectionTitle>
+                                <ActionButton label='Edit' variant='secondary' onClick={() => navigate('/cart')} />
                         </div>
-                        <div className='cart-items'>Cart Items - TBD</div>
+                        {items.length === 0 ? (
+                            <p className='empty-cart-msg'>Cart is empty.</p>
+                        ) : (
+                            <ul className='cart-items-list'>
+                                {items.map((item) => (
+                                    <li key={item.variantId} className='cart-item'>
+                                        <CartProductCard
+                                            key={item.variantId}
+                                            cartItem={item}
+                                            isEditable={false}
+                                            showRemove={false}
+                                            onQuantityChange={() => {}}
+                                            onRemove={() => {}}
+                                            className='checkout-card'
+                                        />
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                         <div className='summary-line'>
                             <span>Subtotal</span>
-                            <span>${(subtotal / 100).toFixed(2)}</span>
+                            <span>{subtotalILS.toFixed(2)} ₪</span>
                         </div>
                         <div className='summary-line'>
                             <span>Delivery</span>
@@ -144,7 +181,7 @@ export const CheckoutPage = () => {
                         </div>
                         <div className='summary-line total'>
                             <strong>Total to Pay:</strong>
-                            <strong>${(subtotal / 100).toFixed(2)}</strong>
+                            <strong>${subtotalUSD}</strong>
                         </div>
                     </div>
                 </section>

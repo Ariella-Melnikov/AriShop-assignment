@@ -5,6 +5,7 @@ import { RootState } from '../../store/store'
 import { removeFromCart } from '../../store/slices/cartSlice'
 import CloseIcon from '@/assets/icons/X.svg?react'
 import { ActionButton } from '../Buttons/ActionButton'
+import { CartProductCard } from '../ProductCard/CartProductCard'
 
 interface CartModalProps {
     onClose: () => void
@@ -12,10 +13,8 @@ interface CartModalProps {
 
 export const CartModal = ({ onClose }: CartModalProps) => {
     const { items, subtotal } = useSelector((state: RootState) => state.cart)
-    const allProducts = useSelector((state: RootState) => state.products.products)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
 
     // Close modal on ESC
     useEffect(() => {
@@ -25,7 +24,6 @@ export const CartModal = ({ onClose }: CartModalProps) => {
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [onClose])
-
 
     const handleViewCart = () => {
         navigate('/cart')
@@ -51,56 +49,18 @@ export const CartModal = ({ onClose }: CartModalProps) => {
                     <p className='empty-cart-msg'>Cart is empty.</p>
                 ) : (
                     <ul className='cart-items-list'>
-                        {items.map((item) => {
-                            const product = allProducts.find((p) => p._id === item.productId)
-                            const variant = product?.variants.find((v) => v._id === item.variantId)
-                            if (!product || !variant) return null
-
-                            return (
-                                <li key={item.variantId} className='cart-item'>
-                                    <div className='item-img'>
-                                        <img
-                                            src={product.media?.[0]?.url}
-                                            alt={product.media?.[0]?.altText || product.name}
-                                        />
-                                    </div>
-
-                                    <div className='item-details'>
-                                        <div className='item-title'>{product.name}</div>
-                                        <div className='item-description'>
-                                            {product.description.split(' ').slice(0, 10).join(' ')}...
-                                        </div>
-                                        <div className='item-meta-row'>
-                                            <span className='meta-label'>Size:</span>
-                                            <button disabled className='meta-button'>
-                                                {(variant.size || 'N/A').charAt(0).toUpperCase()}
-                                            </button>
-                                            <span className='meta-label'>Qty:</span>
-                                            <button disabled className='meta-button'>
-                                                {item.quantity}
-                                            </button>
-                                        </div>
-                                        <div className='price-remove-row'>
-                                            <div className='item-price'>
-                                                <span className='price'>
-                                                    {variant.price.amount.toFixed(2)} {variant.price.currency}
-                                                </span>
-                                            </div>
-                                            <div className='item-action'>
-                                                <button
-                                                    className='remove-btn'
-                                                    onClick={() =>
-                                                        dispatch(removeFromCart({ variantId: item.variantId }))
-                                                    }
-                                                    aria-label='Remove item'>
-                                                    <i className='fas fa-trash'></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            )
-                        })}
+                        {items.map((item) => (
+                            <li key={item.variantId} className='cart-item'>
+                                <CartProductCard
+                                    cartItem={item}
+                                    isEditable={false}
+                                    showRemove={true}
+                                    onQuantityChange={() => {}} // not used in modal
+                                    onRemove={(variantId) => dispatch(removeFromCart({ variantId }))}
+                                    className='modal-card'
+                                />
+                            </li>
+                        ))}
                     </ul>
                 )}
 
@@ -109,7 +69,7 @@ export const CartModal = ({ onClose }: CartModalProps) => {
                 </div>
                 {items.length > 0 && (
                     <div className='cart-actions'>
-                        <ActionButton label='View Cart' onClick={handleViewCart} variant='secondary'  />
+                        <ActionButton label='View Cart' onClick={handleViewCart} variant='secondary' />
                         <ActionButton label='Checkout' onClick={handleCheckout} />
                     </div>
                 )}

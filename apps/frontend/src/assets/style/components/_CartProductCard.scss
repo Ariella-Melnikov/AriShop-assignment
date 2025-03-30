@@ -1,16 +1,22 @@
 @use '../abstracts' as *;
 
 .cart-product-card {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
   gap: $spacing-lg;
-  border-bottom: 1px solid $color-border-light;
   padding-bottom: $spacing-md;
-
+  border-bottom: 1px solid $color-text;
 
   .image-container {
-    width: 140px;
-    height: 140px;
+    width: 160px;
+    max-height: 160px;
+    grid-row: 1 / -1;
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
+    border: 1px solid $color-text;
 
     img {
       width: 100%;
@@ -20,96 +26,128 @@
     }
   }
 
-  .info-container {
-    flex: 1;
+  .items-details {
+    grid-column: 2;
+    grid-template-rows: repeat(4, auto);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
     .title-row {
+      grid-row: 1;
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: $spacing-xs;
 
-    .title {
-      @include text-style($size: $font-size-xl, $weight: $font-weight-semibold);
-      margin-bottom: $spacing-xs;
-    }
-    .remove-btn {
-      background: none;
-      border: none;
-      padding: 0.25rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-  
-      .remove-icon {
-        width: 10px;
-        height: 10px;
-        transition: stroke 0.2s ease;
-  
-        &:hover {
-          stroke: $color-error;
+      .title {
+        @include text-style($size: $font-size-lg, $weight: $font-weight-semibold);
+      }
+
+      .remove-btn {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .remove-icon {
+          width: 14px;
+          height: 14px;
+          transition: stroke 0.2s;
+
+          &:hover {
+            stroke: $color-error;
+          }
         }
       }
     }
-  }
 
-    .description {
-      @include text-style($size: $font-size-sm, $color: $color-text-light);
+    .item-description {
+      grid-row: 2;
       margin-bottom: $spacing-sm;
-      line-height: 1.4;
+      display: -webkit-box;
+      // -webkit-line-clamp: 2;
+      // -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      @include text-style($size: $font-size-lg, $color: $color-text-light);
     }
 
-    .controls {
+    .item-meta-row {
+      grid-row: 3;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: $spacing-sm;
+      margin-bottom: $spacing-sm;
 
-      .label {
+      .meta-label {
         @include text-style($size: $font-size-sm);
       }
 
-      button {
-        padding: 0.25rem 0.5rem;
+      .meta-button {
+        padding: 0.25rem 0.75rem;
+        font-size: $font-size-sm;
         border: 1px solid $color-text;
         background-color: transparent;
-        cursor: pointer;
-        font-size: $font-size-sm;
-
-        &:hover {
-          background-color: $color-action;
-        }
+        pointer-events: none;
+        cursor: default;
+        // width: 2rem;
+        // height: 2rem;
+        aspect-ratio: 1 / 1;
+        @include flex-center;
+        @include text-style($size: $font-size-sm, $weight: $font-weight-semibold);
       }
 
-      .quantity {
-        @include text-style($size: $font-size-sm, $weight: $font-weight-bold);
-        padding: 0 $spacing-xs;
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+
+        .label {
+          @include text-style($size: $font-size-sm);
+        }
+
+        .meta-button {
+          pointer-events: auto;
+          cursor: pointer;
+          border: none;
+
+          &:hover {
+            background-color: $color-action;
+          }
+
+          &:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+          }
+        }
+
+        .quantity {
+          padding: 0 $spacing-xs;
+          @include text-style($size: $font-size-sm, $weight: $font-weight-bold);
+        }
+
+        .readonly-quantity {
+          padding: 0 $spacing-xs;
+          @include text-style($size: $font-size-sm);
+        }
       }
     }
 
     .footer-row {
+      grid-row: 4;
       margin-top: $spacing-sm;
-      @include flex-between;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
       .total-price {
         @include text-style($size: $font-size-lg, $weight: $font-weight-semibold);
       }
-
-      // .remove-btn {
-      //   background: none;
-      //   border: none;
-      //   color: $color-text;
-      //   font-size: $font-size-sm;
-      //   cursor: pointer;
-
-      //   &:hover {
-      //     text-decoration: underline;
-      //     color: $color-error;
-      //   }
-      // }
     }
   }
 }
