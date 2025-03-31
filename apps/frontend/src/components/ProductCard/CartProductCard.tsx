@@ -53,7 +53,10 @@ export const CartProductCard = ({
                 <div className='title-row'>
                     <h3 className='title'>{product.name}</h3>
                     {showRemove && onRemove && (
-                        <button className='remove-btn' onClick={() => onRemove(cartItem._id)} aria-label='Remove product'>
+                        <button
+                            className='remove-btn'
+                            onClick={() => onRemove(cartItem._id)}
+                            aria-label='Remove product'>
                             <CloseIcon className='remove-icon' />
                         </button>
                     )}
@@ -73,15 +76,15 @@ export const CartProductCard = ({
                             <>
                                 <button
                                     className='meta-button'
-                                    onClick={() =>
-                                        quantity <= 1 ? onRemove(variantId) : onQuantityChange(variantId, quantity - 1)
-                                    }>
+                                    onClick={() => onQuantityChange(cartItem._id, quantity - 1)}
+                                    disabled={quantity <= 1} 
+                                >
                                     -
                                 </button>
                                 <span className='quantity'>{quantity}</span>
                                 <button
                                     className='meta-button'
-                                    onClick={() => onQuantityChange(variantId, quantity + 1)}>
+                                    onClick={() => onQuantityChange(cartItem._id, quantity + 1)}>
                                     +
                                 </button>
                             </>

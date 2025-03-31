@@ -10,16 +10,16 @@ export const CartPage = () => {
     const navigate = useNavigate()
 
     const { items, subtotal } = useSelector((state: RootState) => state.cart)
-    const deliveryCost = 35
+    const deliveryCost = 0
     const total = { 
         amount: subtotal.amount + deliveryCost, 
         currency: subtotal.currency 
     }
 
-    const handleQtyChange = async (variantId: string, quantity: number) => {
+    const handleQtyChange = async (cartItemId: string, quantity: number) => {
         if (quantity < 1) return
         try {
-            await dispatch(updateCartItem({ itemId: variantId, quantity })).unwrap()
+            await dispatch(updateCartItem({ itemId: cartItemId, quantity })).unwrap()
         } catch (error) {
             console.error('Failed to update quantity:', error)
         }
@@ -76,7 +76,7 @@ export const CartPage = () => {
                             </div>
                             <div className='summary-row with-border'>
                                 <span>Delivery</span>
-                                <span>{deliveryCost.toFixed(2)} ₪</span>
+                                <span>Free</span>
                             </div>
                             <div className='summary-row total'>
                                 <strong>Total</strong>
