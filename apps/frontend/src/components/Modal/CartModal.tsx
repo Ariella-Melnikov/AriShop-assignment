@@ -33,6 +33,12 @@ export const CartModal = ({ onClose }: CartModalProps) => {
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [onClose])
 
+    useEffect(() => {
+        if (items.length === 0) {
+            onClose()
+        }
+    }, [items.length, onClose])
+
     const handleViewCart = () => {
         navigate('/cart')
         onClose()
