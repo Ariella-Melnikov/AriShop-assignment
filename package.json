@@ -44,7 +44,8 @@
         "path": "^0.12.7",
         "pnpm": "^10.7.0",
         "react-redux": "^9.2.0",
-        "react-router-dom": "^7.3.0"
+        "react-router-dom": "^7.3.0",
+        "redux-persist": "^6.0.0"
     },
     "scripts": {
         "dev": "pnpm --filter @arishop/shared... build && concurrently -k -n BACKEND,FRONTEND \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\"",

@@ -20,11 +20,12 @@ import AppLogo from '@/assets/icons/app-logo.svg?react'
 import creditCards from '@/assets/icons/credit-cards.svg'
 import { CartProductCard } from '../components/ProductCard/CartProductCard'
 import { fetchILSToUSDRate } from '@arishop/shared'
+import { fetchProducts } from '../store/slices/productSlice'
 
 export const CheckoutPage = () => {
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
-
+    const [showLoading, setShowLoading] = useState(true)
     const [exchangeRate, setExchangeRate] = useState<number>(0.28)
     const { items } = useSelector((state: RootState) => state.cart)
     const products = useSelector((state: RootState) => state.products.products)
@@ -34,6 +35,17 @@ export const CheckoutPage = () => {
     useEffect(() => {
         if (!user) dispatch(fetchLoggedInUser())
     }, [dispatch, user])
+
+    useEffect(() => {
+        if (!products.length) {
+          dispatch(fetchProducts())
+        }
+      }, [dispatch, products])
+
+    useEffect(() => {
+        const timeout = setTimeout(() => setShowLoading(false), 3000)
+        return () => clearTimeout(timeout)
+    }, [])
 
     useEffect(() => {
         if (!user && anonymousUser.deliveryAddress) {
@@ -132,6 +144,10 @@ export const CheckoutPage = () => {
     }, 0)
 
     const subtotalUSD = +(subtotalILS * exchangeRate).toFixed(2)
+
+    if (showLoading) {
+        return <p>Loading your cart...</p>
+    }
 
     return (
         <div className='checkout-page'>

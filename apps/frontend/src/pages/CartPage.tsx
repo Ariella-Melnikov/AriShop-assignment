@@ -1,20 +1,42 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { CartProductCard } from '../components/ProductCard/CartProductCard'
 import { RootState, AppDispatch } from '../store/store'
-import { removeCartItem, updateCartItem } from '../store/actions/cartActions'
+import { fetchCart, removeCartItem, updateCartItem } from '../store/actions/cartActions'
 import { useNavigate } from 'react-router-dom'
 import { PageTitle } from '../components/Title/PageTitle'
+import { useEffect, useState } from 'react'
+import { fetchProducts } from '../store/slices/productSlice'
 
 export const CartPage = () => {
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
-
-    const { items, subtotal } = useSelector((state: RootState) => state.cart)
+    const [showLoading, setShowLoading] = useState(true)
+    const { items, subtotal, loading } = useSelector((state: RootState) => state.cart)
+    const user = useSelector((state: RootState) => state.user.user)
+    const products = useSelector((state: RootState) => state.products.products)
     const deliveryCost = 0
     const total = { 
         amount: subtotal.amount + deliveryCost, 
         currency: subtotal.currency 
     }
+
+    useEffect(() => {
+        if (!products.length) {
+          dispatch(fetchProducts())
+        }
+      }, [dispatch, products])
+
+    useEffect(() => {
+        const token = localStorage.getItem('cart-token')
+        if (token || user) {
+          dispatch(fetchCart())
+        }
+      
+        const timeout = setTimeout(() => setShowLoading(false), 3000)
+      
+        return () => clearTimeout(timeout)
+      }, [dispatch, user])
+
 
     const handleQtyChange = async (cartItemId: string, quantity: number) => {
         if (quantity < 1) return
@@ -33,7 +55,11 @@ export const CartPage = () => {
         }
     }
 
-    if (items.length === 0) {
+    if (showLoading) {
+        return <p>Loading your cart...</p>
+    }
+    
+    if (!loading && items.length === 0) {
         return (
             <div className='empty-cart'>
                 <div className='cart-icon'>🛒</div>

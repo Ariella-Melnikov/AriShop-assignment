@@ -218,6 +218,7 @@
             }
             .cart-items-list {
                 max-height: 50vh;
+                overflow-y: auto;
 
                 // Optional: style scrollbar
                 &::-webkit-scrollbar {
@@ -252,9 +253,13 @@
                     }
 
                     .item-description {
-                        font-size: $font-size-sm;
-                        -webkit-box-orient: vertical;
+                        font-size: $font-size-xs;
                         display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 2;
+                        line-clamp: 2;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
 
                     .item-meta-row {
@@ -263,8 +268,12 @@
                     }
                     .meta-button {
                         font-size: $font-size-xs;
-                        padding: 0.25rem 0.50rem;
+                        padding: 0.15rem 0.25rem;
+                        border: none;
 
+                    }
+                    .total-price {
+                        font-size: $font-size-base;
                     }
                 }
             }
