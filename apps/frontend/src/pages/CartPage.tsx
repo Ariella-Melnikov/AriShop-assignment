@@ -25,9 +25,9 @@ export const CartPage = () => {
         }
     }
 
-    const handleRemove = async (variantId: string) => {
+    const handleRemove = async (cartItemId: string) => {
         try {
-            await dispatch(removeCartItem(variantId)).unwrap()
+            await dispatch(removeCartItem(cartItemId)).unwrap()
         } catch (error) {
             console.error('Failed to remove item:', error)
         }
@@ -56,7 +56,7 @@ export const CartPage = () => {
                 <div className='cart-items'>
                     {items.map((item) => (
                         <CartProductCard
-                            key={item.variantId}
+                            key={item._id}
                             cartItem={item}
                             isEditable={true}
                             showRemove={true}

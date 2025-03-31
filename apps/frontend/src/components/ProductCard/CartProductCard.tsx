@@ -53,7 +53,7 @@ export const CartProductCard = ({
                 <div className='title-row'>
                     <h3 className='title'>{product.name}</h3>
                     {showRemove && onRemove && (
-                        <button className='remove-btn' onClick={() => onRemove(variantId)} aria-label='Remove product'>
+                        <button className='remove-btn' onClick={() => onRemove(cartItem._id)} aria-label='Remove product'>
                             <CloseIcon className='remove-icon' />
                         </button>
                     )}

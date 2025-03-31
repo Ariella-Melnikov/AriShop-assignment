@@ -12,7 +12,7 @@ export class CartService {
     constructor(@InjectModel(Cart.name) private cartModel: Model<Cart>, private productsService: ProductsService) {}
 
     async findCart(identifier: { userId?: string; cartToken?: string }): Promise<Cart | null> {
-        return this.cartModel.findOne(identifier);
+        return this.cartModel.findOne(identifier)
     }
 
     async createCart(identifier: { userId?: string; cartToken?: string }): Promise<Cart> {
@@ -21,33 +21,33 @@ export class CartService {
             items: [],
             subtotal: { amount: 0, currency: 'ILS' },
             total: { amount: 0, currency: 'ILS' },
-        });
-        
-        return cart.save();
+        })
+
+        return cart.save()
     }
 
     async findOrCreateCart(identifier: { userId?: string; cartToken?: string }): Promise<Cart> {
-        let cart = await this.findCart(identifier);
+        let cart = await this.findCart(identifier)
         if (!cart) {
-            cart = await this.createCart(identifier);
+            cart = await this.createCart(identifier)
         }
-        return cart;
+        return cart
     }
 
     async addItem(cartId: string, dto: AddCartItemDto): Promise<Cart> {
-        const cart = await this.cartModel.findById(cartId);
+        const cart = await this.cartModel.findById(cartId)
         if (!cart) {
-            throw new NotFoundException('Cart not found');
+            throw new NotFoundException('Cart not found')
         }
 
-        const product = await this.productsService.findOne(dto.productId);
+        const product = await this.productsService.findOne(dto.productId)
         if (!product) {
-            throw new NotFoundException('Product not found');
+            throw new NotFoundException('Product not found')
         }
 
-        const variant = product.variants.find(v => v._id.toString() === dto.variantId);
+        const variant = product.variants.find((v) => v._id.toString() === dto.variantId)
         if (!variant) {
-            throw new NotFoundException('Variant not found');
+            throw new NotFoundException('Variant not found')
         }
 
         const existingIndex = cart.items.findIndex(
@@ -102,14 +102,24 @@ export class CartService {
     }
 
     async removeItem(identifier: { userId?: string; cartToken?: string }, itemId: string): Promise<Cart> {
-        const cart = await this.findOrCreateCart(identifier)
+        const cart = await this.findCart(identifier)
+
+        if (!cart) {
+            throw new NotFoundException('Cart not found')
+        }
+
         cart.items = cart.items.filter((item) => item._id.toString() !== itemId)
 
         cart.markModified('items')
         this.recalculateCartTotals(cart)
         await cart.save()
-        console.log('[REMOVE] Returning cart:', JSON.stringify(cart, null, 2))
-        return this.cartModel.findById(cart._id).populate('items.productId')
+        const updatedCart = await this.cartModel.findById(cart._id).populate('items.productId')
+
+        if (!updatedCart) {
+            throw new NotFoundException('Updated cart not found after removing item')
+        }
+
+        return updatedCart
     }
 
     async clearCart(identifier: { userId?: string; cartToken?: string }): Promise<void> {

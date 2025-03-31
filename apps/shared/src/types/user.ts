@@ -12,6 +12,7 @@ export interface Address {
 }
 
 export interface CartItem {
+  _id: string;
   productId: string;
   variantId: string;
   quantity: number;
@@ -19,10 +20,11 @@ export interface CartItem {
 }
 
 export interface Cart {
+  _id: string;
   items: CartItem[];
   subtotal: Price;
   total: Price;
-  updatedAt: Date;
+  updatedAt: string | Date;
 }
 
 export interface User {

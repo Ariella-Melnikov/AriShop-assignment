@@ -33,6 +33,7 @@ const normalizeCart = (cart: Cart): CartState => {
           : (item.productId as { _id: string })._id
 
       return {
+        _id: item._id, // <-- Now correctly inside the returned object
         productId,
         variantId: item.variantId,
         quantity: item.quantity,
