@@ -3,11 +3,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AppDispatch, RootState } from '../store/store'
 import { fetchLoggedInUser, updateUserAddress } from '../store/slices/userSlice'
-import {
-    setAnonymousBillingAddress,
-    setAnonymousDeliveryAddress,
-    setAnonymousNameAndEmail,
-} from '../store/slices/anonymousUserSlice'
+import { setAnonymousBillingAddress, setAnonymousDeliveryAddress, setAnonymousNameAndEmail } from '../store/slices/anonymousUserSlice'
 import { PageTitle } from '../components/Title/PageTitle'
 import { ActionButton } from '../components/Buttons/ActionButton'
 import { DeliveryAddressBox } from '../components/Checkout/DeliveryAddressBox'
@@ -38,20 +34,14 @@ export const CheckoutPage = () => {
 
     useEffect(() => {
         if (!products.length) {
-          dispatch(fetchProducts())
+            dispatch(fetchProducts())
         }
-      }, [dispatch, products])
+    }, [dispatch, products])
 
     useEffect(() => {
         const timeout = setTimeout(() => setShowLoading(false), 3000)
         return () => clearTimeout(timeout)
     }, [])
-
-    useEffect(() => {
-        if (!user && anonymousUser.deliveryAddress) {
-            dispatch(setAnonymousBillingAddress(anonymousUser.deliveryAddress))
-        }
-    }, [anonymousUser.deliveryAddress])
 
     useEffect(() => {
         fetchILSToUSDRate().then((rate) => {
@@ -91,34 +81,46 @@ export const CheckoutPage = () => {
             const itemsPayload = items.map((item) => {
                 const product = products.find((p) => p._id === item.productId)
                 const variant = product?.variants.find((v) => v._id === item.variantId)
-
+                const itemPriceILS = variant?.price.amount || 0
+                const itemPriceUSD = Math.round(itemPriceILS * exchangeRate) // ✅ in cents
+              
                 return {
-                    name: product?.name || 'Unknown',
-                    amount: variant?.price.amount || 0,
-                    vendorId: 'demo_vendor',
-                    platformFee: 0,
+                  name: product?.name || 'Unknown',
+                  amount: itemPriceUSD,
+                  platformFee: 0,
+                  description: product?.description || 'No description',
+                  quantity: item.quantity,
                 }
-            })
+              })
 
             const payload = {
-                amount: subtotalILS,
-                currency: 'ILS',
+                amount: subtotalUSD,
+                currency: 'USD',
                 orderId,
                 email,
                 country: 'IL',
                 items: itemsPayload,
                 shippingSameAsBilling: true,
                 shippingAddress: {
-                    ...billingName,
-                    city: shippingAddress.city,
-                    country: shippingAddress.country,
+                    ...shippingAddress,
+                    firstName: billingName.firstName,
+                    lastName: billingName.lastName,
                     line1: shippingAddress.street,
+                    line2: shippingAddress.apartment,
                     postalCode: shippingAddress.zip,
-                    line2: '',
                     state: '',
-                },
-                successfulPaymentRedirect: `${window.location.origin}/success?orderId=${orderId}`,
-            }
+                  },
+                  billingAddress: {
+                    ...shippingAddress,
+                    firstName: billingName.firstName,
+                    lastName: billingName.lastName,
+                    line1: shippingAddress.street,
+                    line2: shippingAddress.apartment,
+                    postalCode: shippingAddress.zip,
+                    state: '',
+                  },
+                  successfulPaymentRedirect: `${window.location.origin}/success?orderId=${orderId}`,
+                }
 
             const { checkoutUrl } = await paymentService.createCheckout(payload)
             window.location.href = checkoutUrl
@@ -128,13 +130,17 @@ export const CheckoutPage = () => {
         }
     }
 
-    const deliveryAddress: Address | undefined = user
-        ? user.addresses.find((addr) => addr._id === user.defaultAddressId)
-        : anonymousUser.deliveryAddress ?? undefined
-
-    const billingAddress: Address | undefined = user
-        ? user.addresses.find((addr) => addr._id === user.defaultAddressId)
-        : anonymousUser.billingAddress ?? anonymousUser.deliveryAddress ?? undefined
+    const deliveryAddress: Address | undefined = useSelector((state: RootState) =>
+        state.user.user
+          ? state.user.user.addresses.find((addr) => addr._id === state.user.user!.defaultAddressId)
+          : state.anonymousUser.deliveryAddress ?? undefined // convert `null` to `undefined`
+      )
+      
+      const billingAddress: Address | undefined = useSelector((state: RootState) =>
+        state.user.user
+          ? state.user.user.addresses.find((addr) => addr._id === state.user.user!.defaultAddressId)
+          : state.anonymousUser.billingAddress ?? undefined
+      )
 
     const subtotalILS = items.reduce((acc, item) => {
         const product = products.find((p) => p._id === item.productId)

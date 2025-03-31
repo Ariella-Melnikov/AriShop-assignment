@@ -4,7 +4,6 @@ import { http } from './httpService'
 interface CheckoutItem {
   name: string
   amount: number
-  vendorId: string
   platformFee: number
 }
 

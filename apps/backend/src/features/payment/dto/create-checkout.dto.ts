@@ -1,75 +1,97 @@
-import { IsString, IsEmail, IsNumber, IsArray, ValidateNested, IsBoolean, IsObject } from 'class-validator'
-import { Type } from 'class-transformer'
-
-class CheckoutItem {
+import {
+    IsString,
+    IsEmail,
+    IsNumber,
+    IsArray,
+    ValidateNested,
+    IsBoolean,
+    IsObject,
+    IsOptional,
+  } from 'class-validator'
+  import { Type } from 'class-transformer'
+  
+  export class CheckoutItem {
     @IsString()
-    name: string
+    name: string;
+  
+    @IsNumber()
+    amount: number;
+  
+    @IsNumber()
+    platformFee: number;
+
+    @IsString()
+    @IsOptional()
+    description?: string;
 
     @IsNumber()
-    amount: number
-
-    @IsString()
-    vendorId: string
-
-    @IsNumber()
-    platformFee: number
-}
-
-class ShippingAddress {
+    @IsOptional()
+    quantity?: number;
+  }
+  
+  class AddressDto {
     @IsString()
     firstName: string
-
+  
     @IsString()
     lastName: string
-
+  
+    @IsString()
+    email: string
+  
     @IsString()
     city: string
-
+  
     @IsString()
     country: string
-
+  
     @IsString()
     line1: string
-
-    @IsString()
-    postalCode: string
-
+  
     @IsString()
     line2: string
-
+  
+    @IsString()
+    postalCode: string
+  
     @IsString()
     state: string
-}
-
-export class CreateCheckoutDto {
+  }
+  
+  export class CreateCheckoutDto {
     @IsNumber()
-    amount: number // in ILS (from frontend)
-
+    amount: number 
+  
     @IsString()
-    currency: string // from frontend, will be ignored in backend
-
+    currency: string 
+  
     @IsString()
     orderId: string
-
+  
     @IsEmail()
     email: string
-
+  
     @IsString()
     country: string
-
+  
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => CheckoutItem)
     items: CheckoutItem[]
-
+  
     @IsObject()
     @ValidateNested()
-    @Type(() => ShippingAddress)
-    shippingAddress: ShippingAddress
-
+    @Type(() => AddressDto)
+    shippingAddress: AddressDto
+  
+    @IsObject()
+    @ValidateNested()
+    @Type(() => AddressDto)
+    billingAddress: AddressDto // ✅ Added billingAddress
+  
     @IsBoolean()
-    shippingSameAsBilling: boolean;
+    shippingSameAsBilling: boolean
   
     @IsString()
-    successfulPaymentRedirect: string;
+    successfulPaymentRedirect: string
   }

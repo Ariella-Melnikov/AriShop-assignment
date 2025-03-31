@@ -37,7 +37,7 @@ export class Cart extends Document {
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false })
     userId?: string
 
-    @Prop({ required: false, unique: true, sparse: true })
+    @Prop({ required: false })
     cartToken?: string
 
     @Prop({ type: [CartItemSchema], default: [] })
@@ -61,11 +61,3 @@ export const CartSchema = SchemaFactory.createForClass(Cart)
 CartSchema.index({ cartToken: 1 }, { unique: true, sparse: true })
 CartSchema.index({ userId: 1 }, { unique: true, sparse: true })
 CartSchema.index({ 'items.productId': 1, 'items.variantId': 1 }, { sparse: true })
-
-// CartSchema.pre('save', function (next) {
-//   this.items = this.items.filter(
-//     (item) => item.productId && item.variantId
-//   )
-//   console.log('[Pre Save Hook] items after:', this.items)
-//   next()
-// })

@@ -3,7 +3,14 @@ import { HttpService } from '@nestjs/axios'
 import { ConfigService } from '@nestjs/config'
 import { firstValueFrom } from 'rxjs'
 import { CreateCheckoutDto } from './dto/create-checkout.dto'
+import { AddressDto } from './dto/address.dto'
+import { config } from 'dotenv'
 
+if (process.env.RENDER) {
+    config({ path: '/etc/secrets/UNIPAAS_API' })
+} else {
+    config()
+}
 @Injectable()
 export class PaymentService {
     constructor(private readonly httpService: HttpService, private readonly configService: ConfigService) {}
@@ -13,26 +20,51 @@ export class PaymentService {
         if (!apiKey) throw new InternalServerErrorException('Missing UniPaaS API key')
 
         const headers = {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
+            authorization: `Bearer ${apiKey}`,
+            'content-type': 'application/json',
+            accept: 'application/json',
         }
 
-        // Example fixed exchange rate — in production, fetch live rate
-        const exchangeRate = 0.28 // 1 ILS ≈ 0.28 USD
-        const amountInUsd = Math.round(dto.amount * exchangeRate * 100) // convert to cents
+        function cleanAddress(address: AddressDto) {
+            return {
+                firstName: address.firstName,
+                lastName: address.lastName,
+                line1: address.line1,
+                line2: address.line2,
+                city: address.city,
+                postalCode: address.postalCode,
+                country: address.country,
+                state: address.state,
+            }
+        }
 
         const payload = {
-            amount: amountInUsd,
             currency: 'USD',
+            amount: dto.amount,
             country: 'IL',
             email: dto.email,
             orderId: dto.orderId,
-            shippingAddress: dto.shippingAddress, // ← remapped
+            isMoto: false,
+            storePaymentMethod: false,
+            metadata: {
+                source: 'frontend', // optional but helps for debugging
+            },
+            billingAddress: cleanAddress(dto.billingAddress), // ✅ new field required
             shippingSameAsBilling: dto.shippingSameAsBilling,
-            items: dto.items,
+            shippingAddress: {
+                ...cleanAddress(dto.shippingAddress),
+                email: dto.email,
+            },
+            items: dto.items.map((item) => ({
+                name: item.name,
+                amount: item.amount,
+                description: item.description || 'N/A', // optional fallback
+                quantity: item.quantity || 1,
+            })),
             successfulPaymentRedirect: dto.successfulPaymentRedirect,
-            paymentMethods: ['creditCard'],
         }
+
+        console.log('[DEBUG] Final Payload to UniPaaS:', JSON.stringify(payload, null, 2))
 
         try {
             const response = await firstValueFrom(

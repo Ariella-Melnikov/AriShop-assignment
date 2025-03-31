@@ -48,6 +48,7 @@ export interface AnonymousUserInfo {
   email: string
   deliveryAddress: Address | null
   billingAddress: Address | null
+  billingManuallyEdited?: boolean
 }
 // For auth responses (frontend-safe)
 export interface PublicUser {

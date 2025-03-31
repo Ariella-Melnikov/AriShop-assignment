@@ -7,6 +7,7 @@ const initialState: AnonymousUserInfo = {
   email: '',
   deliveryAddress: null,
   billingAddress: null,
+  billingManuallyEdited: false,
 }
 
 const anonymousUserSlice = createSlice({
@@ -20,10 +21,13 @@ const anonymousUserSlice = createSlice({
     },
     setAnonymousDeliveryAddress(state, action: PayloadAction<Address>) {
       state.deliveryAddress = action.payload
-      state.billingAddress = action.payload // Keep in sync unless changed manually
+      if (!state.billingManuallyEdited) {
+        state.billingAddress = action.payload
+      }
     },
     setAnonymousBillingAddress(state, action: PayloadAction<Address>) {
       state.billingAddress = action.payload
+      state.billingManuallyEdited = true // now treat it as custom
     },
     clearAnonymousUser() {
       return initialState

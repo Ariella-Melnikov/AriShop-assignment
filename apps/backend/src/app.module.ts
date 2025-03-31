@@ -10,7 +10,7 @@ import { OrderModule } from './features/order/order.module';
 import { PaymentModule } from './features/payment/payment.module';
 
 if (process.env.RENDER) {
-  config({ path: '/etc/secrets/.env' });
+  config({ path: '/etc/secrets/MONGO_URI' });
 } else {
   config();
 }
