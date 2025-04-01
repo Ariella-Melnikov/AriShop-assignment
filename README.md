@@ -1,3 +1,177 @@
+# AriShop - Modern Flower E-commerce Platform
+
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://asteria.onrender.com)
+[![GitHub](https://img.shields.io/badge/github-repo-blue)](https://github.com/Ariella-Melnikov/AriShop-assignment)
+[![Figma](https://img.shields.io/badge/figma-design-purple)](https://www.figma.com/design/wLuzGMbfVGoBvkDKxQWsps/home-assignment?node-id=0-1&p=f&t=rhQcq8eFIM3TKIlJ-0)
+
+## 🌸 Project Overview
+
+AriShop is a modern, full-stack e-commerce platform specializing in flower bouquets and arrangements. Built with TypeScript and React, it offers a seamless shopping experience with features like real-time inventory management, secure checkout via UniPaaS, and responsive design across all devices.
+
+### 🖥️ Live Demo
+
+Visit the live demo at [asteria.onrender.com](https://asteria.onrender.com)
+
+![Shop Page Screenshot](path_to_screenshot.png)
+
+## ✨ Features
+
+### Products & Shopping
+- Browse flower arrangements with dynamic filtering and sorting
+- Real-time inventory tracking
+- Detailed product views with size variants
+- Mobile-first responsive design
+- Tag-based product filtering
+
+### Cart & Checkout
+- Persistent shopping cart
+- Guest & authenticated user flows
+- UniPaaS secure payment integration
+- Multiple delivery options
+- Order confirmation and tracking
+
+### User Experience
+- Responsive, modern UI based on Figma design
+- Anonymous user sessions (frontend) & authenticated sessions (backend)
+- Intuitive navigation and product discovery
+- Real-time price updates and currency conversion
+
+## 🚀 Running Locally
+
+### Prerequisites
+- Node.js 18+
+- pnpm 10.6.3+
+- MongoDB (optional, defaults to JSON storage)
+
+### Installation
+
+1. Clone the repository:
+\`\`\`bash
+git clone https://github.com/Ariella-Melnikov/AriShop-assignment.git
+cd AriShop-assignment
+\`\`\`
+
+2. Install dependencies:
+\`\`\`bash
+pnpm install
+\`\`\`
+
+3. Set up environment variables:
+\`\`\`bash
+# .env
+UNIPAAS_API_KEY=your_api_key
+MONGODB_URI=your_mongodb_uri # Optional
+\`\`\`
+
+4. Start the development servers:
+\`\`\`bash
+pnpm dev
+\`\`\`
+
+The app will be available at:
+- Frontend: http://localhost:5173
+- Backend: http://localhost:3000
+
+## 🌍 Deployment
+
+The application is deployed on [Render](https://render.com) with the following setup:
+
+1. Frontend: Static Site
+2. Backend: Web Service
+3. Database: Initially JSON, prepared for MongoDB migration
+
+## 🧪 Testing
+
+### API Testing with Postman
+
+1. Import the [Postman Collection](./apps/shared/src/postman/Ari-shop.postman_collection.json)
+
+2. Set up environment variables in Postman:
+   ```json
+   {
+     "base_url": "http://localhost:3030",
+     "access_token": "",  // Will be automatically set after login
+     "cart-token": ""    // Will be set when creating a cart
+   }
+   ```
+
+3. Test Flow:
+   - Start with the "register user" request to create an account
+   - Use "login user" to get an access token (automatically saved to environment)
+   - Test product endpoints (GET /products, POST /products, etc.)
+   - Test cart operations with cart-token header
+   - Test authenticated endpoints using the Bearer token
+
+4. Available Test Suites:
+   - Products CRUD operations
+   - Cart management
+   - User authentication
+   - Address management
+   - Variant management
+   - Order processing
+
+### Payment Testing
+Use [UniPaaS API test](https://docs.unipaas.com/docs/test-cards) for payment flow testing:
+- Test Card: 4761344136141390
+- Expiry: 02/34
+- CVV: 123
+- Name: John Doe
+
+## 🏗️ Architecture & Design Decisions
+
+### Tech Stack
+- **Frontend**: TypeScript, React, Vite, Redux Toolkit
+- **Backend**: NestJS, Express, TypeScript
+- **Database**: MongoDB-ready schemas
+- **State Management**: Redux with persist storage
+- **Styling**: SCSS modules with responsive design
+- **Payment**: UniPaaS Checkout integration
+
+### Project Structure
+\`\`\`
+apps/
+├── frontend/          # React frontend application
+├── backend/           # NestJS backend API
+└── shared/           # Shared types and utilities
+\`\`\`
+
+### Key Design Decisions
+1. **Monorepo Structure**: Using pnpm workspaces for efficient dependency management
+2. **Type Safety**: Full TypeScript implementation across frontend and backend
+3. **State Management**: Centralized Redux store with cart persistence
+4. **API Design**: RESTful architecture with clear endpoint structure
+5. **Database**: JSON storage for quick prototyping, MongoDB-ready schemas
+
+## 🔄 Assumptions & Improvements
+
+### Current Assumptions
+- Single currency (ILS) with USD conversion support
+- Guest checkout without account creation
+- Local storage for cart persistence
+- Simple inventory management
+
+### Future Improvements
+1. Multi-currency support with real-time exchange rates
+2. Enhanced address validation and geolocation
+3. User authentication service migration
+4. Combined product and variant creation flow for Admin
+5. Advanced inventory management system
+6. Performance optimizations for image loading
+7. Enhanced error handling and user feedback
+8. Integration testing suite
+9. Analytics and monitoring implementation
+
+## 📋 Technical Requirements Checklist
+
+✅ TypeScript in frontend & backend  
+✅ React frontend with modern practices  
+✅ REST API implementation  
+✅ Database integration (JSON/MongoDB)  
+✅ UniPaaS sandbox integration  
+✅ Order management and tracking  
+✅ Responsive, clean UI  
+✅ Deployment with access instructions  
+✅ Clear architecture and documentation  
 
 
 # App Architecture: 
@@ -21,7 +195,7 @@ This project follows a modern, scalable, and modular architecture to ensure main
 
 ## Database:
 
-- Initially uses lowdb with a JSON-based storage for quick prototyping.
+- Initially useג lowdb with a JSON-based storage for quick prototyping.
 - Designed with MongoDB-like data structures to facilitate a seamless migration to MongoDB in later stages.
 - A migration script is included to transfer data from JSON to MongoDB when transitioning to production.
 
@@ -45,8 +219,9 @@ This project follows a modern, scalable, and modular architecture to ensure main
 
 This architecture ensures a smooth development experience, scalability for future enhancements, and maintainability for long-term improvements.
 
+## Schema srtucture: 
 
-//Product Schema: 
+- Product Schema: 
 
 interface Product {
   _id: string;
@@ -86,10 +261,10 @@ interface Variant {
 
 interface Availability {
   inStock: boolean;
-  leadTime?: number; // Days required to fulfill the order if not in stock
+  leadTime?: number; 
 }
 
-//Inventory Schema:
+- Inventory Schema:
 
 interface Inventory {
   variantId: string;
@@ -100,7 +275,7 @@ interface Inventory {
   lastUpdated: Date;
 }
 
-//User Schema:
+- User Schema:
 
 interface User {
   _id: string;
@@ -134,7 +309,7 @@ interface Address {
   };
 }
 
-//Cart Schema: 
+- Cart Schema: 
 
 interface Cart {
   _id: string;
@@ -159,7 +334,7 @@ interface CartItem {
   addedAt: Date;
 }
 
-//Order Schema: 
+- Order Schema: 
 
 interface Order {
   _id: string;
@@ -225,7 +400,7 @@ interface Payment {
   };
 }
 
-//Delivery Schema:
+- Delivery Schema:
 
 interface DeliveryMethod {
   _id: string;
@@ -352,7 +527,247 @@ interface DeliveryMethod {
   areaDescription: "Available in Tel Aviv only"
 }
 
-# E-commerce API Endpoints
+## 📋 TODO List
+
+### Database & Infrastructure
+- [ ] Migrate from JSON storage to MongoDB
+- [ ] Implement database indexing for improved query performance
+- [ ] Set up database backups and monitoring
+- [ ] Implement caching layer for frequently accessed data
+
+### Authentication & Security
+- [ ] Migrate to a robust auth service
+- [ ] Add rate limiting for API endpoints
+- [ ] Add request validation middleware
+
+### Features & UX
+- [ ] Implement address validation with geocoding
+- [ ] Add customer geolocation tracking for delivery optimization
+- [ ] Create combined product and variant creation flow for Admin
+- [ ] Enhance inventory management system
+- [ ] Add real-time stock updates
+- [ ] Implement order tracking system
+- [ ] Add wishlist functionality
+- [ ] Implement product recommendations
+
+### Performance & Optimization
+- [ ] Optimize image loading and implement lazy loading
+- [ ] Add image compression and CDN integration
+- [ ] Implement server-side rendering for critical pages
+- [ ] Add service worker for offline capabilities
+- [ ] Optimize bundle size and implement code splitting
+- [ ] Add performance monitoring and error tracking
+
+### Testing & Quality
+- [ ] Add end-to-end testing suite
+- [ ] Set up continuous integration pipeline
+- [ ] Implement automated accessibility testing
+- [ ] Add load testing for high-traffic scenarios
+
+### Admin Features
+- [ ] Create admin dashboard
+- [ ] Implement bulk product management
+- [ ] Add order management system
+- [ ] Create inventory alerts and notifications
+- [ ] Add staff management and permissions
+
+### Mobile & Responsive
+- [ ] Implement touch-friendly interactions
+- [ ] Add mobile-specific optimizations
+- [ ] Test and optimize for various devices
+
+### Monitoring & Maintenance
+- [ ] Set up logging and monitoring
+- [ ] Implement error tracking and reporting
+- [ ] Create automated backup system
+- [ ] Implement automated deployment pipeline
+
+### Documentation
+- [ ] Create API documentation with Swagger/OpenAPI
+- [ ] Add JSDoc comments for key functions
+- [ ] Create developer onboarding guide
+- [ ] Document deployment procedures
+- [ ] Add architecture decision records (ADRs)
+
+### Business & Marketing
+- [ ] Implement SEO optimizations
+- [ ] Add analytics tracking
+- [ ] Create email notification system
+- [ ] Add customer feedback system
+- [ ] Implement loyalty program
+- [ ] Add social sharing features
+
+## 📋 Technical Requirements Checklist
+
+✅ TypeScript in frontend & backend  
+✅ React frontend with modern practices  
+✅ REST API implementation  
+✅ Database integration (JSON/MongoDB)  
+✅ UniPaaS sandbox integration  
+✅ Order management and tracking  
+✅ Responsive, clean UI  
+✅ Deployment with access instructions  
+✅ Clear architecture and documentation  
+
+
+# App Architecture: 
+
+This project follows a modern, scalable, and modular architecture to ensure maintainability, performance, and future scalability. The key architectural choices are as follows:
+
+## Monorepo & Package Management:
+
+- The application is structured as a pnpm + Turbo monorepo, ensuring efficient dependency management and optimized builds.
+
+## Frontend:
+
+- Built with TypeScript, React, and Vite for a fast and efficient development experience.
+- Uses Redux for state management, ensuring centralized and predictable data handling across the application.
+- Styling is managed with SCSS, providing modular and maintainable styles.
+
+## Backend:
+
+- Developed with NestJS (powered by Express) and TypeScript, ensuring a structured and scalable API design.
+- Follows a modular architecture with controllers, services, and repository layers for clean code separation.
+
+## Database:
+
+- Initially useג lowdb with a JSON-based storage for quick prototyping.
+- Designed with MongoDB-like data structures to facilitate a seamless migration to MongoDB in later stages.
+- A migration script is included to transfer data from JSON to MongoDB when transitioning to production.
+
+## Authentication & Security:
+
+- Implements JWT-based authentication, storing tokens in HTTP-only cookies for enhanced security.
+- Authentication will be integrated in later stages of development.
+
+## State Management:
+
+- Uses Redux Toolkit for managing complex application state, ensuring efficient data flow and updates.
+
+## Payment Processing:
+
+- Integrates UniPaas Checkout in a sandbox environment, following best practices outlined in the UniPaas documentation.
+
+## Deployment:
+
+- The application is deployed on Render, providing a reliable hosting solution for both the frontend and backend.
+- A Dockerfile is included to streamline the deployment process.
+
+This architecture ensures a smooth development experience, scalability for future enhancements, and maintainability for long-term improvements.
+
+## Data collections:
+
+#products: 
+{
+  _id: ObjectId,
+  name: "Romantic Red Roses",
+  description: "A classic bouquet of red roses.",
+  categories: ["romantic", "valentines"],
+  tags: ["roses", "love", "red"],
+  basePrice: { amount: 150, currency: "ILS" },
+  media: [
+    { type: "image", url: "...", altText: "Bouquet close-up" }
+  ],
+  variants: [
+    {
+      _id: ObjectId,
+      size: "medium",
+      color: "red",
+      packaging: "gift",
+      price: { amount: 180, currency: "ILS" },
+      inventory: {
+        quantity: 12,
+        location: "TA-Store",
+        restockThreshold: 3,
+        restockStatus: "in_stock",
+        lastUpdated: ISODate
+      }
+    }
+  ],
+  availability: { inStock: true },
+  createdAt: ISODate,
+  updatedAt: ISODate
+}
+
+#users:
+
+{
+  _id: ObjectId,
+  email: "customer@email.com",
+  firstName: "Ariella",
+  lastName: "Melnikov",
+  phone: "+972...",
+  role: "customer",
+  addresses: [ {...}, {...} ],
+  defaultAddressId: ObjectId,
+  cart: {
+    _id: ObjectId,
+    items: [ {...}, {...} ],
+    subtotal: {...},
+    shipping: {...},
+    total: {...},
+    updatedAt: ISODate
+  },
+  createdAt: ISODate
+}
+
+#orders: 
+
+{
+  _id: ObjectId,
+  userId: ObjectId,
+  orderNumber: "ORD123456",
+  items: [
+    {
+      productId: ObjectId,
+      variantId: ObjectId,
+      productSnapshot: {
+        title: "Romantic Red Roses",
+        attributes: { size: "medium", color: "red", packaging: "gift" },
+        price: {...},
+        media: { url: "...", alt: "..." }
+      },
+      quantity: 2,
+      price: {...},
+      totalPrice: {...}
+    }
+  ],
+  shippingAddress: {...},
+  deliveryMethod: {...},
+  payment: {...},
+  status: "processing",
+  statusHistory: [ { status: "pending_payment", timestamp: ISODate }, ... ],
+  createdAt: ISODate
+}
+
+#payments:
+
+{
+  _id: ObjectId,
+  orderId: ObjectId,
+  provider: "unipaas",
+  transactionId: "...",
+  amount: {...},
+  status: "completed",
+  timestamp: ISODate,
+  details: {...}
+}
+
+#delivery_methods:
+
+{
+  _id: ObjectId,
+  carrier: "Israel Post",
+  method: "express",
+  estimatedDeliveryWindow: {
+    from: ISODate,
+    to: ISODate
+  },
+  price: {...},
+  areaDescription: "Available in Tel Aviv only"
+}
+
+# API Endpoints
 
 ## Product Endpoints
 
@@ -423,12 +838,3 @@ interface DeliveryMethod {
 | DELETE | `/api/addresses/:id`         | Delete address                         |        -         |        -        | Success message |
 | PUT    | `/api/addresses/:id/default` | Set default address                    |        -         |        -        | Updated address |
 
-
-DALLE prompt for fllowers img: 
-A luxurious floral arrangement in a modern, minimalistic style, featuring a bouquet of [flower type] in soft neutral tones. The bouquet is placed in a clear or ceramic vase on a marble or light-toned surface, with natural light casting soft shadows. The aesthetic is refined and elegant, with a delicate balance of texture and color. The background is clean and airy, often white or subtly marbled. The image should have a high-end boutique feel, with an emphasis on sophistication and timeless beauty."
-
-To Do for production: 
-* address validation. 
-* move addresses to be a separate table in order to save costs when validating addresses and also allow tracking customers geo cords location based. 
-* move to real auth service (the authentication).
-* currently due to UX product creation and variant creation are separate, allow creation of both

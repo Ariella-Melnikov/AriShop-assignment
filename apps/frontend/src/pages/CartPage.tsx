@@ -7,6 +7,7 @@ import { PageTitle } from '../components/Title/PageTitle'
 import { useEffect, useState } from 'react'
 import { fetchProducts } from '../store/slices/productSlice'
 import { ActionButton } from '../components/Buttons/ActionButton'
+import { PageLoader } from '../components/Loader/PageLoader'
 
 export const CartPage = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -57,7 +58,7 @@ export const CartPage = () => {
     }
 
     if (showLoading) {
-        return <p>Loading your cart...</p>
+        return <PageLoader />
     }
     
     if (!loading && items.length === 0) {

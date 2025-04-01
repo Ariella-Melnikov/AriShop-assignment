@@ -1,0 +1,51 @@
+@use '../abstracts' as *;
+
+.page-loader {
+  width: 100vw;
+  height: 100vh;
+  background-color: $color-background;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $spacing-md;
+
+  .loader-logo {
+    width: 48px;
+    height: auto;
+
+    @include respond(mobile) {
+      width: 36px;
+    }
+
+    path {
+      fill: $color-text;
+    }
+  }
+
+  .loader-text {
+    display: flex;
+    gap: 0.1em;
+    font-family: $font-family-title;
+    font-size: $font-size-title-mobile;
+    font-weight: $font-weight-regular;
+    color: $color-text;
+
+    @include respond(desktop) {
+      font-size: $font-size-title;
+    }
+
+    .loader-letter {
+      display: inline-block;
+      animation: rise 1s ease-in-out infinite;
+    }
+  }
+
+  @keyframes rise {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-0.3rem);
+    }
+  }
+}

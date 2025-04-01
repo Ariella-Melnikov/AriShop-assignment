@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState, AppDispatch } from '../store/store'
 import { openCartModal } from '../store/slices/cartUiSlice'
@@ -9,6 +9,7 @@ import { PageTitle } from '../components/Title/PageTitle'
 import { SortBox } from '../components/SortTagBox/SortBox'
 import { Banner } from '../components/Banner/Banner'
 import { TagBox } from '../components/SortTagBox/TagBox'
+import { PageLoader } from '../components/Loader/PageLoader'
 import { Product, Variant } from '@arishop/shared'
 import shopHeroImg from '../assets/img/Shop-hero.png'
 
@@ -16,6 +17,7 @@ export const ShopPage = () => {
     const dispatch = useDispatch<AppDispatch>()
 
     const { loading, error } = useSelector((state: RootState) => state.products)
+    const [showLoader, setShowLoader] = useState(true)
     const products = useSelector((state: RootState) => state.products.products)
     const filteredProducts = useSelector((state: RootState) => state.products.filteredProducts)
     const allTags = useSelector((state: RootState) => state.products.allTags)
@@ -28,6 +30,12 @@ export const ShopPage = () => {
             dispatch(fetchTags())
         }
     }, [dispatch, products.length])
+
+    useEffect(() => {
+        const timer = setTimeout(() => setShowLoader(false), 3000) 
+      
+        return () => clearTimeout(timer)
+      }, [])
 
     const getBestAvailableVariant = (product: Product) => {
         const preferredOrder: ('medium' | 'small' | 'large')[] = ['medium', 'small', 'large']
@@ -72,9 +80,13 @@ export const ShopPage = () => {
         }
     }
 
-    if (loading) {
-        return <div className='loading'>Loading...</div>
-    }
+    if (loading || showLoader) {
+        return (
+          <div className='loading'>
+            <PageLoader />
+          </div>
+        )
+      }
 
     if (error) {
         return <div className='error'>{error}</div>

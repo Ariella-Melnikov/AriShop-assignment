@@ -4,24 +4,26 @@ import { useNavigate } from 'react-router-dom'
 import { AppDispatch, RootState } from '../store/store'
 import { fetchLoggedInUser, updateUserAddress } from '../store/slices/userSlice'
 import { setAnonymousBillingAddress, setAnonymousDeliveryAddress, setAnonymousNameAndEmail } from '../store/slices/anonymousUserSlice'
+import { fetchProducts } from '../store/slices/productSlice'
 import { PageTitle } from '../components/Title/PageTitle'
 import { ActionButton } from '../components/Buttons/ActionButton'
 import { DeliveryAddressBox } from '../components/Checkout/DeliveryAddressBox'
 import { DeliveryOptionsBox } from '../components/Checkout/DeliveryOptionsBox'
 import { SectionTitle } from '../components/Title/SectionTitle'
+import { CartProductCard } from '../components/ProductCard/CartProductCard'
+import { PageLoader } from '../components/Loader/PageLoader'
 import { paymentService } from '../services/paymentService'
 import { Address } from '@arishop/shared'
+import { fetchILSToUSDRate } from '@arishop/shared'
 import unipaasLogo from '@/assets/icons/unipaas-logo.svg'
 import AppLogo from '@/assets/icons/app-logo.svg?react'
 import creditCards from '@/assets/icons/credit-cards.svg'
-import { CartProductCard } from '../components/ProductCard/CartProductCard'
-import { fetchILSToUSDRate } from '@arishop/shared'
-import { fetchProducts } from '../store/slices/productSlice'
 
 export const CheckoutPage = () => {
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
-    const [showLoading, setShowLoading] = useState(true)
+    const { loading } = useSelector((state: RootState) => state.products)
+    const [showLoader, setShowLoader] = useState(true)
     const [exchangeRate, setExchangeRate] = useState<number>(0.28)
     const { items } = useSelector((state: RootState) => state.cart)
     const products = useSelector((state: RootState) => state.products.products)
@@ -39,8 +41,9 @@ export const CheckoutPage = () => {
     }, [dispatch, products])
 
     useEffect(() => {
-        const timeout = setTimeout(() => setShowLoading(false), 3000)
-        return () => clearTimeout(timeout)
+        const timer = setTimeout(() => setShowLoader(false), 3000)
+
+        return () => clearTimeout(timer)
     }, [])
 
     useEffect(() => {
@@ -151,8 +154,12 @@ export const CheckoutPage = () => {
 
     const subtotalUSD = +(subtotalILS * exchangeRate).toFixed(2)
 
-    if (showLoading) {
-        return <p>Loading your cart...</p>
+    if (loading || showLoader) {
+        return (
+          <div className='loading'>
+            <PageLoader />
+          </div>
+        )
     }
 
     return (
@@ -199,7 +206,7 @@ export const CheckoutPage = () => {
                                 lastName={user?.lastName || anonymousUser.lastName}
                                 email={user?.email || anonymousUser.email}
                                 isSignedIn={!!user}
-                                editable={!user} // signed-in users don’t edit billing
+                                editable={!user} // signed-in users don't edit billing
                                 onSave={handleSaveBillingAddress}
                                 title='Billing Address'
                                 onGuestInfoSave={handleGuestInfoSave}
