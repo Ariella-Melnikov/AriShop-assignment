@@ -1,0 +1,47 @@
+// styles/components/_tagBox.scss
+@use '../abstracts' as *;
+
+.tag-box {
+  position: relative;
+  max-width: 13.75rem; // 220px
+  @include flex(column, flex-start, flex-start);
+
+  .tag-header {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    gap: $spacing-sm;
+    @include flex(row, flex-start, center);
+
+    .tag-title {
+      @include text-style;
+    }
+
+    .sort-icon {
+      width: auto;
+      height: auto;
+    }
+  }
+ 
+  .tag-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    margin-top: $spacing-sm;
+    background-color: $color-white;
+    border: 1px solid $color-text;
+    border-radius: $radius-sm;
+    padding: $spacing-lg $spacing-sm-2;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    min-width: 13.75rem;
+
+    .tag-sort {
+      padding: 0 $spacing-lg;
+      justify-content: flex-start;
+    }
+  }
+}

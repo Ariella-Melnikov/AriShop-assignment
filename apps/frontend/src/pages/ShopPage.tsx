@@ -5,12 +5,12 @@ import { fetchProducts, toggleTag, fetchTags, setSortOrder } from '../store/slic
 import { ProductList } from '../components/ProductList/ProductList'
 import { Product, Variant } from '@arishop/shared'
 import { PageTitle } from '../components/Title/PageTitle'
-import { Tag } from '../components/Buttons/TagButton'
-import { SortBox } from '../components/SortBox/SortBox'
+import { SortBox } from '../components/SortTagBox/SortBox'
 import { Banner } from '../components/Banner/Banner'
 import shopHeroImg from '../assets/img/Shop-hero.png'
 import { openCartModal } from '../store/slices/cartUiSlice'
 import { addCartItem } from '../store/actions/cartActions'
+import { TagBox } from '../components/SortTagBox/TagBox'
 
 export const ShopPage = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -49,21 +49,23 @@ export const ShopPage = () => {
     const handleAddToCart = async (product: Product, variant: Variant) => {
         try {
             if (!product._id || !variant._id) {
-                console.error('Invalid product or variant ID');
-                return;
+                console.error('Invalid product or variant ID')
+                return
             }
-            
+
             console.log('Adding to cart:', {
                 productId: product._id,
                 variantId: variant._id,
                 quantity: 1,
-            });
-            
-            await dispatch(addCartItem({
-                productId: product._id,
-                variantId: variant._id,
-                quantity: 1,
-            })).unwrap()
+            })
+
+            await dispatch(
+                addCartItem({
+                    productId: product._id,
+                    variantId: variant._id,
+                    quantity: 1,
+                })
+            ).unwrap()
             dispatch(openCartModal())
         } catch (error) {
             console.error('Failed to add item to cart:', error)
@@ -87,14 +89,7 @@ export const ShopPage = () => {
 
             <div className='tag-filters'>
                 <div className='tag-buttons'>
-                    {allTags.map((tag) => (
-                        <Tag
-                            key={tag}
-                            label={tag}
-                            isActive={selectedTags.includes(tag)}
-                            onClick={() => dispatch(toggleTag(tag))}
-                        />
-                    ))}
+                    <TagBox tags={allTags} selected={selectedTags} onToggle={(tag) => dispatch(toggleTag(tag))} />
                 </div>
                 <div className='sort-section'>
                     <SortBox active={sortOrder} onChange={(val) => dispatch(setSortOrder(val))} />
