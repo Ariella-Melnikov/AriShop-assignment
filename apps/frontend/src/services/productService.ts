@@ -7,6 +7,7 @@ interface BackendProduct {
   _id: string
   name: string
   description: string
+  flowerType: string[]
   categories: string[]
   tags: ProductTag[]
   media: ProductMedia[]
@@ -19,6 +20,7 @@ const transformProduct = (product: BackendProduct): Product => ({
   _id: product._id,
   name: product.name,
   description: product.description,
+  flowerType: product.flowerType,
   categories: product.categories,
   tags: product.tags,
   media: product.media,

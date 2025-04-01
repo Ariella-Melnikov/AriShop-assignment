@@ -20,22 +20,21 @@ export class VariantsService {
     if (!product) {
       throw new NotFoundException(`Product with ID ${productId} not found`);
     }
-
-    // Add new variants to product
+  
+    // Use product._id (which is a Mongoose ObjectId) for productId
     const newVariants = createVariantsDto.map((variant) => ({
-      productId,
       ...variant,
+      productId: product._id,
     }));
-
-    product.variants.push(...(newVariants as any));
+  
+    product.variants.push(...(newVariants as any)); // optionally cast if needed
     product.availability = {
       inStock: product.variants.some((v) => v.inventory?.quantity > 0),
     };
     product.updatedAt = new Date();
-
+  
     await product.save();
-
-    // Return only the newly added variants (Mongo will have assigned _id)
+  
     const addedVariants = product.variants.slice(-createVariantsDto.length);
     return addedVariants;
   }

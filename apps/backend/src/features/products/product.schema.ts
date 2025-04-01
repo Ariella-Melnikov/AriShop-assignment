@@ -18,6 +18,9 @@ export class Product {
     @Prop({ type: [String], default: [] })
     categories: string[]
 
+    @Prop({ type: [String], default: [] })
+    flowerType: string[]
+
     @Prop({ type: [String], default: [], index: true,  })
     tags: string[]
 

@@ -48,6 +48,7 @@ export interface Price {
     _id: string;
     name: string;
     description: string;
+    flowerType: string[];
     categories: string[];
     tags: ProductTag[];
     media: ProductMedia[];
