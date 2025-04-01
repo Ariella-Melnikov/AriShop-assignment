@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { PageTitle } from '../components/Title/PageTitle'
 import { useEffect, useState } from 'react'
 import { fetchProducts } from '../store/slices/productSlice'
+import { ActionButton } from '../components/Buttons/ActionButton'
 
 export const CartPage = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -66,9 +67,9 @@ export const CartPage = () => {
                 <p className='main-message'>Your cart is empty</p>
                 <p className='sub-message'>Sign in to see your cart</p>
                 <p className='tagline'>and get a new Boquete</p>
-                <button className='signin-btn' onClick={() => console.log('Sign in logic here')}>
+                {/* <button className='signin-btn' onClick={() => console.log('Sign in logic here')}>
                     Sign In
-                </button>
+                </button> */}
             </div>
         )
     }
@@ -110,9 +111,11 @@ export const CartPage = () => {
                             </div>
                         </div>
                         <div className='checkout-btn-wrapper'>
-                            <button className='checkout-btn' onClick={() => navigate('/checkout')}>
-                                Checkout
-                            </button>
+                            <ActionButton 
+                                onClick={() => navigate('/checkout')}
+                                label="Checkout"
+                                variant="primary"
+                            />
                         </div>
                     </div>
                 </div>

@@ -23,7 +23,9 @@ export const ProductCard = ({ product, displayVariant, onAddToCart }: ProductCar
 
     return (
         <div className='product-card' onClick={handleCardClick}>
-            <img src={imageUrl} alt={imageAlt} className='product-image' />
+            <div className='product-image-container'>
+                <img src={imageUrl} alt={imageAlt} />
+            </div>
             <div className='product-info'>
                 <h3 className='product-title'>{product.name}</h3>
                 <h3 className='product-price'>

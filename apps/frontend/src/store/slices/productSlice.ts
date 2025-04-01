@@ -57,25 +57,34 @@ const productSlice = createSlice({
         },
         setSortOrder(state, action) {
             state.sortOrder = action.payload
-    
+        
             const getMediumPrice = (product: Product): number =>
                 product.variants.find((v) => v.size === 'medium')?.price?.amount ?? 0
-    
-            const sorted = [...state.filteredProducts]
-    
+        
+            let filtered = state.products
+        
+            // Tag filtering
+            if (state.selectedTags.length > 0) {
+                filtered = filtered.filter((product) =>
+                    product.tags.some((tag) => state.selectedTags.includes(tag))
+                )
+            }
+        
             switch (action.payload) {
                 case 'low-to-high':
-                    sorted.sort((a, b) => getMediumPrice(a) - getMediumPrice(b))
+                    filtered = [...filtered].sort((a, b) => getMediumPrice(a) - getMediumPrice(b))
                     break
                 case 'high-to-low':
-                    sorted.sort((a, b) => getMediumPrice(b) - getMediumPrice(a))
+                    filtered = [...filtered].sort((a, b) => getMediumPrice(b) - getMediumPrice(a))
                     break
+                case 'best':
                 default:
-                    // best → keep current order
+                    // Filter by best sellers only
+                    filtered = filtered.filter((product) => product.isBestSeller)
                     break
             }
-    
-            state.filteredProducts = sorted
+        
+            state.filteredProducts = filtered
         }
     },
     extraReducers: (builder) => {

@@ -61,7 +61,7 @@ export class PaymentService {
                 description: item.description || 'N/A', // optional fallback
                 quantity: item.quantity || 1,
             })),
-            successfulPaymentRedirect: dto.successfulPaymentRedirect,
+            // successfulPaymentRedirect: dto.successfulPaymentRedirect,
         }
 
         console.log('[DEBUG] Final Payload to UniPaaS:', JSON.stringify(payload, null, 2))

@@ -1,16 +1,16 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState, AppDispatch } from '../store/store'
+import { openCartModal } from '../store/slices/cartUiSlice'
+import { addCartItem } from '../store/actions/cartActions'
 import { fetchProducts, toggleTag, fetchTags, setSortOrder } from '../store/slices/productSlice'
 import { ProductList } from '../components/ProductList/ProductList'
-import { Product, Variant } from '@arishop/shared'
 import { PageTitle } from '../components/Title/PageTitle'
 import { SortBox } from '../components/SortTagBox/SortBox'
 import { Banner } from '../components/Banner/Banner'
-import shopHeroImg from '../assets/img/Shop-hero.png'
-import { openCartModal } from '../store/slices/cartUiSlice'
-import { addCartItem } from '../store/actions/cartActions'
 import { TagBox } from '../components/SortTagBox/TagBox'
+import { Product, Variant } from '@arishop/shared'
+import shopHeroImg from '../assets/img/Shop-hero.png'
 
 export const ShopPage = () => {
     const dispatch = useDispatch<AppDispatch>()

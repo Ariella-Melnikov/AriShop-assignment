@@ -56,5 +56,6 @@ export interface Price {
     availability: Availability;
     createdAt: string;
     updatedAt: string;
+    isBestSeller?: boolean;
   }
 

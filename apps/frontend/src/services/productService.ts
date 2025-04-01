@@ -12,6 +12,7 @@ interface BackendProduct {
   tags: ProductTag[]
   media: ProductMedia[]
   variants: Variant[]
+  isBestSeller?: boolean;
   createdAt: string
   updatedAt: string
 }
@@ -28,6 +29,7 @@ const transformProduct = (product: BackendProduct): Product => ({
   availability: {
     inStock: product.variants?.some(v => v.inventory.quantity > 0) ?? true
   },
+  isBestSeller: product.isBestSeller,
   createdAt: new Date(product.createdAt).toISOString(),
   updatedAt: new Date(product.updatedAt).toISOString()
 })
