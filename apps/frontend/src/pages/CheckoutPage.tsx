@@ -119,7 +119,7 @@ export const CheckoutPage = () => {
                     postalCode: shippingAddress.zip,
                     state: '',
                   },
-                  successfulPaymentRedirect: `${window.location.origin}/success?orderId=${orderId}`,
+                  successfulPaymentRedirect: `${window.location.origin}/success?orderId=${orderId}&paymentApproved=true`,
                 }
 
             const { checkoutUrl } = await paymentService.createCheckout(payload)

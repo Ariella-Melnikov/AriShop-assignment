@@ -8,6 +8,7 @@ import { CancelOrderDto } from './dto/cancel-order.dto'
 import { UpdateOrderStatusDto } from './dto/update-order-status.dto'
 import { Cart } from '../cart/cart.schema'
 import { v4 as uuidv4 } from 'uuid'
+import { CreateOrderFromPaymentDto } from './dto/create-order-from-payment.dto'
 
 @Injectable()
 export class OrderService {
@@ -52,6 +53,31 @@ export class OrderService {
         await order.save()
         return order
     }
+
+    async createFromPaymentRedirect(dto: CreateOrderFromPaymentDto) {
+        const { orderId, deliveryAddress, billingAddress, userInfo, deliveryDate, items, payment } = dto
+      
+        const order = new this.orderModel({
+          orderNumber: orderId,
+          deliveryAddress,
+          billingAddress,
+          userInfo,
+          items,
+          deliveryDate: new Date(deliveryDate),
+          payment: {
+            token: '', // guest, no token
+            last4: '', // optional
+            method: 'unipaas',
+            approvalNumber: payment.approvalNumber,
+          },
+          status: 'paid',
+          statusHistory: [{ status: 'paid', timestamp: new Date() }],
+          createdAt: new Date(),
+        })
+      
+        await order.save()
+        return order
+      }
 
     async findAll(userId: string, query: any) {
         const { status, from, to, page = 1, limit = 10 } = query
