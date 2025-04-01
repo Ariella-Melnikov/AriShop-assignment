@@ -19,7 +19,8 @@ $font-family-title: 'Antic Didone', serif;
 
 $font-size-base: 1rem;    // 16px
 $font-size-title: 5rem;   // 80px 
-$font-size-title-mobile: 3rem; // 48px
+$font-size-title-mobile: 3rem;
+$font-size-title-tablet: 4rem;
 $font-size-xs: 0.75rem;   // 12px
 $font-size-sm: 0.875rem;  // 14px
 $font-size-lg: 1.125rem;  // 18px
@@ -57,7 +58,10 @@ $radius-md: 0.5rem; //8px
 // Layout
 $header-height: 80px;
 $container-max-width: 1200px;
-$container-padding: 1rem; // ✅ Direct value instead of referencing another variable
+$container-padding: 1rem;
+$layout-padding-desktop: 12.5rem; //200px
+$layout-padding-tablet: 2rem;
+$layout-padding-mobile: 1rem; 
 
 // Grid
 $grid-gap: 16px;

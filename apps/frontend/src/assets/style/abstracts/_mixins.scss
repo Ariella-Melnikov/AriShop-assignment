@@ -26,21 +26,18 @@
 // Grid
 @mixin layout-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
-  column-gap: 20px;
-  padding-left: 200px;
-  padding-right: 200px;
-
+  padding-left: 1rem;
+  padding-right: 1rem;
+ 
   @include respond(tablet) {
-    grid-template-columns: 1fr;
     padding-left: 2rem;
     padding-right: 2rem;
   }
 
-  @include respond(mobile) {
-    grid-template-columns: 1fr;
-    padding-left: 1rem;
-    padding-right: 1rem;
+  @include respond(desktop) {
+    padding-left: 12.5rem; // 200px
+    padding-right: 12.5rem;
+    column-gap: 1.25rem; // 20px
   }
 }
 

@@ -2,19 +2,23 @@
 
 .title-container {
     text-align: left;
-    padding: 1rem 0.4rem;
+    padding: $spacing-md 0.4rem;
 
     .title {
-        font-family: $font-family-title;
-        font-size: $font-size-title;
-        color: $color-text;
-        font-weight: $font-weight-regular;
+        @include text-style($size: $font-size-title-mobile, $family: $font-family-title);
         text-align: center;
-        margin-block: var(--title-margin, $spacing-3xl);
         vertical-align: top;
+        margin-block: var(--title-margin, $spacing-xl);
 
-        @include respond(mobile) {
-            font-size: $font-size-title-mobile;
-        }
+        @include respond(tablet) {
+            @include text-style($size: $font-size-title-tablet, $family: $font-family-title); 
+          }
+      
+          @include respond(desktop) {
+            @include text-style($size: $font-size-title, $family: $font-family-title); 
+          }
+          @include respond(wide) {
+            @include text-style($size: $font-size-title, $family: $font-family-title); 
+          }
     }
 }

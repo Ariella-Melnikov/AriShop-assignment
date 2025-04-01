@@ -1,29 +1,36 @@
 @use '../abstracts' as *;
 
 .checkout-page {
-    @include layout-grid;
-    @include respond(desktop) {
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 1.25rem;
+    width: 100%;
+    padding-left: $spacing-md;
+    padding-right: $spacing-md;
+
+    @include respond(tablet) {
         grid-template-columns: repeat(3, 1fr);
+        padding-left: 2rem;
+        padding-right: 2rem;
+        gap: 2rem;
     }
 
-    @include respond-mobile-tablet {
-        grid-template-columns: auto 1fr auto;
+    @include respond(desktop) {
+        padding-left: 12.5rem;
+        padding-right: 12.5rem;
+
     }
 
     .checkout-header {
-        position: absolute;
-        left: 0;
-        right: 0;
+        grid-column: 1 / -1;
         background-color: $color-background;
         height: $header-height;
         z-index: $z-index-header;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 32px;
         column-gap: 20px;
-        padding-left: 200px;
-        padding-right: 200px;
+
 
         .app-logo-column {
             grid-column: 1;
@@ -32,14 +39,11 @@
             align-items: center;
 
             .app-logo {
-                width: 100px;
+                width: 80px;
                 height: auto;
-                @include respond(tablet) {
-                    width: 80px;
-                }
 
-                @include respond(mobile) {
-                    width: 80px;
+                @include respond(tablet) {
+                    width: 100px;
                 }
             }
         }
@@ -52,10 +56,15 @@
             text-align: center;
 
             .title {
-                font-size: $font-size-3xl;
+                font-size: $font-size-2xl;
                 margin-block: var(--title-margin, $spacing-md);
+
+                @include respond(tablet) {
+                    font-size: $font-size-3xl;
+                }
             }
         }
+
         .unipaas-logo-column {
             grid-column: 3;
             display: flex;
@@ -64,15 +73,11 @@
             padding-left: 1rem;
 
             .unipaas-logo {
-                width: 120px;
+                width: 80px;
                 height: auto;
 
                 @include respond(tablet) {
-                    width: 100px;
-                }
-
-                @include respond(mobile) {
-                    width: 80px;
+                    width: 120px;
                 }
 
                 img {
@@ -86,13 +91,32 @@
 
     .checkout-main {
         grid-column: 1 / -1;
-        display: contents;
-        gap: 32px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 0;
+        margin: 0;
+
+        @include respond(tablet) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @include respond(desktop) {
+            grid-template-columns: repeat(3, 1fr);
+        }
 
         .checkout-left {
-            grid-column: 1/3;
-            margin-top: 100px;
-            gap: 24px;
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+
+            @include respond(tablet) {
+                grid-column: 1 / 3;
+            }
+
+            @include respond(desktop) {
+                grid-column: 1 / 3;
+            }
 
             .box {
                 background: #fff;
@@ -129,15 +153,11 @@
                     gap: 20px;
                     margin: 20px 0;
                     margin-block-start: 12px;
-                    width: 80px;
+                    width: 160px;
                     height: auto;
 
                     @include respond(tablet) {
-                        width: 160px;
-                    }
-
-                    @include respond(mobile) {
-                        width: 160px;
+                        width: 80px;
                     }
 
                     img {
@@ -147,6 +167,7 @@
                     }
                 }
             }
+
             .payment-footer-box {
                 &.box {
                     margin-top: 0;
@@ -154,7 +175,7 @@
                 }
 
                 .credit-cards-img {
-                    height: 30px; // adjust to your needs
+                    height: 30px;
                     margin-left: 14px;
                     vertical-align: middle;
 
@@ -170,18 +191,29 @@
                 padding: 0 20px;
                 margin-bottom: 20px;
                 margin-top: 20px;
-            }
 
-            .payment-button .action-button {
-                width: 100%;
-                &:hover {
-                    background-color: $color-action-hover-green;
+                .action-button {
+                    width: 100%;
+                    &:hover {
+                        background-color: $color-action-hover-green;
+                    }
                 }
             }
         }
 
         .checkout-summary {
-            grid-column: 3;
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+
+            @include respond(tablet) {
+                grid-column: 3 / 4;
+            }
+
+            @include respond(desktop) {
+                grid-column: 3 / 4;
+            }
+
             .box {
                 background: #fff;
                 border: 1px solid #ccc;
@@ -198,29 +230,23 @@
                 justify-content: space-between;
                 border-bottom: 1px solid $color-border-light;
 
-             .action-button {
-                padding: 0 10px;
-                margin-bottom: 20px;
-                font-size: $font-size-sm;
-                border: none;
-                text-decoration: none;
-                &:hover {
-                    background-color: transparent;
-                    text-decoration: underline;
+                .action-button {
+                    padding: 0 10px;
+                    margin-bottom: 20px;
+                    font-size: $font-size-sm;
+                    border: none;
+                    text-decoration: none;
+                    &:hover {
+                        background-color: transparent;
+                        text-decoration: underline;
+                    }
                 }
             }
-        }
 
-            ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
             .cart-items-list {
                 max-height: 50vh;
                 overflow-y: auto;
 
-                // Optional: style scrollbar
                 &::-webkit-scrollbar {
                     width: 6px;
                 }
@@ -229,66 +255,65 @@
                     background-color: rgba(0, 0, 0, 0.15);
                     border-radius: 3px;
                 }
-           
 
-            .cart-product-card.checkout-card {
-                margin-top: 1rem;
-                border-bottom: 1px solid $color-border-light;
+                .cart-product-card.checkout-card {
+                    margin-top: 1rem;
+                    border-bottom: 1px solid $color-border-light;
 
-                .image-container {
-                    grid-row: 1/-1;
-                    width: 100px;
+                    .image-container {
+                        grid-row: 1/-1;
+                        width: 100px;
 
-
-                    img {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
-                }
-
-                .items-details {
-                    .title {
-                        font-size: $font-size-sm;
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
                     }
 
-                    .item-description {
-                        font-size: $font-size-xs;
-                        display: -webkit-box;
-                        -webkit-box-orient: vertical;
-                        -webkit-line-clamp: 2;
-                        line-clamp: 2;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
+                    .items-details {
+                        .title {
+                            font-size: $font-size-sm;
+                        }
 
-                    .item-meta-row {
-                        gap: $spacing-xs;
-                        margin-bottom: 0;
-                    }
-                    .meta-button {
-                        font-size: $font-size-xs;
-                        padding: 0.15rem 0.25rem;
-                        border: none;
+                        .item-description {
+                            font-size: $font-size-xs;
+                            display: -webkit-box;
+                            -webkit-box-orient: vertical;
+                            -webkit-line-clamp: 2;
+                            line-clamp: 2;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
 
-                    }
-                    .total-price {
-                        font-size: $font-size-base;
+                        .item-meta-row {
+                            gap: $spacing-xs;
+                            margin-bottom: 0;
+                        }
+
+                        .meta-button {
+                            font-size: $font-size-xs;
+                            padding: 0.15rem 0.25rem;
+                            border: none;
+                        }
+
+                        .total-price {
+                            font-size: $font-size-base;
+                        }
                     }
                 }
             }
-        }
-                .summary-line {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-top: 0.25rem;
-                    @include text-style();
 
-                    &.total {
-                        @include text-style($size: $font-size-lg, $weight: $font-weight-bold );
-                    }
+            .summary-line {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 0.25rem;
+                @include text-style();
+
+                &.total {
+                    @include text-style($size: $font-size-lg, $weight: $font-weight-bold);
                 }
             }
         }
     }
-
+}

@@ -1,6 +1,13 @@
+@use '../abstracts' as *;
+
 .product-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    grid-template-columns: 1fr; // Single column for mobile
+    gap: 2rem; // Smaller gap for mobile
     width: 100%;
+
+    @include respond(tablet) {
+        grid-template-columns: repeat(3, 1fr); // Three columns for tablet and up
+        gap: 2rem; // Larger gap for tablet and up
+    }
 }

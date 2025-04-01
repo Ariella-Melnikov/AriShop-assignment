@@ -1,18 +1,29 @@
 @use '../abstracts' as *;
 
 .banner {
-  position: relative;
-  width: 100vw;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  z-index: 1;
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    margin-top: 4rem;
+    z-index: 1;
 
-  .banner-img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    display: block;
-  }
+    .banner-img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        display: block;
+        max-height: 300px;
+
+        @include respond(tablet) {
+            max-height: 400px;
+        }
+
+        @include respond(desktop) {
+            max-height: auto;
+        }
+
+    }
 }

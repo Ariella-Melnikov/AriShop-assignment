@@ -15,71 +15,62 @@
 
     .cart-page-main {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        column-gap: $spacing-xl;
+        grid-template-columns: 1fr; // Mobile first - single column
+        gap: $spacing-lg;
+
+        @include respond(tablet) {
+            grid-template-columns: 2fr 1fr; // Two columns for tablet and up
+            column-gap: $spacing-xl;
+        }
 
         .cart-items {
-            grid-column: 1 / 3;
             display: grid;
             grid-auto-rows: auto;
             row-gap: $spacing-md;
 
             .cart-product-card {
-                max-height: 180px;
-                overflow: hidden;
-              }
-            
-              @include respond('wide') {
-                .cart-product-card {
-                  max-height: 180px;
-                }
-              }
-            
-              @include respond('desktop') {
-                .cart-product-card {
-                  max-height: 160px;
-                }
-              }
-            
-              @include respond('tablet') {
-                .cart-product-card {
-                  max-height: 160px;
-                }
-              }
-            
-              @include respond('mobile') {
-                .cart-product-card {
-                  max-height: 160px; // allow full height on small screens
-                }
-              }
+                max-height: none; // Allow full height on mobile
             }
+        }
 
         .cart-summary-section {
-            grid-column: 3 / 4;
-
             .cart-summary-box {
                 border: 1px solid $color-text;
                 display: flex;
                 flex-direction: column;
-                padding-bottom: 2.5rem; // 40px bottom padding
+                padding-bottom: 2rem;
 
                 .summary-title {
-                    @include heading($font-size-xl);
-                    padding: 0.889375rem 0.445rem; // 14.23px top/bottom, 7.12px left/right
+                    @include heading($font-size-lg); // Smaller title for mobile
+                    padding: 0.889375rem 0.445rem;
                     border-bottom: 1px solid $color-border-light;
                     text-align: center;
+
+                    @include respond(tablet) {
+                        @include heading($font-size-xl);
+                    }
                 }
 
                 .summary-rows-wrapper {
                     display: flex;
                     flex-direction: column;
-                    gap: $spacing-md;
-                    padding: 0 1.25rem;
+                    gap: $spacing-sm; // Smaller gap for mobile
+                    padding: 0 1rem;
+
+                    @include respond(tablet) {
+                        gap: $spacing-md;
+                        padding: 0 1.25rem;
+                    }
                 }
 
                 .summary-row {
                     @include flex-between;
-                    @include text-style($size: $font-size-lg);
+                    @include text-style($size: $font-size-base); // Smaller text for mobile
+
+                    @include respond(tablet) {
+                        @include text-style($size: $font-size-lg);
+                    }
+
                     &.with-border {
                         border-bottom: 1px solid $color-border-light;
                         padding-bottom: $spacing-sm;
@@ -90,18 +81,26 @@
                         font-weight: $font-weight-bold;
                     }
                 }
+
                 .checkout-btn-wrapper {
-                    padding: 0 1.25rem;
-                    .checkout-btn {
-                        margin-top: 2.5rem; // 40px gap from the summary rows                    width: 100%;
+                    padding: 0 1rem;
+                    margin-top: 2rem;
+
+                    @include respond(tablet) {
+                        padding: 0 1.25rem;
+                        margin-top: 2rem;
+                    }
+
+                    .action-button {
                         width: 100%;
-                        padding: $spacing-sm $spacing-md;
-                        background-color: $color-text;
-                        color: $color-white;
-                        border: none;
-                        border-radius: $radius-sm;
+                        padding: 0.75rem 2rem;
+                        color: $color-text;
                         font-weight: $font-weight-semibold;
                         cursor: pointer;
+
+                        @include respond(tablet) {
+                            padding: 0.75rem 2rem;
+                        }
 
                         &:hover {
                             background-color: $color-action-hover;
@@ -116,37 +115,62 @@
 
 .empty-cart {
     text-align: center;
-    margin-top: 3rem;
+    margin-top: 2rem; // Smaller margin for mobile
+
+    @include respond(tablet) {
+        margin-top: 3rem;
+    }
 
     .cart-icon {
-        font-size: 4rem;
+        font-size: 3rem; // Smaller icon for mobile
         margin-bottom: 1rem;
+
+        @include respond(tablet) {
+            font-size: 4rem;
+        }
     }
 
     .main-message {
-        font-size: 1.5rem;
+        font-size: 1.25rem; // Smaller text for mobile
         font-weight: bold;
         margin-bottom: 0.5rem;
+
+        @include respond(tablet) {
+            font-size: 1.5rem;
+        }
     }
 
     .sub-message {
-        font-size: 1.1rem;
+        font-size: 1rem; // Smaller text for mobile
         margin-bottom: 0.3rem;
+
+        @include respond(tablet) {
+            font-size: 1.1rem;
+        }
     }
 
     .tagline {
-        font-size: 1.1rem;
+        font-size: 1rem; // Smaller text for mobile
         margin-bottom: 1.5rem;
         color: #444;
+
+        @include respond(tablet) {
+            font-size: 1.1rem;
+        }
     }
 
     .signin-btn {
-        padding: 0.6rem 1.2rem;
-        font-size: 1rem;
+        padding: 0.5rem 1rem; // Smaller padding for mobile
+        font-size: 0.875rem; // Smaller text for mobile
         border: none;
         background-color: #000;
         color: #fff;
         cursor: pointer;
         border-radius: 4px;
+
+        @include respond(tablet) {
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+        }
     }
 }

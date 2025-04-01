@@ -2,9 +2,9 @@
 
 .tag {
   gap: 0.625rem; // 10px
-  padding: 0 1rem; // Horizontal padding only
+  padding: 0 1rem; 
   
-  height: 2rem; // Adjust height for better alignment
+  height: 2rem; 
   
   border: 1px solid $color-text;
   background-color: transparent;
@@ -12,14 +12,19 @@
   text-align: start;
   cursor: pointer;
   transition: background-color $transition-base;
-  @include text-style;
+  @include text-style($size:$font-size-xs);
   
   @include flex-center;
-    &.active,
-    &:hover,
-    &:active {
-      background-color: $color-action;
-    }
+  
+  @include respond(tablet) {
+    @include text-style($size:$font-size-sm)
+  }
+  
+  &.active,
+  &:hover,
+  &:active {
+    background-color: $color-action;
+  }
   
     .tag-icon {
         width: 0.375rem; // 6px

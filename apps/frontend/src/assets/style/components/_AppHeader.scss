@@ -20,30 +20,31 @@
     .header-content {
         width: 100%;
         align-items: center;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
 
         @include layout-grid;
 
-        @include respond(desktop) {
-            grid-template-columns: auto 1fr auto;
+        @include respond(tablet) {
+            padding: 0 2rem;
         }
 
-        @include respond-mobile-tablet {
-            grid-template-columns: auto 1fr auto;
+        @include respond(desktop) {
+            padding: 0 12.5rem;
         }
     }
 
     .hamburger-menu {
-        display: none;
-        grid-column: 1; // ✅ always left in mobile/tablet
+        display: flex;
+        align-items: center;
+        justify-content: start;
         cursor: pointer;
         width: 30px;
         height: 30px;
         position: relative;
 
-        @include respond-mobile-tablet {
-            display: flex;
-            align-items: center;
-            justify-content: start;
+        @include respond(tablet) {
+            display: none;
         }
 
         .hamburger-icon {
@@ -92,68 +93,67 @@
     }
 
     .logo-column {
-        grid-column: 1;
         display: flex;
-        justify-content: start;
+        justify-content: center;
         align-items: center;
 
-        @include respond-mobile-tablet {
-            grid-column: 2;
-            justify-content: center;
-        }
-
         .app-logo {
-            width: 140px;
+            width: 100px;
             height: auto;
 
             @include respond(tablet) {
                 width: 120px;
             }
 
-            @include respond(mobile) {
-                width: 100px;
+            @include respond(desktop) {
+                width: 140px;
             }
         }
     }
 
     .nav-column {
-        grid-column: 2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: none;
+        opacity: 0;
+        height: 0;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: $color-background;
+        padding: $spacing-md;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        flex-direction: column;
+        gap: $spacing-md;
+        transition: all 0.3s ease-in-out;
 
-        @include respond-mobile-tablet {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: $color-background;
-            padding: $spacing-md;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            flex-direction: column;
-            gap: $spacing-md;
-            transition: all 0.3s ease-in-out;
+        @include respond(tablet) {
+            grid-column: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: static;
+            width: auto;
+            height: auto;
+            opacity: 1;
+            box-shadow: none;
+            padding: 0;
+        }
 
-            display: none;
-            opacity: 0;
-            height: 0;
-
-            &.active {
-                display: flex;
-                opacity: 1;
-                height: auto;
-            }
+        &.active {
+            display: flex;
+            opacity: 1;
+            height: auto;
         }
     }
 
     .nav-links {
         display: flex;
-        gap: $spacing-xl;
+        flex-direction: column;
+        gap: $spacing-sm;
 
-        @include respond-mobile-tablet {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: $spacing-sm;
+        @include respond(tablet) {
+            flex-direction: row;
+            gap: $spacing-xl;
         }
 
         a {
@@ -166,15 +166,10 @@
                 color: $color-action-hover;
                 font-weight: $font-weight-bold;
             }
-
-            @include respond-mobile-tablet {
-                font-size: $font-size-base;
-            }
         }
     }
 
     .cart-column {
-        grid-column: 3;
         display: flex;
         justify-content: flex-end;
         align-items: center;

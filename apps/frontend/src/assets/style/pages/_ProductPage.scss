@@ -2,19 +2,28 @@
 
 .product-page {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: $spacing-xl;
+    grid-template-columns: 1fr;
     border: 1px solid $color-text;
-    margin-top: $spacing-8xl;
+    margin-top: $spacing-4xl;
 
-    @include respond(mobile) {
-        grid-template-columns: 1fr;
+    @include respond(tablet) {
+        grid-template-columns: 1fr 1fr;
+        margin-top: $spacing-4xl;
+    }
+
+    @include respond(desktop) {
+        grid-template-columns: repeat(3, 1fr);
+        margin-top: $spacing-8xl;
     }
 
     .product-info {
-        gap: 1.5rem;
+        gap: 1rem;
         height: 100%;
         @include flex(column, flex-start, stretch);
+
+        @include respond(tablet) {
+            gap: 1rem;
+        }
 
         > * {
             padding-inline: 10px;
@@ -26,30 +35,51 @@
             white-space: nowrap; 
             overflow: hidden; 
             text-overflow: ellipsis; 
+            @include text-style($size: $font-size-xl);
+
+            @include respond(tablet) {
+                @include text-style($size: $font-size-2xl);
+            }
         }
+
         .product-description {
-            @include text-style($size: $font-size-lg,$color: $color-text-light);
+            @include text-style($size: $font-size-base, $color: $color-text-light);
+
+            @include respond(tablet) {
+                @include text-style($size: $font-size-lg, $color: $color-text-light);
+            }
         }
 
         .variant-select {
-            gap: 1rem;
+            gap: 0.75rem;
             @include flex($align:center);
-            @include text-style($size: $font-size-lg);
+            @include text-style($size: $font-size-base);
 
+            @include respond(tablet) {
+                gap: 1rem;
+                @include text-style($size: $font-size-lg);
+            }
 
             .variant-button {
-                width: 2rem;
-                height: 2rem;
+                width: 1.75rem;
+                height: 1.75rem;
                 border: 1px solid $color-text;
                 aspect-ratio: 1 / 1;
-                padding: $spacing-sm $spacing-md;
+                padding: $spacing-xs $spacing-sm;
                 background-color: transparent;
                 cursor: pointer;
                 transition: background-color $transition-base;
                 position: relative;
 
-                @include text-style($size: $font-size-lg, $weight: $font-weight-medium);
+                @include text-style($size: $font-size-base, $weight: $font-weight-medium);
                 @include flex-center;
+
+                @include respond(tablet) {
+                    width: 2rem;
+                    height: 2rem;
+                    padding: $spacing-sm $spacing-md;
+                    @include text-style($size: $font-size-lg, $weight: $font-weight-medium);
+                }
 
                 &.active,
                 &:hover {
@@ -67,7 +97,7 @@
                 &::after {
                     content: '';
                     position: absolute;
-                    width: 140%; // slightly more than 100% to cover the diagonal
+                    width: 140%;
                     height: 0.0625rem;
                     background-color: $color-text;
                     top: 50%;
@@ -79,28 +109,46 @@
         }
 
         .quantity-select {
-            gap: $spacing-md;
-            @include flex( $align: center);
-            @include text-style($size: $font-size-lg);
+            gap: $spacing-sm;
+            @include flex($align: center);
+            @include text-style($size: $font-size-base);
+
+            @include respond(tablet) {
+                gap: $spacing-md;
+                @include text-style($size: $font-size-lg);
+            }
 
             .quantity-buttons {
-                gap: $spacing-sm;
-                @include flex( $align: center);
-                @include text-style($size: $font-size-lg);
+                gap: $spacing-xs;
+                @include flex($align: center);
+                @include text-style($size: $font-size-base);
 
+                @include respond(tablet) {
+                    gap: $spacing-sm;
+                    @include text-style($size: $font-size-lg);
+                }
 
                 button {
-                    padding: $spacing-xs $spacing-sm-2;
+                    padding: $spacing-xs $spacing-sm;
                     background-color: transparent;
                     border: none;
                     cursor: pointer;
-                    @include text-style($size: $font-size-xl);
+                    @include text-style($size: $font-size-lg);
+
+                    @include respond(tablet) {
+                        padding: $spacing-xs $spacing-sm-2;
+                        @include text-style($size: $font-size-xl);
+                    }
                 }
             }
         }
 
         .price {
-            @include text-style($size: $font-size-3xl, $weight: $font-weight-bold);
+            @include text-style($size: $font-size-2xl, $weight: $font-weight-bold);
+
+            @include respond(tablet) {
+                @include text-style($size: $font-size-3xl, $weight: $font-weight-bold);
+            }
         }
 
         .action-button {
@@ -109,10 +157,11 @@
         }
     }
 
-
     .product-gallery {
-        height: 100%;
+        grid-row: 1;
         width: 100%;
+        height: 300px;
+        overflow: hidden;
         border: 1px solid $color-text;
         @include flex($justify:center);
 
@@ -120,6 +169,21 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
+        }
+
+        @include respond(tablet) {
+            grid-column: 2 / 3;
+            width: auto;
+            height: 450px;
+        }
+    
+        @include respond(desktop) {
+            height: 600px;
+        }
+
+        @include respond(wide) {
+            height: 700px;
         }
     }
 }

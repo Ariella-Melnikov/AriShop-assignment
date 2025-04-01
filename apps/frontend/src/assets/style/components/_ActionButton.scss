@@ -1,32 +1,49 @@
 @use '../abstracts' as *;
 
 .action-button {
-    padding: 0.8rem 1.8rem; // 22px vertical 
-    background-color: $color-action;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background-color $transition-base;
-    border: 1px solid $color-text;
+  padding: $spacing-sm-2 $spacing-xl; // 8px 16px
+  background-color: $color-action;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color $transition-base;
+  border: 1px solid $color-text;
 
-    @include flex ($align:center, $justify:center);
-    @include text-style($size: $font-size-lg);
+  @include flex($align:center, $justify:center);
+  @include text-style($size: $font-size-sm, $weight: $font-weight-medium);
+
+    // Breakpoint overrides
+    @include respond(tablet) {
+      padding: $spacing-sm $spacing-lg; // 8px 24px
+      @include text-style($size: $font-size-sm);
+    }
   
+    @include respond(desktop) {
+      padding: $spacing-sm-2 $spacing-lg; // 8px 48px
+      @include text-style($size: $font-size-base);
+    }
+  
+    @include respond(wide) {
+      padding: $spacing-sm-2 $spacing-xl; // 16px 64px
+      @include text-style($size: $font-size-lg);
+    }
+
+  &:hover,
+  &:active {
+    background-color: $color-action-hover;
+  }
+
+  &.secondary {
+    background-color: $color-background;
+
     &:hover,
     &:active {
       background-color: $color-action-hover;
     }
-  
-    &.secondary {
-      background-color: $color-background;
-      
-      &:hover,
-      &:active {
-        background-color: $color-action-hover;
-      }
-    }
-  
-    &.disabled {
-      opacity: 0.6;
-      pointer-events: none;
-    }
   }
+
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+}

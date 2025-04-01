@@ -3,13 +3,16 @@
 .cart-product-card {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: $spacing-lg;
+  gap: $spacing-md;
   padding-bottom: $spacing-md;
   border-bottom: 1px solid $color-text;
 
+  @include respond(tablet) {
+    gap: $spacing-lg;
+  }
+
   .image-container {
-    width: 160px;
-    max-height: 160px;
+    width: 180px;
     grid-row: 1 / -1;
     grid-column: 1;
     display: flex;
@@ -17,6 +20,10 @@
     justify-content: center;
     overflow: hidden;
     border: 1px solid $color-text;
+
+    @include respond(tablet) {
+      width: 160px;
+    }
 
     img {
       width: 100%;
@@ -41,7 +48,11 @@
       margin-bottom: $spacing-xs;
 
       .title {
-        @include text-style($size: $font-size-lg, $weight: $font-weight-semibold);
+        @include text-style($size: $font-size-base, $weight: $font-weight-semibold);
+
+        @include respond(tablet) {
+          @include text-style($size: $font-size-lg, $weight: $font-weight-semibold);
+        }
       }
 
       .remove-btn {
@@ -54,9 +65,14 @@
         justify-content: center;
 
         .remove-icon {
-          width: 14px;
-          height: 14px;
+          width: 12px;
+          height: 12px;
           transition: stroke 0.2s;
+
+          @include respond(tablet) {
+            width: 14px;
+            height: 14px;
+          }
 
           &:hover {
             stroke: $color-error;
@@ -69,11 +85,16 @@
       grid-row: 2;
       margin-bottom: $spacing-sm;
       display: -webkit-box;
-      // -webkit-line-clamp: 2;
-      // -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
-      @include text-style($size: $font-size-lg, $color: $color-text-light);
+      @include text-style($size: $font-size-base, $color: $color-text-light);
+
+      @include respond(tablet) {
+        @include text-style($size: $font-size-lg, $color: $color-text-light);
+      }
     }
 
     .item-meta-row {
@@ -81,25 +102,37 @@
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: $spacing-sm;
+      gap: $spacing-xs;
       margin-bottom: $spacing-sm;
 
+      @include respond(tablet) {
+        gap: $spacing-sm;
+      }
+
       .meta-label {
-        @include text-style($size: $font-size-sm);
+        @include text-style($size: $font-size-xs);
+
+        @include respond(tablet) {
+          @include text-style($size: $font-size-sm);
+        }
       }
 
       .meta-button {
-        padding: 0.25rem 0.75rem;
-        font-size: $font-size-sm;
+        padding: 0.25rem 0.5rem;
+        font-size: $font-size-xs;
         border: 1px solid $color-text;
         background-color: transparent;
         pointer-events: none;
         cursor: default;
-        // width: 2rem;
-        // height: 2rem;
         aspect-ratio: 1 / 1;
         @include flex-center;
-        @include text-style($size: $font-size-sm, $weight: $font-weight-semibold);
+        @include text-style($size: $font-size-xs, $weight: $font-weight-semibold);
+
+        @include respond(tablet) {
+          padding: 0.25rem 0.75rem;
+          font-size: $font-size-sm;
+          @include text-style($size: $font-size-sm, $weight: $font-weight-semibold);
+        }
       }
 
       .controls {
@@ -108,7 +141,11 @@
         gap: $spacing-xs;
 
         .label {
-          @include text-style($size: $font-size-sm);
+          @include text-style($size: $font-size-xs);
+
+          @include respond(tablet) {
+            @include text-style($size: $font-size-sm);
+          }
         }
 
         .meta-button {
@@ -128,12 +165,20 @@
 
         .quantity {
           padding: 0 $spacing-xs;
-          @include text-style($size: $font-size-sm, $weight: $font-weight-bold);
+          @include text-style($size: $font-size-xs, $weight: $font-weight-bold);
+
+          @include respond(tablet) {
+            @include text-style($size: $font-size-sm, $weight: $font-weight-bold);
+          }
         }
 
         .readonly-quantity {
           padding: 0 $spacing-xs;
-          @include text-style($size: $font-size-sm);
+          @include text-style($size: $font-size-xs);
+
+          @include respond(tablet) {
+            @include text-style($size: $font-size-sm);
+          }
         }
       }
     }
@@ -146,7 +191,11 @@
       align-items: center;
 
       .total-price {
-        @include text-style($size: $font-size-lg, $weight: $font-weight-semibold);
+        @include text-style($size: $font-size-base, $weight: $font-weight-semibold);
+
+        @include respond(tablet) {
+          @include text-style($size: $font-size-lg, $weight: $font-weight-semibold);
+        }
       }
     }
   }
