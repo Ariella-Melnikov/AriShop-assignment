@@ -88,7 +88,6 @@ export const CheckoutPage = () => {
                 const variant = product?.variants.find((v) => v._id === item.variantId)
                 const itemPriceILS = variant?.price.amount || 0
     
-                // ✅ Convert to float with 2 decimals
                 const itemPriceUSD = parseFloat((itemPriceILS * exchangeRate).toFixed(2))
                 const totalForItem = parseFloat((itemPriceUSD * item.quantity).toFixed(2))
     
@@ -159,7 +158,7 @@ export const CheckoutPage = () => {
         return acc + variant.price.amount * item.quantity
     }, 0)
 
-    const subtotalUSD = +(subtotalILS * exchangeRate).toFixed(2)
+    const subtotalUSD = +(subtotalILS * exchangeRate)
 
     if (loading || showLoader) {
         return (
