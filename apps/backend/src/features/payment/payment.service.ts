@@ -4,13 +4,6 @@ import { ConfigService } from '@nestjs/config'
 import { firstValueFrom } from 'rxjs'
 import { CreateCheckoutDto } from './dto/create-checkout.dto'
 import { AddressDto } from './dto/address.dto'
-import { config } from 'dotenv'
-
-if (process.env.RENDER) {
-    config({ path: '/etc/secrets/UNIPAAS_API' })
-} else {
-    config()
-}
 @Injectable()
 export class PaymentService {
     constructor(private readonly httpService: HttpService, private readonly configService: ConfigService) {}
