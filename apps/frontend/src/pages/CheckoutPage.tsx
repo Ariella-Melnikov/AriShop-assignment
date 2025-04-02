@@ -101,7 +101,10 @@ export const CheckoutPage = () => {
                     quantity: item.quantity,
                 }
             })
-    
+
+            const redirectUrl = `${window.location.origin}/success?orderId=${orderId}&paymentApproved=true`
+            console.log('Redirecting to:', window.location.origin)
+            
             const payload = {
                 amount: parseFloat(totalAmount.toFixed(2)), 
                 currency: 'USD',
@@ -128,7 +131,7 @@ export const CheckoutPage = () => {
                     postalCode: shippingAddress.zip,
                     state: '',
                 },
-                successfulPaymentRedirect: `${window.location.origin}/success?orderId=${orderId}&paymentApproved=true`,
+                successfulPaymentRedirect: redirectUrl,
             }
     
             const { checkoutUrl } = await paymentService.createCheckout(payload)

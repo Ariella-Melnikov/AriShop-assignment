@@ -51,10 +51,10 @@ export class PaymentService {
             items: dto.items.map((item) => ({
                 name: item.name,
                 amount: item.amount,
-                description: item.description || 'N/A', // optional fallback
+                description: item.description || 'N/A', 
                 quantity: item.quantity || 1,
             })),
-            // successfulPaymentRedirect: dto.successfulPaymentRedirect,
+            successfulPaymentRedirect: dto.successfulPaymentRedirect,
         }
 
         console.log('[DEBUG] Final Payload to UniPaaS:', JSON.stringify(payload, null, 2))
