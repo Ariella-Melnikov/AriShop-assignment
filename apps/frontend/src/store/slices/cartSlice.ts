@@ -26,20 +26,22 @@ const initialState: CartState = {
 
 const normalizeCart = (cart: Cart): CartState => {
   return {
-    items: cart.items.map((item) => {
-      const productId =
-        typeof item.productId === 'string'
-          ? item.productId
-          : (item.productId as { _id: string })._id
+    items: cart.items
+      .filter((item) => item && item.productId && item.variantId)
+      .map((item) => {
+        const productId =
+          typeof item.productId === 'string'
+            ? item.productId
+            : (item.productId as { _id: string })._id
 
-      return {
-        _id: item._id, // <-- Now correctly inside the returned object
-        productId,
-        variantId: item.variantId,
-        quantity: item.quantity,
-        price: item.price,
-      }
-    }),
+        return {
+          _id: item._id,
+          productId,
+          variantId: item.variantId,
+          quantity: item.quantity,
+          price: item.price,
+        }
+      }),
     subtotal: cart.subtotal,
     total: cart.total,
     loading: false,

@@ -60,4 +60,4 @@ export const CartSchema = SchemaFactory.createForClass(Cart)
 
 CartSchema.index({ cartToken: 1 }, { unique: true, sparse: true })
 CartSchema.index({ userId: 1 }, { unique: true, sparse: true })
-CartSchema.index({ 'items.productId': 1, 'items.variantId': 1 }, { sparse: true })
+CartSchema.index({ 'items.productId': 1, 'items.variantId': 1 }, { unique: true, sparse: true })

@@ -39,25 +39,30 @@ export class CartService {
         if (!cart) {
             throw new NotFoundException('Cart not found')
         }
-
+    
         const product = await this.productsService.findOne(dto.productId)
         if (!product) {
             throw new NotFoundException('Product not found')
         }
-
+    
         const variant = product.variants.find((v) => v._id.toString() === dto.variantId)
         if (!variant) {
             throw new NotFoundException('Variant not found')
         }
-
-        const existingIndex = cart.items.findIndex(
-            (item) => item.productId.toString() === dto.productId && item.variantId.toString() === dto.variantId
+    
+        // 🔍 Check if the item already exists in the cart
+        const existingItem = cart.items.find(
+            (item) =>
+                item.productId.toString() === dto.productId &&
+                item.variantId.toString() === dto.variantId
         )
-
-        if (existingIndex > -1) {
-            cart.items[existingIndex].quantity += dto.quantity
-            cart.items[existingIndex].totalPrice.amount = cart.items[existingIndex].quantity * variant.price.amount
+    
+        if (existingItem) {
+            // ✅ Item already exists → increment quantity and total
+            existingItem.quantity += dto.quantity
+            existingItem.totalPrice.amount = existingItem.quantity * variant.price.amount
         } else {
+            // ✅ New item → push it safely
             cart.items.push({
                 _id: new mongoose.Types.ObjectId().toString(),
                 productId: dto.productId,
@@ -71,11 +76,11 @@ export class CartService {
                 addedAt: new Date(),
             })
         }
-
+    
         cart.markModified('items')
         this.recalculateCartTotals(cart)
         await cart.save()
-
+    
         return this.cartModel.findById(cart._id).populate('items.productId')
     }
 
