@@ -158,7 +158,7 @@ export const CheckoutPage = () => {
         return acc + variant.price.amount * item.quantity
     }, 0)
 
-    const subtotalUSD = +(subtotalILS * exchangeRate)
+    const subtotalUSD = +(subtotalILS * exchangeRate).toFixed(2)
 
     if (loading || showLoader) {
         return (
