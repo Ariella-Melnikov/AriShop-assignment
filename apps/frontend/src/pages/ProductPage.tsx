@@ -1,18 +1,21 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { productService } from '../services/productService'
-import { Product } from '@arishop/shared'
-import { PageTitle } from '../components/Title/PageTitle'
-import { ActionButton } from '../components/Buttons/ActionButton'
+import type { AppDispatch } from '../store/store'
 import { openCartModal } from '../store/slices/cartUiSlice'
 import { addCartItem } from '../store/actions/cartActions'
-import type { AppDispatch } from '../store/store'
+import { RootState } from '../store/store'
+import { PageTitle } from '../components/Title/PageTitle'
+import { ActionButton } from '../components/Buttons/ActionButton'
+import { PageLoader } from '../components/Loader/PageLoader'
+import { productService } from '../services/productService'
+import { Product } from '@arishop/shared'
 
 export const ProductPage = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { productId } = useParams()
     const [product, setProduct] = useState<Product | null>(null)
+    const { loading} = useSelector((state: RootState) => state.products)
     const [selectedSize, setSelectedSize] = useState<'small' | 'medium' | 'large'>('medium')
     const [quantity, setQuantity] = useState(1)
 
@@ -46,7 +49,7 @@ export const ProductPage = () => {
     const price = selectedVariant?.price?.amount || 0
     const currency = selectedVariant?.price?.currency || 'ILS'
 
-    if (!product) return <div>Loading product...</div>
+    if (!product || loading ) return <PageLoader />
 
     return (
         <div className='product-page'>

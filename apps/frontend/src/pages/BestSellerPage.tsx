@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState, AppDispatch } from '../store/store'
 import { openCartModal } from '../store/slices/cartUiSlice'
@@ -16,7 +16,6 @@ import bestSellerImg from '../assets/img/best-seller.png'
 export const BestSellerPage = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { loading, error } = useSelector((state: RootState) => state.products)
-    const [showLoader, setShowLoader] = useState(true)
     const { products, allTags, selectedTags, sortOrder } = useSelector((state: RootState) => state.products)
 
     useEffect(() => {
@@ -25,12 +24,6 @@ export const BestSellerPage = () => {
             dispatch(fetchTags())
         }
     }, [dispatch, products.length])
-
-    useEffect(() => {
-        const timer = setTimeout(() => setShowLoader(false), 3000)
-
-        return () => clearTimeout(timer)
-    }, [])
 
     const bestSellerProducts = products.filter((p) => p.isBestSeller)
 
@@ -92,7 +85,7 @@ export const BestSellerPage = () => {
         }
     }
 
-    if (loading || showLoader) {
+    if (loading) {
         return (
             <div className='loading'>
                 <PageLoader />

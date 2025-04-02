@@ -61,7 +61,7 @@ export const CheckoutPage = () => {
             dispatch(updateUserAddress(updatedAddress))
         } else {
             dispatch(setAnonymousDeliveryAddress(updatedAddress))
-            dispatch(setAnonymousBillingAddress(updatedAddress)) // Default billing = delivery
+            dispatch(setAnonymousBillingAddress(updatedAddress)) 
         }
     }
 
@@ -72,6 +72,8 @@ export const CheckoutPage = () => {
     }
 
     const handleUniPaaSPayment = async () => {
+        let totalAmount = 0
+    
         try {
             const orderId = crypto.randomUUID()
             const email = user?.email || anonymousUser.email
@@ -80,24 +82,29 @@ export const CheckoutPage = () => {
                 firstName: user?.firstName || anonymousUser.firstName,
                 lastName: user?.lastName || anonymousUser.lastName,
             }
-
+    
             const itemsPayload = items.map((item) => {
                 const product = products.find((p) => p._id === item.productId)
                 const variant = product?.variants.find((v) => v._id === item.variantId)
                 const itemPriceILS = variant?.price.amount || 0
-                const itemPriceUSD = Math.round(itemPriceILS * exchangeRate) // ✅ in cents
-              
+    
+                // ✅ Convert to float with 2 decimals
+                const itemPriceUSD = parseFloat((itemPriceILS * exchangeRate).toFixed(2))
+                const totalForItem = parseFloat((itemPriceUSD * item.quantity).toFixed(2))
+    
+                totalAmount += totalForItem
+    
                 return {
-                  name: product?.name || 'Unknown',
-                  amount: itemPriceUSD,
-                  platformFee: 0,
-                  description: product?.description || 'No description',
-                  quantity: item.quantity,
+                    name: product?.name || 'Unknown',
+                    amount: itemPriceUSD, 
+                    platformFee: 0,
+                    description: product?.description || 'No description',
+                    quantity: item.quantity,
                 }
-              })
-
+            })
+    
             const payload = {
-                amount: subtotalUSD,
+                amount: parseFloat(totalAmount.toFixed(2)), 
                 currency: 'USD',
                 orderId,
                 email,
@@ -112,8 +119,8 @@ export const CheckoutPage = () => {
                     line2: shippingAddress.apartment,
                     postalCode: shippingAddress.zip,
                     state: '',
-                  },
-                  billingAddress: {
+                },
+                billingAddress: {
                     ...shippingAddress,
                     firstName: billingName.firstName,
                     lastName: billingName.lastName,
@@ -121,10 +128,10 @@ export const CheckoutPage = () => {
                     line2: shippingAddress.apartment,
                     postalCode: shippingAddress.zip,
                     state: '',
-                  },
-                  successfulPaymentRedirect: `${window.location.origin}/success?orderId=${orderId}&paymentApproved=true`,
-                }
-
+                },
+                successfulPaymentRedirect: `${window.location.origin}/success?orderId=${orderId}&paymentApproved=true`,
+            }
+    
             const { checkoutUrl } = await paymentService.createCheckout(payload)
             window.location.href = checkoutUrl
         } catch (err) {
@@ -156,9 +163,7 @@ export const CheckoutPage = () => {
 
     if (loading || showLoader) {
         return (
-          <div className='loading'>
             <PageLoader />
-          </div>
         )
     }
 
@@ -206,7 +211,7 @@ export const CheckoutPage = () => {
                                 lastName={user?.lastName || anonymousUser.lastName}
                                 email={user?.email || anonymousUser.email}
                                 isSignedIn={!!user}
-                                editable={!user} // signed-in users don't edit billing
+                                editable={!user} 
                                 onSave={handleSaveBillingAddress}
                                 title='Billing Address'
                                 onGuestInfoSave={handleGuestInfoSave}

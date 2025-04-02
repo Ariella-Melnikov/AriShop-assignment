@@ -4,7 +4,7 @@ import { RootState, AppDispatch } from '../store/store'
 import { fetchCart, removeCartItem, updateCartItem } from '../store/actions/cartActions'
 import { useNavigate } from 'react-router-dom'
 import { PageTitle } from '../components/Title/PageTitle'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { fetchProducts } from '../store/slices/productSlice'
 import { ActionButton } from '../components/Buttons/ActionButton'
 import { PageLoader } from '../components/Loader/PageLoader'
@@ -12,7 +12,6 @@ import { PageLoader } from '../components/Loader/PageLoader'
 export const CartPage = () => {
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
-    const [showLoading, setShowLoading] = useState(true)
     const { items, subtotal, loading } = useSelector((state: RootState) => state.cart)
     const user = useSelector((state: RootState) => state.user.user)
     const products = useSelector((state: RootState) => state.products.products)
@@ -33,10 +32,6 @@ export const CartPage = () => {
         if (token || user) {
           dispatch(fetchCart())
         }
-      
-        const timeout = setTimeout(() => setShowLoading(false), 3000)
-      
-        return () => clearTimeout(timeout)
       }, [dispatch, user])
 
 
@@ -57,9 +52,11 @@ export const CartPage = () => {
         }
     }
 
-    if (showLoading) {
-        return <PageLoader />
-    }
+    if (loading) {
+        return (
+            <PageLoader />
+        )
+      }
     
     if (!loading && items.length === 0) {
         return (

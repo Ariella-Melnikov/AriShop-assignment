@@ -179,10 +179,12 @@
         }
     
         @include respond(desktop) {
+            grid-column: 3 / 4;
             height: 600px;
         }
 
         @include respond(wide) {
+            grid-column: 3 / 4;
             height: 700px;
         }
     }
