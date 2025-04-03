@@ -27,7 +27,7 @@ interface CreateCheckoutPayload {
   items: CheckoutItem[]
   shippingAddress: ShippingAddress
   shippingSameAsBilling: boolean
-  successfulPaymentRedirect: string
+  successfulPaymentRedirect?: string
 }
 
 export const paymentService = {
