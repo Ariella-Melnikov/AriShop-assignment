@@ -1,13 +1,17 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState, useRef } from 'react'
+import { useNavigate, NavLink } from 'react-router-dom'
 import { AppDispatch, RootState } from '../store/store'
 import { fetchLoggedInUser, updateUserAddress } from '../store/slices/userSlice'
-import { setAnonymousBillingAddress, setAnonymousDeliveryAddress, setAnonymousNameAndEmail } from '../store/slices/anonymousUserSlice'
+import {
+    setAnonymousBillingAddress,
+    setAnonymousDeliveryAddress,
+    setAnonymousNameAndEmail,
+} from '../store/slices/anonymousUserSlice'
 import { fetchProducts } from '../store/slices/productSlice'
 import { PageTitle } from '../components/Title/PageTitle'
 import { ActionButton } from '../components/Buttons/ActionButton'
-import { DeliveryAddressBox } from '../components/Checkout/DeliveryAddressBox'
+import DeliveryAddressBox, { DeliveryAddressBoxHandle } from '../components/Checkout/DeliveryAddressBox'
 import { DeliveryOptionsBox } from '../components/Checkout/DeliveryOptionsBox'
 import { SectionTitle } from '../components/Title/SectionTitle'
 import { CartProductCard } from '../components/ProductCard/CartProductCard'
@@ -29,6 +33,8 @@ export const CheckoutPage = () => {
     const products = useSelector((state: RootState) => state.products.products)
     const user = useSelector((state: RootState) => state.user.user)
     const anonymousUser = useSelector((state: RootState) => state.anonymousUser)
+    const deliveryRef = useRef<DeliveryAddressBoxHandle>(null)
+    const billingRef = useRef<DeliveryAddressBoxHandle>(null)
 
     useEffect(() => {
         if (!user) dispatch(fetchLoggedInUser())
@@ -61,7 +67,7 @@ export const CheckoutPage = () => {
             dispatch(updateUserAddress(updatedAddress))
         } else {
             dispatch(setAnonymousDeliveryAddress(updatedAddress))
-            dispatch(setAnonymousBillingAddress(updatedAddress)) 
+            dispatch(setAnonymousBillingAddress(updatedAddress))
         }
     }
 
@@ -73,7 +79,14 @@ export const CheckoutPage = () => {
 
     const handleUniPaaSPayment = async () => {
         let totalAmount = 0
-    
+        const isDeliveryValid = deliveryRef.current?.validateForm() ?? false
+        const isBillingValid = billingRef.current?.validateForm() ?? false
+
+        if (!isDeliveryValid || !isBillingValid) {
+            alert('Please complete both delivery and billing address information before proceeding.')
+            return
+        }
+
         try {
             const orderId = crypto.randomUUID()
             const email = user?.email || anonymousUser.email
@@ -82,29 +95,28 @@ export const CheckoutPage = () => {
                 firstName: user?.firstName || anonymousUser.firstName,
                 lastName: user?.lastName || anonymousUser.lastName,
             }
-    
+
             const itemsPayload = items.map((item) => {
                 const product = products.find((p) => p._id === item.productId)
                 const variant = product?.variants.find((v) => v._id === item.variantId)
                 const itemPriceILS = variant?.price.amount || 0
-    
+
                 const itemPriceUSD = parseFloat((itemPriceILS * exchangeRate).toFixed(2))
                 const totalForItem = parseFloat((itemPriceUSD * item.quantity).toFixed(2))
-    
+
                 totalAmount += totalForItem
-    
+
                 return {
                     name: product?.name || 'Unknown',
-                    amount: itemPriceUSD, 
+                    amount: itemPriceUSD,
                     platformFee: 0,
                     description: product?.description || 'No description',
                     quantity: item.quantity,
                 }
             })
 
-
             const payload = {
-                amount: parseFloat(totalAmount.toFixed(2)), 
+                amount: parseFloat(totalAmount.toFixed(2)),
                 currency: 'USD',
                 orderId,
                 email,
@@ -128,9 +140,9 @@ export const CheckoutPage = () => {
                     line2: shippingAddress.apartment,
                     postalCode: shippingAddress.zip,
                     state: '',
-                }
+                },
             }
-    
+
             const { checkoutUrl } = await paymentService.createCheckout(payload)
             window.location.href = checkoutUrl
         } catch (err) {
@@ -141,15 +153,15 @@ export const CheckoutPage = () => {
 
     const deliveryAddress: Address | undefined = useSelector((state: RootState) =>
         state.user.user
-          ? state.user.user.addresses.find((addr) => addr._id === state.user.user!.defaultAddressId)
-          : state.anonymousUser.deliveryAddress ?? undefined // convert `null` to `undefined`
-      )
-      
-      const billingAddress: Address | undefined = useSelector((state: RootState) =>
+            ? state.user.user.addresses.find((addr) => addr._id === state.user.user!.defaultAddressId)
+            : state.anonymousUser.deliveryAddress ?? undefined
+    )
+
+    const billingAddress: Address | undefined = useSelector((state: RootState) =>
         state.user.user
-          ? state.user.user.addresses.find((addr) => addr._id === state.user.user!.defaultAddressId)
-          : state.anonymousUser.billingAddress ?? undefined
-      )
+            ? state.user.user.addresses.find((addr) => addr._id === state.user.user!.defaultAddressId)
+            : state.anonymousUser.billingAddress ?? undefined
+    )
 
     const subtotalILS = items.reduce((acc, item) => {
         const product = products.find((p) => p._id === item.productId)
@@ -161,9 +173,7 @@ export const CheckoutPage = () => {
     const subtotalUSD = +(subtotalILS * exchangeRate).toFixed(2)
 
     if (loading || showLoader) {
-        return (
-            <PageLoader />
-        )
+        return <PageLoader />
     }
 
     return (
@@ -171,7 +181,9 @@ export const CheckoutPage = () => {
             <header className='checkout-header'>
                 <div className='app-logo-column'>
                     <div className='app-logo'>
-                        <AppLogo className='app-logo' />
+                        <NavLink to='/shop'>
+                            <AppLogo className='app-logo' />
+                        </NavLink>
                     </div>
                 </div>
                 <div className='checkout-title'>
@@ -188,6 +200,7 @@ export const CheckoutPage = () => {
                 <section className='checkout-left'>
                     <div className='box'>
                         <DeliveryAddressBox
+                            ref={deliveryRef}
                             address={deliveryAddress ?? anonymousUser.deliveryAddress ?? undefined}
                             firstName={user?.firstName || anonymousUser.firstName}
                             lastName={user?.lastName || anonymousUser.lastName}
@@ -205,12 +218,13 @@ export const CheckoutPage = () => {
                         <div className='payment-box'>
                             <SectionTitle>PAYMENT</SectionTitle>
                             <DeliveryAddressBox
+                                ref={billingRef}
                                 address={billingAddress}
                                 firstName={user?.firstName || anonymousUser.firstName}
                                 lastName={user?.lastName || anonymousUser.lastName}
                                 email={user?.email || anonymousUser.email}
                                 isSignedIn={!!user}
-                                editable={!user} 
+                                editable={!user}
                                 onSave={handleSaveBillingAddress}
                                 title='Billing Address'
                                 onGuestInfoSave={handleGuestInfoSave}

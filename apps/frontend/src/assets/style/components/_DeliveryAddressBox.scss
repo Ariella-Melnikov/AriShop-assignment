@@ -15,11 +15,18 @@
         flex-direction: column;
         gap: $spacing-sm;
 
-        input {
-            padding: 0.6rem 0.8rem;
-            border: 1px solid $color-border-light;
-            @include text-style();
-        }
+        
+            input {
+              padding: 0.6rem 0.8rem;
+              border: 1px solid $color-border-light;
+              @include text-style();
+            }
+        
+            .error {
+              color: $color-error; 
+              font-size: $font-size-xs;
+              margin-top: 2px;
+            }
 
         button {
             margin-top: $spacing-xs;

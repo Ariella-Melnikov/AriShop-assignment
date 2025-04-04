@@ -246,7 +246,7 @@ interface ProductMedia {
 
 interface Price {
   amount: number;
-  currency: 'ILS' | 'USD' | 'EUR';
+  currency: 'ILS' | 'USD';
 }
 
 interface Variant {
