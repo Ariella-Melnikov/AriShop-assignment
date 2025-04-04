@@ -3,11 +3,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
 import { AppDispatch, RootState } from '../store/store'
 import { fetchLoggedInUser, updateUserAddress } from '../store/slices/userSlice'
-import {
-    setAnonymousBillingAddress,
-    setAnonymousDeliveryAddress,
-    setAnonymousNameAndEmail,
-} from '../store/slices/anonymousUserSlice'
+import { setAnonymousBillingAddress, setAnonymousDeliveryAddress, setAnonymousNameAndEmail } from '../store/slices/anonymousUserSlice'
 import { fetchProducts } from '../store/slices/productSlice'
 import { PageTitle } from '../components/Title/PageTitle'
 import { ActionButton } from '../components/Buttons/ActionButton'

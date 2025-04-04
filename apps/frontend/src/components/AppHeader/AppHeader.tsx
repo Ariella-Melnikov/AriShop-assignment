@@ -29,7 +29,7 @@ export const AppHeader = () => {
         if (showCartModal) {
             const timer = setTimeout(() => {
                 dispatch(closeCartModal())
-            }, 20000) // 20 seconds
+            }, 20000)
             return () => clearTimeout(timer)
         }
     }, [showCartModal, dispatch])
@@ -43,22 +43,21 @@ export const AppHeader = () => {
     return (
         <header className={`app-header ${isSticky ? 'sticky' : ''}`}>
             <div className='header-content'>
-                {/* Hamburger */}
                 <div
                     className={`hamburger-menu ${isMobileNavOpen ? 'active' : ''}`}
                     onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}>
                     <span className='hamburger-icon' />
                 </div>
 
-                {/* Logo */}
                 <div className='logo-column'>
+                    <NavLink to='/shop'>
                         <AppLogo className='app-logo' />
+                    </NavLink>
                 </div>
 
-                {/* Navigation */}
                 <nav className={`nav-column ${isMobileNavOpen ? 'active' : ''}`}>
                     <ul className='nav-links'>
-                    <li>
+                        <li>
                             <NavLink to='/shop' onClick={() => setIsMobileNavOpen(false)}>
                                 Shop
                             </NavLink>
@@ -68,20 +67,9 @@ export const AppHeader = () => {
                                 Best Seller
                             </NavLink>
                         </li>
-                        {/* <li>
-                            <NavLink to='/philosophy' onClick={() => setIsMobileNavOpen(false)}>
-                                Philosophy
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to='/contact' onClick={() => setIsMobileNavOpen(false)}>
-                                Contact
-                            </NavLink>
-                        </li> */}
                     </ul>
                 </nav>
 
-                {/* Cart */}
                 <div className='cart-column'>
                     <div className='cart-button-wrapper'>
                         <NavLink to='/cart' className='cart-button'>

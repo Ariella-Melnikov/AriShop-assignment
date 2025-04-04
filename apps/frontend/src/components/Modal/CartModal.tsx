@@ -24,7 +24,6 @@ export const CartModal = ({ onClose }: CartModalProps) => {
         }
     }, [dispatch, products.length])
 
-    // Close modal on ESC
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') onClose()
@@ -87,7 +86,7 @@ export const CartModal = ({ onClose }: CartModalProps) => {
                                         cartItem={item}
                                         isEditable={false}
                                         showRemove={true}
-                                        onQuantityChange={() => {}} // not used in modal
+                                        onQuantityChange={() => {}} 
                                         onRemove={handleRemoveItem}
                                         className='modal-card'
                                     />

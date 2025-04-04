@@ -40,9 +40,9 @@ export class PaymentService {
             isMoto: false,
             storePaymentMethod: false,
             metadata: {
-                source: 'frontend', // optional but helps for debugging
+                source: 'frontend',
             },
-            billingAddress: cleanAddress(dto.billingAddress), // ✅ new field required
+            billingAddress: cleanAddress(dto.billingAddress), 
             shippingSameAsBilling: dto.shippingSameAsBilling,
             shippingAddress: {
                 ...cleanAddress(dto.shippingAddress),
@@ -54,7 +54,7 @@ export class PaymentService {
                 description: item.description || 'N/A', 
                 quantity: item.quantity || 1,
             })),
-            successfulPaymentRedirect: dto.successfulPaymentRedirect,
+            // successfulPaymentRedirect: dto.successfulPaymentRedirect,
         }
 
         console.log('[DEBUG] Final Payload to UniPaaS:', JSON.stringify(payload, null, 2))

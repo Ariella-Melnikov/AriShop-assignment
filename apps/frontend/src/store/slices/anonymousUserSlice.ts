@@ -27,7 +27,7 @@ const anonymousUserSlice = createSlice({
     },
     setAnonymousBillingAddress(state, action: PayloadAction<Address>) {
       state.billingAddress = action.payload
-      state.billingManuallyEdited = true // now treat it as custom
+      state.billingManuallyEdited = true 
     },
     clearAnonymousUser() {
       return initialState

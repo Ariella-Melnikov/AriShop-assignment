@@ -1,4 +1,3 @@
-// store/slices/userSlice.ts
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { User, Address } from '@arishop/shared'
 import { userService } from '../../services/userService'

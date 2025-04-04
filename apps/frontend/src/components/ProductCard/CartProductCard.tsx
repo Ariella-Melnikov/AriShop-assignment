@@ -1,9 +1,7 @@
-// src/components/Cart/CartProductCard.tsx
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { CartItem } from '@arishop/shared'
 import CloseIcon from '@/assets/icons/X.svg?react'
-
 interface CartProductCardProps {
     cartItem: CartItem
     onQuantityChange: (variantId: string, quantity: number) => void

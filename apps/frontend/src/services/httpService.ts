@@ -15,7 +15,6 @@ const handleResponse = async (response: Response) => {
         throw new Error(errorText)
     }
 
-    // Handle 204 No Content
     if (response.status === 204) {
         return null
     }
@@ -23,7 +22,6 @@ const handleResponse = async (response: Response) => {
     return response.json()
 }
 
-// Helper to include headers
 const withHeaders = (headers: HeadersInit = {}) => {
     const cartToken = getOrCreateCartToken()
     console.log('Using cart token:', cartToken)
@@ -40,7 +38,7 @@ interface HttpOptions {
     timeout?: number
 }
 
-const DEFAULT_TIMEOUT = 10000 // 10 seconds
+const DEFAULT_TIMEOUT = 10000 
 
 const fetchWithTimeout = async (url: string, options: RequestInit & { timeout?: number }) => {
     const { timeout = DEFAULT_TIMEOUT, ...fetchOptions } = options

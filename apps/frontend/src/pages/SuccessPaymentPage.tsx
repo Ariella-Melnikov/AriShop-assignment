@@ -17,7 +17,6 @@ export const SuccessPaymentPage = () => {
 
     const dispatch = useDispatch()
     const cartItems = useSelector((state: RootState) => state.cart.items)
-    //   const products = useSelector((state: RootState) => state.products.products)
     const user = useSelector((state: RootState) => state.user.user)
     const anonymousUser = useSelector((state: RootState) => state.anonymousUser)
     const deliveryAddress =
@@ -130,7 +129,7 @@ export const SuccessPaymentPage = () => {
             <ActionButton
                 label='Download Receipt as PDF'
                 onClick={handleDownloadPDF}
-                variant='secondary' // or "primary", up to your UI design
+                variant='secondary' 
             />
         </div>
     )

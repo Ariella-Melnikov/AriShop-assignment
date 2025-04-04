@@ -1,4 +1,3 @@
-// src/services/paymentService.ts
 import { http } from './httpService'
 
 interface CheckoutItem {

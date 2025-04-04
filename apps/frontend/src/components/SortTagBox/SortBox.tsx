@@ -13,7 +13,6 @@ export const SortBox = ({ active, onChange }: SortBoxProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (boxRef.current && !boxRef.current.contains(e.target as Node)) {

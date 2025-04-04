@@ -1,4 +1,3 @@
-// import { MainHero } from '../components/Hero/MainHero'
 
 export const MainPage = () => {
     return (

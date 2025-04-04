@@ -42,7 +42,6 @@ export const ProductPage = () => {
             dispatch(openCartModal())
         } catch (error) {
             console.error('Failed to add item to cart:', error)
-            // You can add error handling UI here
         }
     }, [dispatch, product, selectedVariant, quantity])
 
@@ -97,9 +96,9 @@ export const ProductPage = () => {
                     onClick={handleAddToCart}
                 />
             </div>
-            {/* seconed Column — placeholder for future content */}
-            <div className='product-extra'>{/* Could be recommendations, reviews, etc. */}</div>
-            {/* third Column */}
+            {/* seconed Column — placeholder for style*/}
+            <div className='product-extra'></div>
+
             <div className='product-gallery'>
                 {product.media?.[0] && (
                     <img

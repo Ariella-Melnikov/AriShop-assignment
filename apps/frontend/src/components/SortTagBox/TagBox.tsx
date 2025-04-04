@@ -3,7 +3,6 @@ import { Tag } from '../Buttons/TagButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTags } from '@fortawesome/free-solid-svg-icons'
 
-
 type TagBoxProps = {
   tags: string[]
   selected: string[]
