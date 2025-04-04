@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand&family=Antic+Didone&display=swap');
 
-// Colors
 $color-background: #FBFBFB;
 $color-background-light: #f9f9f9;
 $color-text: #050505;
@@ -13,7 +12,6 @@ $color-action-hover: #D5ABA1;
 $color-action-hover-green: #A8D5A1;
 $color-error: #ee886e;
 
-// Typography
 $font-family-primary: 'Quicksand', sans-serif;
 $font-family-title: 'Antic Didone', serif;
 
@@ -28,8 +26,6 @@ $font-size-xl: 1.25rem;   // 20px
 $font-size-2xl: 1.5rem;   // 24px
 $font-size-3xl: 1.75rem;  // 28px
 
-
-// Font Weights
 $font-weight-light: 300;
 $font-weight-regular: 400;
 $font-weight-medium: 500;
@@ -37,7 +33,6 @@ $font-weight-semibold: 600;
 $font-weight-bold: 700;
 $font-weight-extrabold: 800;
 
-// Spacing
 $spacing-xs: 0.25rem;   // 4px
 $spacing-sm: 0.5rem;    // 8px
 $spacing-sm-2: 0.75rem; // 12px
@@ -51,11 +46,10 @@ $spacing-5xl: 6rem;     // 96px
 $spacing-6xl: 7rem;     // 112px
 $spacing-7xl: 8rem;     // 128px
 $spacing-8xl: 9rem;     // 144px
-//border radius
+
 $radius-sm: 0.25rem; //4px
 $radius-md: 0.5rem; //8px
 
-// Layout
 $header-height: 80px;
 $container-max-width: 1200px;
 $container-padding: 1rem;
@@ -63,15 +57,12 @@ $layout-padding-desktop: 12.5rem; //200px
 $layout-padding-tablet: 2rem;
 $layout-padding-mobile: 1rem; 
 
-// Grid
 $grid-gap: 16px;
 $grid-columns: 12;
 
-// Z-Index
 $z-index-header: 1030;
 $z-index-dropdown: 1040;
 $z-index-modal: 1050;
 $z-index-tooltip: 1060;
 
-// Transitions
 $transition-base: 0.3s ease;

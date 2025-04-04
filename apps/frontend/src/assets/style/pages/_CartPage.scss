@@ -15,11 +15,11 @@
 
     .cart-page-main {
         display: grid;
-        grid-template-columns: 1fr; // Mobile first - single column
+        grid-template-columns: 1fr; 
         gap: $spacing-lg;
 
         @include respond(tablet) {
-            grid-template-columns: 2fr 1fr; // Two columns for tablet and up
+            grid-template-columns: 2fr 1fr; 
             column-gap: $spacing-xl;
         }
 
@@ -29,7 +29,7 @@
             row-gap: $spacing-md;
 
             .cart-product-card {
-                max-height: none; // Allow full height on mobile
+                max-height: none; 
             }
         }
 
@@ -41,7 +41,7 @@
                 padding-bottom: 2rem;
 
                 .summary-title {
-                    @include heading($font-size-lg); // Smaller title for mobile
+                    @include heading($font-size-lg); 
                     padding: 0.889375rem 0.445rem;
                     border-bottom: 1px solid $color-border-light;
                     text-align: center;
@@ -54,7 +54,7 @@
                 .summary-rows-wrapper {
                     display: flex;
                     flex-direction: column;
-                    gap: $spacing-sm; // Smaller gap for mobile
+                    gap: $spacing-sm; 
                     padding: 0 1rem;
 
                     @include respond(tablet) {
@@ -65,7 +65,7 @@
 
                 .summary-row {
                     @include flex-between;
-                    @include text-style($size: $font-size-base); // Smaller text for mobile
+                    @include text-style($size: $font-size-base); 
 
                     @include respond(tablet) {
                         @include text-style($size: $font-size-lg);
@@ -115,14 +115,14 @@
 
 .empty-cart {
     text-align: center;
-    margin-top: 2rem; // Smaller margin for mobile
+    margin-top: 2rem; 
 
     @include respond(tablet) {
         margin-top: 3rem;
     }
 
     .cart-icon {
-        font-size: 3rem; // Smaller icon for mobile
+        font-size: 3rem; 
         margin-bottom: 1rem;
 
         @include respond(tablet) {
@@ -131,7 +131,7 @@
     }
 
     .main-message {
-        font-size: 1.25rem; // Smaller text for mobile
+        font-size: 1.25rem; 
         font-weight: bold;
         margin-bottom: 0.5rem;
 
@@ -141,7 +141,7 @@
     }
 
     .sub-message {
-        font-size: 1rem; // Smaller text for mobile
+        font-size: 1rem; 
         margin-bottom: 0.3rem;
 
         @include respond(tablet) {
@@ -150,7 +150,7 @@
     }
 
     .tagline {
-        font-size: 1rem; // Smaller text for mobile
+        font-size: 1rem; 
         margin-bottom: 1.5rem;
         color: #444;
 
@@ -160,8 +160,8 @@
     }
 
     .signin-btn {
-        padding: 0.5rem 1rem; // Smaller padding for mobile
-        font-size: 0.875rem; // Smaller text for mobile
+        padding: 0.5rem 1rem; 
+        font-size: 0.875rem; 
         border: none;
         background-color: #000;
         color: #fff;

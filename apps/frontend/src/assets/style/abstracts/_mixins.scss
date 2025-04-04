@@ -1,7 +1,6 @@
 @use 'variables' as *;
 @use 'breakpoints' as *;
 
-// Flexbox
 @mixin flex($direction: row, $justify: flex-start, $align: stretch, $wrap: nowrap) {
   display: flex;
   flex-direction: $direction;
@@ -10,7 +9,6 @@
   flex-wrap: $wrap;
 }
 
-// Shortcut for common Flexbox
 @mixin flex-center {
   @include flex(row, center, center);
 }
@@ -23,7 +21,6 @@
   @include flex(column, center, center);
 }
 
-// Grid
 @mixin layout-grid {
   display: grid;
   padding-left: 1rem;
@@ -51,7 +48,6 @@
   }
 }
 
-// Container
 @mixin container {
   width: 100%;
   max-width: $container-max-width;
@@ -59,7 +55,6 @@
   padding: 0 $container-padding;
 }
 
-// Typography
 @mixin heading($size: $font-size-2xl) {
   font-size: $size;
   font-weight: 600;
@@ -81,7 +76,6 @@
   letter-spacing: $spacing;
 }
 
-// Utility
 @mixin visually-hidden {
   position: absolute;
   width: 1px;

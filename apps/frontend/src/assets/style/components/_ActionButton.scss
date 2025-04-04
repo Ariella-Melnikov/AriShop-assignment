@@ -11,7 +11,6 @@
   @include flex($align:center, $justify:center);
   @include text-style($size: $font-size-sm, $weight: $font-weight-medium);
 
-    // Breakpoint overrides
     @include respond(tablet) {
       padding: $spacing-sm $spacing-lg; // 8px 24px
       @include text-style($size: $font-size-sm);

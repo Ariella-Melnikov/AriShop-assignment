@@ -60,9 +60,8 @@
     .cart-items-list {
         max-height: 50vh;
         overflow-y: auto;
-        margin: 1rem 1.5rem; // match padding with other sections
+        margin: 1rem 1.5rem; 
       
-        // Optional: style scrollbar
         &::-webkit-scrollbar {
           width: 6px;
         }
