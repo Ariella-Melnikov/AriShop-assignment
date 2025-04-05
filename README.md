@@ -12,8 +12,6 @@ AriShop is a modern, full-stack e-commerce platform specializing in flower bouqu
 
 Visit the live demo at [asteria.onrender.com](https://asteria.onrender.com)
 
-![Shop Page Screenshot](path_to_screenshot.png)
-
 ## ✨ Features
 
 ### Products & Shopping
