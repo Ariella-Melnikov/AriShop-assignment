@@ -13,7 +13,7 @@ import { User, UserSchema } from '../user/user.schema';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'secret', // Replace with env
+      secret: process.env.JWT_SECRET || 'secret', 
       signOptions: { expiresIn: '7d' },
     }),
   ],

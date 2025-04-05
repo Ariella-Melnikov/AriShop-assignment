@@ -28,7 +28,7 @@ export class CreateOrderFromPaymentDto {
   @IsString() deliveryDate: string
 
   @IsArray()
-  items: any[] // Simplified; can refine later with a CartItemDto if needed
+  items: any[] 
 
   @ValidateNested()
   @Type(() => PaymentSummaryDto)

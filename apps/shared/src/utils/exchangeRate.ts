@@ -5,6 +5,6 @@ export const fetchILSToUSDRate = async (): Promise<number> => {
       return data.rates?.USD ?? 0.28
     } catch (err) {
       console.error('Failed to fetch exchange rate:', err)
-      return 0.28 // fallback default
+      return 0.28 
     }
   }

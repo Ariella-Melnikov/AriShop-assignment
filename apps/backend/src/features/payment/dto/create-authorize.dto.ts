@@ -6,5 +6,5 @@ export class UniPaaSAuthorizeDto {
   vendorId: string;
 
   @IsArray()
-  scopes: string[]; // e.g., ["onboarding_write"]
+  scopes: string[]; 
 }

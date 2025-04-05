@@ -3,7 +3,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UserService } from './user.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-import { CurrentUser } from '../../common/decorators/current-user.decorator'; // adjust path if needed
+import { CurrentUser } from '../../common/decorators/current-user.decorator'; 
 
 @Controller('auth')
 @UseGuards(JwtAuthGuard)

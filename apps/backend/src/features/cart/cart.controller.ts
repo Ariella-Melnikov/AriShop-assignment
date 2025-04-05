@@ -18,7 +18,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Cart')
 @Controller('cart')
-// @UseGuards(OptionalAuthGuard)
+
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
@@ -58,13 +58,11 @@ export class CartController {
         throw new BadRequestException('Either authentication or cart-token is required');
       }
 
-      // First try to find existing cart
       let cart = await this.cartService.findCart({
         userId: req.user?.id,
         cartToken: !req.user ? cartToken : undefined,
       });
 
-      // If no cart exists, create a new one
       if (!cart) {
         cart = await this.cartService.createCart({
           userId: req.user?.id,
@@ -72,7 +70,6 @@ export class CartController {
         });
       }
 
-      // Add item to cart
       return this.cartService.addItem(cart._id.toString(), dto);
     } catch (error) {
       console.error('Add item error:', error);
@@ -101,7 +98,7 @@ export class CartController {
 
   @Delete('items/:itemId')
   @ApiOperation({ summary: 'Remove item from cart' })
-  @ApiResponse({ status: 200, description: 'Item removed from cart' }) // ⬅️ changed from 204 to 200
+  @ApiResponse({ status: 200, description: 'Item removed from cart' })
   async removeItem(
     @Request() req,
     @Headers('cart-token') cartToken: string,

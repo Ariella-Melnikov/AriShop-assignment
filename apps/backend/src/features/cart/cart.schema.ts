@@ -49,7 +49,7 @@ export class Cart extends Document {
     @Prop({ type: Object, required: true })
     total: Price
 
-    @Prop({ default: Date.now, expires: 3600 }) // 1 hour TTL
+    @Prop({ default: Date.now, expires: 3600 }) 
     createdAt: Date
 
     @Prop()

@@ -6,5 +6,5 @@ export interface Payment {
     amount: number;
     status: 'pending' | 'completed' | 'failed';
     timestamp: Date;
-    details?: Record<string, any>; // or a typed structure if you know what’s in it
+    details?: Record<string, any>; 
   }

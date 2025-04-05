@@ -50,7 +50,6 @@ export class CartService {
             throw new NotFoundException('Variant not found')
         }
     
-        // 🔍 Check if the item already exists in the cart
         const existingItem = cart.items.find(
             (item) =>
                 item.productId.toString() === dto.productId &&
@@ -58,11 +57,9 @@ export class CartService {
         )
     
         if (existingItem) {
-            // ✅ Item already exists → increment quantity and total
             existingItem.quantity += dto.quantity
             existingItem.totalPrice.amount = existingItem.quantity * variant.price.amount
         } else {
-            // ✅ New item → push it safely
             cart.items.push({
                 _id: new mongoose.Types.ObjectId().toString(),
                 productId: dto.productId,
@@ -145,7 +142,6 @@ export class CartService {
             return userCart
         }
 
-        // Merge items from guest cart to user cart
         for (const guestItem of guestCart.items) {
             const existingItem = userCart.items.find(
                 (item) =>

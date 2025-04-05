@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, Types } from 'mongoose';
 import { Address, Order } from '@arishop/shared';
 
-@Schema({ timestamps: true }) // handles createdAt and updatedAt automatically
+@Schema({ timestamps: true }) 
 export class User extends Document {
   @Prop({ required: true, unique: true })
   email: string;

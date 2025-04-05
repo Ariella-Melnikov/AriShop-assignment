@@ -21,7 +21,6 @@ export class VariantsService {
       throw new NotFoundException(`Product with ID ${productId} not found`);
     }
   
-    // Use product._id (which is a Mongoose ObjectId) for productId
     const newVariants = createVariantsDto.map((variant) => ({
       ...variant,
       productId: product._id,

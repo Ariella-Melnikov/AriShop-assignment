@@ -37,6 +37,4 @@ export class ProductsController {
     remove(@Param('id') id: string): Promise<void> {
         return this.productsService.remove(id)
     }
-
-
 }

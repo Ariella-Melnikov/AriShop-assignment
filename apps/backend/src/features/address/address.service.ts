@@ -56,15 +56,12 @@ export class AddressService {
         const address = await this.addressModel.findOne({ _id: id, userId })
         if (!address) throw new NotFoundException('Address not found')
 
-        // ✅ Wait for all old defaults to be unset
         await this.addressModel.updateMany({ userId }, { isDefault: false })
 
-        // ✅ Then set this one to true
         await this.addressModel.findByIdAndUpdate(id, { isDefault: true })
 
-        // ✅ Finally update the user’s default reference
         await this.userModel.findByIdAndUpdate(userId, { defaultAddressId: id })
 
-        return this.addressModel.findById(id) // Return updated address if needed
+        return this.addressModel.findById(id) 
     }
 }

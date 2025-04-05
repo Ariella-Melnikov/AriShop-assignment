@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from './src/app.module'
 import { config } from 'dotenv'
 import * as path from 'path';
-import * as express from 'express'; // ✅ This ensures 'static' will be defined
+import * as express from 'express'; 
 import { Request, Response } from 'express';
 
 if (process.env.RENDER) {
@@ -23,12 +23,11 @@ async function bootstrap() {
     })
 
 
-  //if (process.env.NODE_ENV === 'production') {
-      const expressApp = app.getHttpAdapter().getInstance(); // ✅ get native express app
+      const expressApp = app.getHttpAdapter().getInstance(); 
       const publicPath = path.join(__dirname, '..', 'public');
       app.use(express.static(publicPath));
 
-        // Only handle non-API routes (exclude anything starting with /api)
+     
     expressApp.get(/^\/(?!api).*/, (req: Request, res: Response) => {
         console.log('Serving frontend for:', req.url);
         res.sendFile(path.join(publicPath, 'index.html'));

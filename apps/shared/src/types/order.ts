@@ -4,7 +4,7 @@ import { DeliveryMethod } from "./delivery";
 
 export interface ProductSnapshot {
     title: string;
-    attributes: Record<string, string>; // or a more specific type
+    attributes: Record<string, string>; 
     price: number;
     media: {
       url: string;

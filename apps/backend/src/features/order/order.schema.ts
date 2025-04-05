@@ -101,7 +101,6 @@ export class Order extends Document implements OrderInterface {
   @Prop()
   createdAt: Date;
 
-  // Optional for interface alignment; normally _id is handled by Mongoose
   @Prop()
   _id: string;
 }

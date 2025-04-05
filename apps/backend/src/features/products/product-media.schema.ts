@@ -6,5 +6,5 @@ export const ProductMediaSchema = new Schema(
       url: { type: String },
       altText: { type: String },
     },
-    { _id: true } // 👈 same here
+    { _id: true }
   );

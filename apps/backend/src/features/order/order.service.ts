@@ -65,8 +65,8 @@ export class OrderService {
           items,
           deliveryDate: new Date(deliveryDate),
           payment: {
-            token: '', // guest, no token
-            last4: '', // optional
+            token: '',
+            last4: '', 
             method: 'unipaas',
             approvalNumber: payment.approvalNumber,
           },
