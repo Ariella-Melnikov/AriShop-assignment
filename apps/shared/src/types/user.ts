@@ -1,6 +1,5 @@
 import { Order } from "./order";
 import { Price } from "./product";
-
 export interface Address {
   _id: string;
   street: string;
@@ -10,7 +9,6 @@ export interface Address {
   zip: string;
   isDefault?: boolean;
 }
-
 export interface CartItem {
   _id: string;
   productId: string;
@@ -18,7 +16,6 @@ export interface CartItem {
   quantity: number;
   price: Price;
 }
-
 export interface Cart {
   _id: string;
   items: CartItem[];
@@ -30,7 +27,7 @@ export interface Cart {
 export interface User {
   _id: string;
   email: string;
-  password?: string; // Only in backend
+  password?: string; 
   firstName: string;
   lastName: string;
   phone?: string;
@@ -41,7 +38,6 @@ export interface User {
   cart?: Cart;
   createdAt: Date;
 }
-
 export interface AnonymousUserInfo {
   firstName: string
   lastName: string
@@ -50,7 +46,6 @@ export interface AnonymousUserInfo {
   billingAddress: Address | null
   billingManuallyEdited?: boolean
 }
-// For auth responses (frontend-safe)
 export interface PublicUser {
   _id: string;
   email: string;
@@ -58,7 +53,6 @@ export interface PublicUser {
   lastName: string;
   role: 'customer' | 'admin';
 }
-
 export interface LoginResponse {
   access_token: string;
   user: PublicUser;
